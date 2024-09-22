@@ -9,6 +9,13 @@ struct jugador{
     int afectacion=0; /*Afectacion viene siendo los daños que resive el jugador*/
     jugador *prox;
 };
+struct zombies{
+    string nombre;
+    string nivel;
+    int salud=0;
+    int daño_de_ataque=0;
+    zombies *prox;
+};
 
 void escribir_archivo_jugador(ofstream &escribir){ /*La función crea el archivo en donde se guardará la información de la estructura jugador*/
     string nombre_jugador;
@@ -19,20 +26,19 @@ void escribir_archivo_jugador(ofstream &escribir){ /*La función crea el archivo
     cin>>nombre_jugador;
     cout<<"Ingrese el rango (lider / soldado): ";
     cin>>rango_jugador;
-    while(rango_jugador!="lider" || rango_jugador!="soldado"){
-        cout<<"El rango no coinside, vuelva a intentar."<<"\n";
-        cout<<"Ingrese el rango (lider / soldado): ";
-        cin>>rango_jugador;
-        if(rango_jugador=="lider" || rango_jugador=="soldado")
-            cin>>rango_jugador;
+    if(rango_jugador!="lider" && rango_jugador!="soldado"){
+        cout<<"Error, el dato no se encuentre entre las opciones\n"; /*prueba de modificacion para github*/
     }
-    
-    escribir.open("archivo jugador.txt", ios::out | ios::app);
-    escribir<<nombre_jugador<<" "<<rango_jugador<<" "<<salud_jugador<<" "<<afectacion_jugador<<"\n";
-    escribir.close();
+    else{
+        escribir.open("archivo jugador.txt", ios::out | ios::app);
+        escribir<<nombre_jugador<<" "<<rango_jugador<<" "<<salud_jugador<<" "<<afectacion_jugador<<"\n";
+        escribir.close();
+    }   
 }
 
+void leer_archivo_jugador(ifstream &leer){
 
+}
 
 int main(){
     ofstream escritura_jugador;
@@ -72,11 +78,11 @@ int main(){
                     cin>>opcion;
                     switch (opcion){
                         case 1:
-                            cout<<"falta programar"<<endl;
+                            cout<<"falta programar";
                             system("pause");
                         break;
                         case 2:
-                            cout<<"falta programar"<<endl;
+                            cout<<"falta programar";
                             system("pause");
                         break;
                         case 3:
@@ -109,7 +115,7 @@ int main(){
                                         system("pause");
                                         break;
                                     case 4:
-                                        cout<<"falta programar";
+                                        leer_archivo_jugador(lectura_jugador);
                                         system("pause");
                                         break;
                                 }
