@@ -1,3 +1,4 @@
+//IMPORTACIÓN DE LIBRERIAS.
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -38,7 +39,7 @@ void lista_jugador(jugador *&inicio){ /*La función crea la lista en donde se gu
     
 }
 
-void mostrar_lista_jugador(jugador *inicio){
+void mostrar_lista_jugador(jugador *inicio){ /*Esta función mostrará a cada jugador que se llenó en la lista*/
     cout<<"\n\n";
    jugador *mostrar_jugador;
 
@@ -53,8 +54,8 @@ void mostrar_lista_jugador(jugador *inicio){
         cout<<"Lista esta vacia"<<endl;
 }
 
-void modificar_jugador(jugador *&inicio){
-    jugador *buscar=inicio;
+void modificar_jugador(jugador *&inicio){ /*Esta funcion busca y cambia al jugador a modificar,por haora modifica el nombre */
+    jugador *buscar=inicio;               /*pero mas adelante se mejorará si es necesario modificarle la salud y afectación*/
     string nombre_aux;
     bool encontrado_1=false;
     bool encontrado_2=false;
@@ -93,7 +94,7 @@ void modificar_jugador(jugador *&inicio){
     } 
 }
 
-void eliminar_jugador_lista(jugador *&inicio){
+void eliminar_jugador_lista(jugador *&inicio){ /* Su función lo dice, elimina al jugador */
     jugador *eliminar_jugador;
     jugador *auxiliar = NULL; 
     string nombre_aux;
@@ -135,7 +136,7 @@ int main(){
         cout<<"3. Reglas "<<"\n";
         cout<<"4. Salir "<<"\n";
         cout<<"===================="<<"\n";
-        cout<<"Ingrese una opcion: ";
+        cout<<"Ingrese una opcion (1 al 4): ";
         cin>>opcion;
         switch (opcion){
             case 1:
@@ -153,7 +154,7 @@ int main(){
                     cout<<"2.4. Gestionar mapas "<<"\n";
                     cout<<"2.5. Volver "<<"\n";
                     cout<<"==========================="<<"\n";
-                    cout<<"Ingrese una opcion: ";
+                    cout<<"Ingrese una opcion (1 al 5): ";
                     cin>>opcion;
                     switch (opcion){
                         case 1:
@@ -172,9 +173,9 @@ int main(){
                                 cout<<"2.3.1. Agregar soldado "<<"\n";
                                 cout<<"2.3.2. Modificar soldado "<<"\n";
                                 cout<<"2.3.3. Eliminar soldado "<<"\n";
-                                cout<<"2.3.5. Volver "<<"\n";
+                                cout<<"2.3.4. Volver "<<"\n";
                                 cout<<"======================================"<<"\n";
-                                cout<<"Ingrese una opcion: ";
+                                cout<<"Ingrese una opcion (1 al 4): ";
                                 cin>>opcion;
                                 switch (opcion){
                                     case 1:
@@ -186,7 +187,7 @@ int main(){
                                             cout<<"2.3.1.2. Consultar equipo "<<"\n";
                                             cout<<"2.3.1.3. Volver "<<"\n";
                                             cout<<"======================================"<<"\n";
-                                            cout<<"Ingrese una opcion: ";
+                                            cout<<"Ingrese una opcion (1 al 3): ";
                                             cin>>opcion;
                                             switch (opcion){
                                                 case 1:
