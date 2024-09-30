@@ -296,7 +296,7 @@ int main() {
                     buscar_zombie(lista_zombies, pedir_nombre());
                 break;  
             case 7:
-                cout << "Hasta la vista baby" << endl;
+                cout << "Adios" << endl;
                 break;
             default: 
                 cout << "Opción inválida. Intente nuevamente." << endl;
