@@ -76,10 +76,56 @@ int main(){
                     cout<<"==========================="<<"\n";
                     cout<<"Ingrese una opcion: ";
                     cin>>opcion;
+                    
                     switch (opcion){
                         case 1:
-                            cout<<"falta programar";
-                            system("pause");
+                            while(opcion!=0)
+                            {
+                                system("cls");
+                                cout<<"        2.1. Gestionar zombies        "<<"\n";
+                                cout<<"======================================"<<"\n";
+                                cout<<"2.1.1. Agregar zombies "<<"\n";
+                                cout<<"2.1.2. Modificar zombie "<<"\n";
+                                cout<<"2.1.3. Eliminar zombie "<<"\n";
+                                cout<<"2.1.4. Consultar zombie "<<"\n";
+                                cout<<"2.1.0. Volver "<<"\n";
+                                cout<<"======================================"<<"\n";
+                                cout<<"Ingrese una opcion: ";
+                                cin>>opcion;
+                                switch (opcion)
+                                {
+                                case 1:
+                                    cout<<"agregar zombies"<<endl;
+                                    system("pause");
+                                    break;                               
+                               
+                                
+                                case 2:
+                                    cout<<"modificar Z"<<endl;
+                                    system("pause");
+                                    break;                               
+                               
+                                
+                                case 3:
+                                    cout<<"eliminar Z"<<endl;
+                                    system("pause");
+                                    break;                               
+                               
+                                
+                                case 4:
+                                    cout<<"consultar Z"<<endl;
+                                    system("pause");
+                                    break;                               
+                               
+                                
+                                case 0:
+                                    cout<<"salir"<<endl;
+                                    system("pause");
+                                    break;
+                                }                               
+                               
+                            
+                        }
                         break;
                         case 2:
                             cout<<"falta programar";
