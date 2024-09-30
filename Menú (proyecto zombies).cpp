@@ -9,13 +9,7 @@ struct jugador{
     int afectacion=0; /*Afectacion viene siendo los daños que resive el jugador*/
     jugador *prox;
 };
-struct zombies{
-    string nombre;
-    string nivel;
-    int salud=0;
-    int daño_de_ataque=0;
-    zombies *prox;
-};
+
 
 void escribir_archivo_jugador(ofstream &escribir){ /*La función crea el archivo en donde se guardará la información de la estructura jugador*/
     string nombre_jugador;
