@@ -191,7 +191,7 @@ void eliminar(zombies**lista_zombies,string nom)
    else{
       zombies*mover,*anterior=NULL;
       mover=*lista_zombies;
-      while(mover->prox!=NULL && mover->nombre!=nom)
+      while(mover!=NULL && mover->nombre!=nom)
       {
          anterior=mover;
          mover=mover->prox;
