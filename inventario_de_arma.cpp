@@ -36,7 +36,7 @@ void registrar_arma(PLista &lista) {
 
     switch (opcion) {
         case 1:
-            strcpy(q->nombrearm, "Basuca");
+            strcpy(q->nombrearm, "Bazuca");
             break;
         case 2:
             strcpy(q->nombrearm, "Escopeta");
@@ -81,7 +81,7 @@ void eliminar_arma(PLista &lista) {
     const char* nombreArma;
     switch (opcion) {
         case 1:
-            nombreArma = "Basuca";
+            nombreArma = "Bazuca";
             break;
         case 2:
             nombreArma = "Escopeta";
