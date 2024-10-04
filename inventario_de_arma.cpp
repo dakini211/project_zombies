@@ -28,7 +28,7 @@ void registrar_arma(PLista &lista) {
     cout << "\n\n\t\t[  REGISTRO  ]\n";
     cout << "\t\t------------";
     cout << "\n\tSeleccione el arma a registrar:\n";
-    cout << "1. Basuca\n";
+    cout << "1. Bazuca\n";
     cout << "2. Escopeta\n";
     cout << "3. Cuchillo\n";
     cout << "Ingrese su opcion: ";
@@ -72,7 +72,7 @@ void eliminar_arma(PLista &lista) {
 
     cout << "\n\n\n\tELIMINAR UN ARMA";
     cout << "\n\n\tSeleccione el arma a eliminar:\n";
-    cout << "1. Basuca\n";
+    cout << "1. Bazuca\n";
     cout << "2. Escopeta\n";
     cout << "3. Cuchillo\n";
     cout << "Ingrese su opcion: ";
