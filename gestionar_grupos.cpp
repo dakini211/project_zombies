@@ -26,16 +26,16 @@ bool lista_vacia(jugador *soldado){
 void insertar_Ultimo_jugador(jugador *&inicio, string nom, int sald, int afect){
     jugador *nuevo = crear_jugador(nom, sald, afect);
  
-   if (lista_vacia(inicio)) {
-       inicio = nuevo;
+    if (lista_vacia(inicio)) {
+        inicio = nuevo;
     } 
     else {
-       jugador *mover = inicio;
-       while (mover->prox != NULL) {
-           mover = mover->prox;
-       }
+        jugador *mover = inicio;
+        while (mover->prox != NULL) {
+            mover = mover->prox;
+        }
         mover->prox = nuevo;
-  } 
+    } 
 }
 
 void lista_jugador(jugador *&inicio){ /*La función crea la lista en donde se guardará la información de la estructura jugador*/
@@ -55,7 +55,7 @@ void lista_jugador(jugador *&inicio){ /*La función crea la lista en donde se gu
 
 void mostrar_lista_jugador(jugador *inicio){ /*Esta función mostrará a cada jugador que se llenó en la lista*/
     cout<<"\n\n";
-   jugador *mostrar_jugador;
+    jugador *mostrar_jugador;
 
     if (!lista_vacia(inicio)){
         mostrar_jugador = inicio;
@@ -68,52 +68,47 @@ void mostrar_lista_jugador(jugador *inicio){ /*Esta función mostrará a cada ju
         cout<<"Lista esta vacia"<<endl;
 }
 
-void buscarElemento(jugador *primero, string valor) {
-    jugador *buscar = primero; 
-    bool encontrado = false;
-    if (lista_vacia(primero))
+void modificar_jugador(jugador *inicio){ /*Esta funcion busca y cambia al jugador a modificar,por haora modifica el nombre */
+    jugador *buscar = inicio;            /*pero mas adelante se mejorará si es necesario modificarle la salud y afectación*/
+    bool encontrado = false;             //no funciona bien :(
+    string nombre_aux;                    
+    cout<<"Ingresa jugador a modificar: ";
+    cin>>nombre_aux;
+
+    if (lista_vacia(inicio))
     cout<<"Lista vacia\n";
-     else{   
+    else{   
         while (!lista_vacia(buscar) && encontrado == false) {
-            if (buscar->nombre == valor){
+            if (buscar->nombre == nombre_aux){
                 encontrado = true;
                 string nuevo_nombre;
                 cout<<"Ingrese el nuevo nombre del jugador: ";
                 cin>>nuevo_nombre; 
-                verificar_existe_jugador(primero, nuevo_nombre); //acomodar...
+                jugador *buscar_2=inicio;
+                bool encontrado_2=false;
+                while(!lista_vacia(buscar_2) && encontrado_2==false){
+                    if(buscar_2->nombre==nuevo_nombre){
+                        encontrado_2=true;
+                        cout<<"Este usuario ya existe\n";
+                    }
+                    else{
+                        if(buscar_2->nombre!=nuevo_nombre){
+                            buscar_2=buscar_2->prox;
+                        }
+                        if(lista_vacia(buscar_2)){
+                            buscar_2->nombre=nuevo_nombre;
+                            cout<<"El jugador se modifico con exito!!!\n";         
+                        }
+                    }
+                } 
             }
-            else 
+            else{
                 buscar = buscar->prox;
+            }
         }
-        if (encontrado == false)
+        if (!encontrado)
             cout<<"El jugador no fue encontrado en la lista."<<endl;
-        }   
-}
-
-void verificar_existe_jugador(jugador *inicio, string buscar_nombre){
-    jugador *buscar_2=inicio;
-    bool encontrado_2=false;
-    while(!lista_vacia(buscar_2) && encontrado_2==false){
-        if(buscar_2->nombre==buscar_nombre){
-            encontrado_2=true;
-            cout<<"Este usuario ya existe\n";
-        }
-        else{
-            if(buscar_2->nombre != buscar_nombre){
-                buscar_2=buscar_2->prox;
-            }
-            if(lista_vacia(buscar_2)){
-                buscar_2->nombre=buscar_nombre;
-            }
-        }      
     }
-}
-
-void modificar_jugador(jugador *&inicio){ /*Esta funcion busca y cambia al jugador a modificar,por haora modifica el nombre */
-    string nombre_aux;                    /*pero mas adelante se mejorará si es necesario modificarle la salud y afectación*/
-    cout<<"Ingresa jugador a modificar: ";
-    cin>>nombre_aux;
-    buscarElemento(inicio, nombre_aux);
 }
 
 void eliminar_jugador_lista(jugador *&inicio){ /* Su función lo dice, elimina al jugador */
@@ -145,8 +140,8 @@ void eliminar_jugador_lista(jugador *&inicio){ /* Su función lo dice, elimina a
 
 int main(){
     jugador *lista_soldados=NULL;
-    int opcion;
-    while (opcion!=4){
+    char opcion;
+    while (opcion!='4'){
         system("cls");
         cout<<"        Menu        "<<"\n";
         cout<<"Cristian Teran"<<"\n";
@@ -161,12 +156,12 @@ int main(){
         cout<<"Ingrese una opcion (1 al 4): ";
         cin>>opcion;
         switch (opcion){
-            case 1:
+            case '1':
                 cout<<"falta programar"<<"\n";
                 system("pause");
             break;
-            case 2: 
-                while(opcion!=5){
+            case '2': 
+                while(opcion!='5'){
                     system("cls");
                     cout<<"        2. Opciones        "<<"\n";
                     cout<<"==========================="<<"\n";
@@ -179,16 +174,16 @@ int main(){
                     cout<<"Ingrese una opcion (1 al 5): ";
                     cin>>opcion;
                     switch (opcion){
-                        case 1:
+                        case '1':
                             cout<<"falta programar";
                             system("pause");
                         break;
-                        case 2:
+                        case '2':
                             cout<<"falta programar";
                             system("pause");
                         break;
-                        case 3:
-                            while(opcion!=4){
+                        case '3':
+                            while(opcion!='4'){
                                 system("cls");
                                 cout<<"        2.3. Gestionar equipos        "<<"\n";
                                 cout<<"======================================"<<"\n";
@@ -200,8 +195,8 @@ int main(){
                                 cout<<"Ingrese una opcion (1 al 4): ";
                                 cin>>opcion;
                                 switch (opcion){
-                                    case 1:
-                                        while(opcion!=3){                                        
+                                    case '1':
+                                        while(opcion!='3'){                                        
                                             system("cls");
                                             cout<<"        2.3.1 Agregar soldado       "<<"\n";
                                             cout<<"======================================"<<"\n";
@@ -212,37 +207,66 @@ int main(){
                                             cout<<"Ingrese una opcion (1 al 3): ";
                                             cin>>opcion;
                                             switch (opcion){
-                                                case 1:
+                                                case '1':
                                                     lista_jugador(lista_soldados);
                                                     system("pause");
                                                 break;
-                                                case 2:                                                   
+                                                case '2':                                                   
                                                     mostrar_lista_jugador(lista_soldados);
                                                     system("pause");
                                                 break;
+                                                case '3':
+                                                    system("pause");
+                                                break;
+                                                default:
+                                                    cout<<" ERROR, no esta en las opciones vuelva a intentar\n";
+                                                    system("pause");
+                                                break;
+                                                
                                             }
                                         }
                                         system("pause");
                                     break;
-                                    case 2:
+                                    case '2':
                                         modificar_jugador(lista_soldados);
                                         system("pause");
                                     break;
-                                    case 3:
+                                    case '3':
                                         eliminar_jugador_lista(lista_soldados);
+                                        system("pause");
+                                    break;
+                                    case '4':
+                                        system("pause");
+                                    break;
+                                    default:
+                                        cout<<"ERROR, no esta en las opciones vuelva a intentar.\n";
                                         system("pause");
                                     break;
                                 }
                             }
                         break;
-                        case 4:
+                        case '4':
                             cout<<"falta programar"<<"\n";
                             system("pause");
-                        break;                   
+                        break; 
+                        case '5':
+                            system("pause");
+                        break;
+                        default:
+                            cout<<"ERROR, no esta en las opciones vuelva a intentar.\n";
+                            system("pause");
+                        break;                  
                     }
                 }
-            case 3:
+            case '3':
                 cout<<"falta programar";
+                system("pause");
+            break;
+            case '4':
+                system("pause");
+            break;
+            default:
+                cout<<"ERROR, no esta en las opciones vuelva a intentar.\n";
                 system("pause");
             break;
         }
