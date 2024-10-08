@@ -10,6 +10,34 @@ struct jugador{
     jugador *prox;
 };
 
+jugador *crear_jugador(string nom, int sald, int afect){
+    jugador *nuevo_jugador =new jugador;
+    nuevo_jugador->nombre=nom;
+    nuevo_jugador->salud=sald;
+    nuevo_jugador->afectacion=afect;
+    nuevo_jugador->prox=NULL;
+    return nuevo_jugador;
+}
+
+bool lista_vacia(jugador *soldado){
+    return soldado==NULL;
+}
+
+void insertar_Ultimo_jugador(jugador *&inicio, string nom, int sald, int afect){
+    jugador *nuevo = crear_jugador(nom, sald, afect);
+ 
+   if (lista_vacia(inicio)) {
+       inicio = nuevo;
+    } 
+    else {
+       jugador *mover = inicio;
+       while (mover->prox != NULL) {
+           mover = mover->prox;
+       }
+        mover->prox = nuevo;
+  } 
+}
+
 void lista_jugador(jugador *&inicio){ /*La función crea la lista en donde se guardará la información de la estructura jugador*/
     string escribir_nombre;
     int escribir_salud=100; 
@@ -20,21 +48,7 @@ void lista_jugador(jugador *&inicio){ /*La función crea la lista en donde se gu
     for(int i=0; i<cantidad; i++){
         cout<<"Ingrese jugador: ";
         cin>>escribir_nombre;
-        jugador *nuevo_jugador =new jugador;
-        nuevo_jugador->nombre=escribir_nombre;
-        nuevo_jugador->salud=escribir_salud;
-        nuevo_jugador->afectacion=escribir_afectacion;
-        nuevo_jugador->prox=NULL;
-        if (inicio==NULL) {
-            inicio = nuevo_jugador;
-        } 
-        else {
-            jugador *avanzar = inicio;
-            while (avanzar->prox != NULL) {
-                avanzar = avanzar->prox;
-            }
-            avanzar->prox = nuevo_jugador;
-        }
+        insertar_Ultimo_jugador(inicio, escribir_nombre, escribir_salud, escribir_afectacion);
     }
     
 }
@@ -43,9 +57,9 @@ void mostrar_lista_jugador(jugador *inicio){ /*Esta función mostrará a cada ju
     cout<<"\n\n";
    jugador *mostrar_jugador;
 
-    if (inicio!=NULL){
+    if (!lista_vacia(inicio)){
         mostrar_jugador = inicio;
-        while (mostrar_jugador != NULL){
+        while (!lista_vacia(mostrar_jugador)){
             cout<<"[Nombre: "<<mostrar_jugador->nombre<<"; vida: "<<mostrar_jugador->salud<<", Afectacion: "<<mostrar_jugador->afectacion<<"]\n";
             mostrar_jugador = mostrar_jugador->prox;
         }
@@ -54,44 +68,52 @@ void mostrar_lista_jugador(jugador *inicio){ /*Esta función mostrará a cada ju
         cout<<"Lista esta vacia"<<endl;
 }
 
-void modificar_jugador(jugador *&inicio){ /*Esta funcion busca y cambia al jugador a modificar,por haora modifica el nombre */
-    jugador *buscar=inicio;               /*pero mas adelante se mejorará si es necesario modificarle la salud y afectación*/
-    string nombre_aux;
-    bool encontrado_1=false;
-    bool encontrado_2=false;
-    cout<<"Ingresa jugador a modificar: ";
-    cin>>nombre_aux;
-    if (inicio==NULL)
-        cout<<"Lista vacia\n";
-    else{   
-        while (buscar != NULL && encontrado_1 == false) {
-            if (buscar->nombre == nombre_aux) {
-                jugador *buscar_2=inicio;
-                encontrado_1 = true;
+void buscarElemento(jugador *primero, string valor) {
+    jugador *buscar = primero; 
+    bool encontrado = false;
+    if (lista_vacia(primero))
+    cout<<"Lista vacia\n";
+     else{   
+        while (!lista_vacia(buscar) && encontrado == false) {
+            if (buscar->nombre == valor){
+                encontrado = true;
                 string nuevo_nombre;
                 cout<<"Ingrese el nuevo nombre del jugador: ";
-                cin>>nuevo_nombre;
-                while(buscar_2 != NULL && encontrado_2==false){
-                    if(buscar_2->nombre==nuevo_nombre){
-                        encontrado_2=true;
-                        cout<<"Este usuario ya existe\n";
-                    }
-                    else{
-                        if(buscar_2->nombre != nuevo_nombre){
-                            buscar_2=buscar_2->prox;
-                        }
-                        if(buscar_2==NULL){
-                            buscar->nombre=nuevo_nombre;
-                        }
-                    }      
-                }    
+                cin>>nuevo_nombre; 
+                verificar_existe_jugador(primero, nuevo_nombre); //acomodar...
             }
             else 
                 buscar = buscar->prox;
         }
-        if (encontrado_1 == false)
+        if (encontrado == false)
             cout<<"El jugador no fue encontrado en la lista."<<endl;
-    } 
+        }   
+}
+
+void verificar_existe_jugador(jugador *inicio, string buscar_nombre){
+    jugador *buscar_2=inicio;
+    bool encontrado_2=false;
+    while(!lista_vacia(buscar_2) && encontrado_2==false){
+        if(buscar_2->nombre==buscar_nombre){
+            encontrado_2=true;
+            cout<<"Este usuario ya existe\n";
+        }
+        else{
+            if(buscar_2->nombre != buscar_nombre){
+                buscar_2=buscar_2->prox;
+            }
+            if(lista_vacia(buscar_2)){
+                buscar_2->nombre=buscar_nombre;
+            }
+        }      
+    }
+}
+
+void modificar_jugador(jugador *&inicio){ /*Esta funcion busca y cambia al jugador a modificar,por haora modifica el nombre */
+    string nombre_aux;                    /*pero mas adelante se mejorará si es necesario modificarle la salud y afectación*/
+    cout<<"Ingresa jugador a modificar: ";
+    cin>>nombre_aux;
+    buscarElemento(inicio, nombre_aux);
 }
 
 void eliminar_jugador_lista(jugador *&inicio){ /* Su función lo dice, elimina al jugador */
@@ -224,7 +246,6 @@ int main(){
                 system("pause");
             break;
         }
-    }
-    
+    } 
     return 0;
 }
