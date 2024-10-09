@@ -64,51 +64,70 @@ void mostrar_lista_jugador(jugador *inicio){ /*Esta función mostrará a cada ju
             mostrar_jugador = mostrar_jugador->prox;
         }
     }  
-    else
-        cout<<"Lista esta vacia"<<endl;
+    else{
+        cout<<"\e[47m \e[0m";
+        cout<<"\e[41mNo se han introducido datos del jugador\e[0m"<<endl;
+        cout<<"\e[47m \e[0m\n\n"; 
+    }
 }
 
-void modificar_jugador(jugador *inicio){ /*Esta funcion busca y cambia al jugador a modificar,por haora modifica el nombre */
-    jugador *buscar = inicio;            /*pero mas adelante se mejorará si es necesario modificarle la salud y afectación*/
-    bool encontrado = false;             //no funciona bien :(
-    string nombre_aux;                    
-    cout<<"Ingresa jugador a modificar: ";
-    cin>>nombre_aux;
+void existe_jugador(jugador *lista, jugador *auxiliar, string valor_1){
+    jugador *buscar_2=lista;
+    bool encontrado_2=false;
+    while(!lista_vacia(buscar_2) && encontrado_2==false){
+        if(buscar_2->nombre==valor_1){
+            encontrado_2=true;
+            cout<<"\e[47m \e[0m";
+            cout<<"\e[41mEste usuario ya existe\e[0m";
+            cout<<"\e[47m \e[0m\n\n"; 
+        }
+        else{
+            buscar_2=buscar_2->prox;
+        }
+        if(lista_vacia(buscar_2)){
+            auxiliar->nombre= valor_1;
+            cout<<"\n";
+            cout<<"\e[47m \e[0m";
+            cout<<"\e[42mEl jugador se modifico con exito!!!\e[0m";   
+            cout<<"\e[47m \e[0m\n\n";      
+        }
+    }
+}
 
-    if (lista_vacia(inicio))
-    cout<<"Lista vacia\n";
+void buscar_jugador(jugador *list, string actual){
+    jugador *buscar = list;                      
+    bool encontrado = false; 
+    if (lista_vacia(list)){
+        cout<<"\e[47m \e[0m";
+        cout<<"\e[41mNo se han introducido datos del jugador\e[0m";
+        cout<<"\e[47m \e[0m\n\n";
+    }  
     else{   
         while (!lista_vacia(buscar) && encontrado == false) {
-            if (buscar->nombre == nombre_aux){
+            if (buscar->nombre == actual){
                 encontrado = true;
                 string nuevo_nombre;
                 cout<<"Ingrese el nuevo nombre del jugador: ";
                 cin>>nuevo_nombre; 
-                jugador *buscar_2=inicio;
-                bool encontrado_2=false;
-                while(!lista_vacia(buscar_2) && encontrado_2==false){
-                    if(buscar_2->nombre==nuevo_nombre){
-                        encontrado_2=true;
-                        cout<<"Este usuario ya existe\n";
-                    }
-                    else{
-                        if(buscar_2->nombre!=nuevo_nombre){
-                            buscar_2=buscar_2->prox;
-                        }
-                        if(lista_vacia(buscar_2)){
-                            buscar_2->nombre=nuevo_nombre;
-                            cout<<"El jugador se modifico con exito!!!\n";         
-                        }
-                    }
-                } 
+                existe_jugador(list, buscar, nuevo_nombre);
             }
             else{
                 buscar = buscar->prox;
             }
         }
-        if (!encontrado)
-            cout<<"El jugador no fue encontrado en la lista."<<endl;
+        if (!encontrado){
+            cout<<"\e[47m \e[0m";
+        cout<<"\e[41mEl jugador no fue encontrado en la lista\e[0m";
+            cout<<"\e[47m \e[0m\n\n";
+        }
     }
+}
+
+void modificar_jugador(jugador *inicio){ /*Esta funcion busca y cambia al jugador a modificar,por haora modifica el nombre */
+    string nombre_aux;                   /*pero mas adelante se mejorará si es necesario modificarle la salud y afectación*/          
+    cout<<"Ingresa jugador a modificar: ";
+    cin>>nombre_aux;
+    buscar_jugador(inicio, nombre_aux);
 }
 
 void eliminar_jugador_lista(jugador *&inicio){ /* Su función lo dice, elimina al jugador */
@@ -117,8 +136,11 @@ void eliminar_jugador_lista(jugador *&inicio){ /* Su función lo dice, elimina a
     string nombre_aux;
     cout<<"Ingresa jugador a eliminar: ";
     cin>>nombre_aux;
-    if (inicio==NULL)
-       cout<<"Lista esta vacia"<<endl;
+    if (inicio==NULL){
+        cout<<"\e[47m \e[0m";
+        cout<<"\e[41mEl jugador no fue encontrado en la lista\e[0m";
+        cout<<"\e[47m \e[0m\n\n";
+    }
     else {   
         eliminar_jugador = inicio;
         while (eliminar_jugador != NULL && eliminar_jugador->nombre != nombre_aux){
@@ -219,10 +241,11 @@ int main(){
                                                     system("pause");
                                                 break;
                                                 default:
-                                                    cout<<" ERROR, no esta en las opciones vuelva a intentar\n";
+                                                    cout<<"\e[47m \e[0m";
+                                                    cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                                                    cout<<"\e[47m \e[0m\n\n";
                                                     system("pause");
-                                                break;
-                                                
+                                                break; 
                                             }
                                         }
                                         system("pause");
@@ -239,7 +262,9 @@ int main(){
                                         system("pause");
                                     break;
                                     default:
-                                        cout<<"ERROR, no esta en las opciones vuelva a intentar.\n";
+                                        cout<<"\e[47m \e[0m";
+                                        cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                                        cout<<"\e[47m \e[0m\n\n";
                                         system("pause");
                                     break;
                                 }
@@ -253,7 +278,9 @@ int main(){
                             system("pause");
                         break;
                         default:
-                            cout<<"ERROR, no esta en las opciones vuelva a intentar.\n";
+                            cout<<"\e[47m \e[0m";
+                            cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                            cout<<"\e[47m \e[0m\n\n";
                             system("pause");
                         break;                  
                     }
@@ -266,7 +293,9 @@ int main(){
                 system("pause");
             break;
             default:
-                cout<<"ERROR, no esta en las opciones vuelva a intentar.\n";
+                cout<<"\e[47m \e[0m";
+                cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                cout<<"\e[47m \e[0m\n\n";
                 system("pause");
             break;
         }
