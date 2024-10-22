@@ -9,7 +9,7 @@ using namespace std;
 
 
 int main(){
-    //jugador *lista_soldados=NULL;
+    jugador *lista_soldados=NULL;
     arma*arma=NULL;
     char opcion;
     zombies *lista_zombies = NULL;
@@ -166,11 +166,11 @@ int main(){
                                             cin>>opcion;
                                             switch (opcion){
                                                 case '1':
-                                                    //lista_jugador(lista_soldados);
+                                                    insertar_ultimo_jugador(&lista_soldados);
                                                     system("pause");
                                                 break;
                                                 case '2':                                                   
-                                                    //mostrar_lista_jugador(lista_soldados);
+                                                    mostrarListaJugador(lista_soldados);
                                                     system("pause");
                                                 break;
                                                 case '3':

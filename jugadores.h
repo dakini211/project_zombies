@@ -33,21 +33,21 @@ bool lista_vacia_jugador(jugador *soldado){
 int pedir_vida()
 {
     int vida;
-    cout<<"escriba tipo de accesorio: ";
+    cout<<"escriba cantidad de vida:  ";
     cin>>vida;
     return vida;
 }
 int pedir_reduccion_dano()
 {
     int red_dano;
-    cout<<"escriba tipo de accesorio: ";
+    cout<<"modificador de reduccion ";
     cin>>red_dano;
     return red_dano;
 }
 string pedir_nombre_soldado()
 {
     string nombre;
-    cout<<"escriba tipo de accesorio: ";
+    cout<<"escriba nombre del soldado ";
     cin>>nombre;
     return nombre;
 }
@@ -74,7 +74,7 @@ void mostrarListaJugador(jugador *lista){
 
    if (!lista_vacia_jugador(lista)){
        mover = lista;
-      cout<<"Lista de Estudiantes: "<<endl;
+      cout<<"Soldado "<<endl;
       while (mover != NULL)
         {
            cout <<" Nombre: "<<mover->nombre <<" ";
