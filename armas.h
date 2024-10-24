@@ -123,10 +123,11 @@ string pedir_tipo() {
     case '4': // Armas blancas
     {
         char subOpcion;
-        cout << "Seleccione el arma blanca:\n";
-        cout << "1. Cuchillos\n";
-        cout << "2. Machete\n";
-        cout << "3. Espada\n";
+        cout<<"Seleccione el arma blanca:\n";
+        cout<<"1. Cuchillos\n";
+        cout<<"2. Machete\n";
+        cout<<"3. Espada\n";
+        cin>>subOpcion;
         switch (subOpcion)
         {
         case '1': 

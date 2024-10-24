@@ -93,7 +93,7 @@ void mostrarListaJugador_armas_accesorios(jugador *lista)
     jugador *mover;arma*mover2;accesorio*mover3;
 
    if (!lista_vacia_jugador(lista)){
-       mover = lista;
+      mover = lista;
       cout<<"Lista de Estudiantes: "<<endl;
       while (mover != NULL)
         {
@@ -101,29 +101,42 @@ void mostrarListaJugador_armas_accesorios(jugador *lista)
            cout <<" salud: "<<mover->salud <<" ";
            cout <<" reduccion: "<<mover->reduccion_dano <<endl;
            cout <<"-------------------------------------------->"<<endl;
-           mover2=mover->arma_jugador;//a mover 2 le paso la lista de arma del jugador(vacia)
-           while(mover2!=NULL)
+           mover2=mover->arma_jugador;//a mover 2 le paso la lista de arma del jugador
+           if(mover2!=NULL)
            {
-            cout<<endl<<"arma y propiedades"<<endl;
-            cout<<"arma: "<<mover2->nombre_arma<<endl;
-            cout<<"tipo de arma: "<<mover2->tipo_arma<<endl;
-            cout<<"arma: "<<mover2->dano<<endl;
-            cout <<"-------------------------------------------->"<<endl;
-            mover2=mover2->sgte;
+            while(mover2!=NULL)
+                {
+                    cout<<endl<<"arma y propiedades"<<endl;
+                    cout<<"arma: "<<mover2->nombre_arma<<endl;
+                    cout<<"tipo de arma: "<<mover2->tipo_arma<<endl;
+                    cout<<"arma: "<<mover2->dano<<endl;
+                    cout <<"-------------------------------------------->"<<endl;
+                    mover2=mover2->sgte;
+                }
            }
-           mover3=mover->accesorio_jugador;//a mover 3 le paso la lista de accesorio del jugador(vacia)
-           while(mover3!=NULL)
+           else{
+             cout<<"arma no disponible"<<endl;
+             cout <<"-------------------------------------------->"<<endl;
+           }           
+           mover3=mover->accesorio_jugador;//a mover 3 le paso la lista de accesorio del jugador
+           if(mover3!=NULL)
            {
-            cout<<endl<<"accesorios y propiedades"<<endl;
-            cout<<"nombre: "<<mover3->nombre<<endl;
-            cout<<"tipo: "<<mover3->tipo<<endl;
-            cout<<"modificador de daño: "<<mover3->modificador_dano<<endl;
-            cout<<"modificador de vida: "<<mover3->modificador_vida<<endl;
-            cout<<"reduccion al daño: "<<mover3->modificador_reduccion_dao<<endl;
-            cout <<"-------------------------------------------->"<<endl;
-            mover3=mover3->prox;
+             while(mover3!=NULL)
+                {
+                    cout<<endl<<"accesorios y propiedades"<<endl;
+                    cout<<"nombre: "<<mover3->nombre<<endl;
+                    cout<<"tipo: "<<mover3->tipo<<endl;
+                    cout<<"modificador de daño: "<<mover3->modificador_dano<<endl;
+                    cout<<"modificador de vida: "<<mover3->modificador_vida<<endl;
+                    cout<<"reduccion al daño: "<<mover3->modificador_reduccion_dao<<endl;
+                    cout <<"-------------------------------------------->"<<endl;
+                    mover3=mover3->prox;
+                }
            }
-
+           else{
+            cout<<"accesorio no disponible"<<endl;
+            cout <<"-------------------------------------------->"<<endl;
+           }           
            mover = mover->prox;
          }
 
@@ -134,18 +147,117 @@ void mostrarListaJugador_armas_accesorios(jugador *lista)
 jugador *buscar_jugador(jugador *lisita_jugador,string nombre)
 {
     jugador *mover=lisita_jugador;bool encontrado=false;
-    while(mover!=NULL and encontrado==false)
-    {
-        if(mover->nombre==nombre)
+    if(lista_vacia_jugador(lisita_jugador)){
+        return NULL;
+    }
+    else{
+        while(mover!=NULL and encontrado==false)
         {
-            encontrado=true;
+            if(mover->nombre==nombre)
+            {
+                encontrado=true;
+            }
+            else{
+                mover=mover->prox;
+            }
+        
+        }
+    return mover;
+    }   
+}
+void agregar_arma_soldado(jugador**lista_soldados)
+{
+    arma*arma_nueva=NULL;
+    jugador*soldado_actual=NULL;
+    string nombre;
+    cout<<"elija nombre de jugador a buscar: ";
+    cin>>nombre;
+    soldado_actual=buscar_jugador(*lista_soldados,nombre);
+    if(soldado_actual==NULL)
+    {
+        cout<<"soldado no encontrado"<<endl;        
+    }
+    else{
+        insertar_ultimo_armas(&arma_nueva);
+        (soldado_actual)->arma_jugador=arma_nueva;
+    }
+}
+
+void agregar_accesorio_soldado(jugador**lista_soldados)
+{
+    accesorio*accesorio_nuevo=NULL;
+    jugador*soldado_actual=NULL;
+    string nombre;
+    cout<<"elija nombre de jugador a buscar: ";
+    cin>>nombre;
+    soldado_actual=buscar_jugador(*lista_soldados,nombre);
+    if(soldado_actual==NULL)
+    {
+        cout<<"soldado no encontrado"<<endl;        
+    }
+    else{
+        //insertar_ultimo_accesorio(&accesorio_nuevo);
+        //(soldado_actual)->arma_jugador=arma_nueva;
+    }
+}
+
+void eliminar_jugador(jugador**lista_soldado,string nombre)
+{
+    jugador*anterior=NULL;jugador*actual=NULL;
+    arma*borrar_arma=NULL;
+    accesorio*borrar_accesorio=NULL;
+    if(lista_vacia_jugador(*lista_soldado))
+    {
+        cout<<"No hay soldados a eliminar"<<endl;
+        return;
+    }
+    else{
+        actual=(*lista_soldado);
+        while(actual!=NULL and actual->nombre!=nombre )
+        {
+            anterior=actual;
+            actual=actual->prox;
+        }
+        if(actual==NULL)
+        {
+            cout<<"Soldado no encontrado"<<endl;
+            return;
         }
         else{
-            mover=mover->prox;
+            borrar_accesorio=actual->accesorio_jugador;
+            borrar_arma=actual->arma_jugador;
+            if(actual==(*lista_soldado))
+            {
+                (*lista_soldado)=(*lista_soldado)->prox;
+            }
+            else{
+                anterior->prox=actual->prox;
+                if(borrar_accesorio!=NULL)
+                {
+                    accesorio*aux=borrar_accesorio;
+                    while(aux!=NULL)
+                    {
+                        borrar_accesorio=borrar_accesorio->prox;
+                        delete aux;
+                        aux=borrar_accesorio;
+                    }
+                    
+                }
+                if(borrar_arma!=NULL)
+                {
+                    arma*aux=borrar_arma;
+                    while(aux!=NULL)
+                    {
+                        borrar_arma=borrar_arma->sgte;
+                        delete aux;
+                        aux=borrar_arma;
+                    }                    
+                }
+                
+            }
+            delete actual;
         }
-        
     }
-    return mover;
 }
 
 

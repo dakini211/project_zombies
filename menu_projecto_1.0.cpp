@@ -166,11 +166,12 @@ int main(){
                                             cin>>opcion;
                                             switch (opcion){
                                                 case '1':
-                                                    insertar_ultimo_jugador(&lista_soldados);
+
+                                                    insertar_ultimo_jugador(&lista_soldados);                                                   
                                                     system("pause");
                                                 break;
                                                 case '2':                                                   
-                                                    mostrarListaJugador(lista_soldados);
+                                                    mostrarListaJugador_armas_accesorios(lista_soldados);
                                                     system("pause");
                                                 break;
                                                 case '3':
@@ -187,11 +188,12 @@ int main(){
                                         system("pause");
                                     break;
                                     case '2':
-                                        //modificar_jugador(lista_soldados);
+                                        agregar_arma_soldado(&lista_soldados);
                                         system("pause");
                                     break;
                                     case '3':
-                                        //eliminar_jugador_lista(lista_soldados);
+                                        eliminar_jugador(&lista_soldados,pedir_nombre());
+                                        mostrarListaJugador_armas_accesorios(lista_soldados);
                                         system("pause");
                                     break;
                                     case '4':
@@ -238,5 +240,6 @@ int main(){
     }
     delete lista_zombies;
     delete arma; 
+    delete lista_soldados;
     return 0;
 }
