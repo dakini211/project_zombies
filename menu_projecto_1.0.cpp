@@ -171,7 +171,7 @@ int main(){
                                                     system("pause");
                                                 break;
                                                 case '2':                                                   
-                                                    mostrarListaJugador_armas_accesorios(lista_soldados);
+                                                    mostrarListaJugador(lista_soldados);
                                                     system("pause");
                                                 break;
                                                 case '3':
@@ -188,7 +188,12 @@ int main(){
                                         system("pause");
                                     break;
                                     case '2':
-                                        agregar_arma_soldado(&lista_soldados);
+                                        //agregar_arma_soldado(&lista_soldados);
+                                        //agregar_accesorio_soldado(&lista_soldados);
+                                        modificar_soldado(&lista_soldados);
+                                        system("pause");
+                                        system("cls");                                   
+                                        mostrarListaJugador_armas_accesorios(lista_soldados);
                                         system("pause");
                                     break;
                                     case '3':

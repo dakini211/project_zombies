@@ -4,13 +4,15 @@
 #include <fstream>
 #include<string.h>
 using namespace std;
+
+/*-------------------- STRUCT,CREACION Y LISTA_VACIA------------------*/
 struct arma{
     string tipo_arma;    
     string nombre_arma; // campo que almacena el nombre del arma
     int dano;
     arma*sgte;   
 };    
-arma *crear_arma(string tipo_arma,string nombre_arma,int dano)
+arma *crear_arma(int dano, string nombre_arma,string tipo_arma)
 {    
     arma *nueva_arma=new arma;
     nueva_arma->tipo_arma=tipo_arma;
@@ -32,7 +34,7 @@ void menu_registro_arma(){
     cout << " 4. SALIR                                 " << endl;
     cout << "\n Ingrese opcion : ";
 }
-/*-------------------- FUNCION REGISTRAR ARMA ------------------*/
+/*-------------------- FUNCION INSERTAR  ------------------*/
 string pedir_tipo() {
     string tipo;
     char opcion;
@@ -176,13 +178,20 @@ string pedir_tipo() {
 int pedir_dano_arma()
 {
     int dano=0;
-    cout<<"escriba daño del arma: ";
+    cout<<"escriba dano del arma: ";
     cin>>dano;
-    return dano;
+    return dano;  
+}
+string pedir_nombre_arma()
+{
+    string nombre_arma;
+    cout<<"escriba nombre del arma: ";
+    cin>>nombre_arma;
+    return nombre_arma;
 }
 void insertar_ultimo_armas(arma **lista)
 {
-    arma*nueva_arma=crear_arma(pedir_tipo(),pedir_nombre(),pedir_dano_arma());
+    arma*nueva_arma=crear_arma(pedir_dano_arma(),pedir_nombre_arma(),pedir_tipo());
     if(lista_vacia_arma(*lista))
     {
         (*lista)=nueva_arma;
@@ -198,7 +207,7 @@ void insertar_ultimo_armas(arma **lista)
 }
 
 
-/*------------------------ FUNCION ELIMINAR ARMA ---------------------*/
+/*------------------------ FUNCION ELIMINAR  ---------------------*/
 void eliminar_arma(arma **lista) {
     int opcion, subOpcion;
     arma *q, *t = nullptr;
@@ -303,7 +312,74 @@ void eliminar_arma(arma **lista) {
     cout << "\n\tARMA NO ENCONTRADA...!!\n";
 }
 
-/*---------------------- FUNCION MOSTRAR ARMA -------------------*/
+void eliminar_arma_sin_nombre(arma**lista_arma)
+{
+    string nombre_arma;
+    cout<<"Nombre del arma a eliminar: ";
+    cin>>nombre_arma;
+    arma*actual=(*lista_arma);
+    if(lista_vacia_arma(*lista_arma))
+    {
+        cout<<"no hay arma por eliminar: "<<endl;        
+    }
+    else{
+        arma*anterior=NULL;
+        while(actual!=NULL and actual->nombre_arma!=nombre_arma)
+        {
+            anterior=actual;
+            actual=actual->sgte;
+        }
+        if(actual!=NULL)
+        {
+            cout<<"accesorio no encontrado"<<endl;
+        }
+        else{
+            if(actual==(*lista_arma))
+            {
+                (*lista_arma)=(*lista_arma)->sgte;
+            }
+            else{
+                anterior->sgte=actual->sgte;
+            }
+            delete actual;
+        }
+
+    }
+}
+
+void eliminar_arma_con_nombre(arma**lista_arma,string nombre_arma)
+{   
+    arma*actual=(*lista_arma);
+    if(lista_vacia_arma(*lista_arma))
+    {
+        cout<<"no hay arma por eliminar: "<<endl;        
+    }
+    else{
+        arma*anterior=NULL;
+        while(actual!=NULL and actual->nombre_arma!=nombre_arma)
+        {
+            anterior=actual;
+            actual=actual->sgte;
+        }
+        if(actual!=NULL)
+        {
+            cout<<"accesorio no encontrado"<<endl;
+        }
+        else{
+            if(actual==(*lista_arma))
+            {
+                (*lista_arma)=(*lista_arma)->sgte;
+            }
+            else{
+                anterior->sgte=actual->sgte;
+            }
+            delete actual;
+        }
+
+    }
+}
+
+/*---------------------- FUNCION MOSTRAR  -------------------*/
 void mostrar_arma(arma*q) {
     int i = 1;
     arma*p=q;
@@ -317,7 +393,87 @@ void mostrar_arma(arma*q) {
         i++;
     }
 }
+/*---------------------- FUNCION MODIFICAR-------------------*/
+void modificar_arma(arma**lista_arma)
+{
+    string nombre_arma;
+    cout<<"Nombre del arma a modificar: ";
+    cin>>nombre_arma;
+    if(lista_vacia_arma(*lista_arma))
+    {
+        cout<<"No hay armas "<<endl;
+        return;
+    }
+    else{
+        arma*actual=(*lista_arma);
+        bool encontrado=false;
+        while(actual!=NULL and encontrado==false)
+        {
+            if(actual->nombre_arma==nombre_arma)
+            {
+                encontrado=true;
+                cout<<"accesorio: "<<actual->nombre_arma;
+                char opcion;
+                while(opcion!='5')
+                {
+                    cout << "Seleccione el campo a modificar:" << endl;
+                    cout << "1. Modificar tipo" << endl;
+                    cout << "2. Modificar nombre" << endl;
+                    cout << "3. Modificar dano" << endl; 
+                    cout << "4. Eliminar arma" << endl;                  
+                    cout << "5. Salir" << endl;
+                    cout << "Ingrese su opcion: ";
+                    cin >> opcion;
+                    switch (opcion)
+                    {
+                    case '1':
+                    {
+                        string nuevo_tipo;
+                        nuevo_tipo=pedir_tipo();
+                        actual->tipo_arma = nuevo_tipo;
+                        break;
+                     }
+                    case '2':
+                    {
+                        string nuevo_nombre;
+                        nuevo_nombre = pedir_nombre_arma();
+                        actual->nombre_arma = nuevo_nombre;
+                        break;
+                    }
+                    case '3':
+                    {
+                        int dano;
+                        dano=pedir_dano_arma();
+                        actual->dano=dano;
+                        break;
+                    }
+                    case '4':
+                    {
+                        eliminar_arma_con_nombre(&actual,actual->nombre_arma);
+                        break;                        
+                    }
+                    case '5':
+                    {
+                        cout << "Saliendo de la modificación." << endl;
+                        break;                        
+                    }                    
+                    
+                    default:
+                        break;
+                    }
+                }
+            }
+            else{
+                actual=actual->sgte;
+            }
+        }
+        if(encontrado==false)
+        {
+            cout<<"no se encontro arma"<<endl;
+        }
+    }
 
+}
 
 
 

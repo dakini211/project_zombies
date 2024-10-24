@@ -3,189 +3,281 @@
 #include <iostream>
 #include <string>
 using namespace std;
-
+/*-------------------- STRUCT,CREACION Y LISTA_VACIA------------------*/
 struct accesorio {
-   string nombre;
    string tipo;
-   int modificador_dano = 0;
-   int modificador_vida = 0;
-   int modificador_reduccion_dao = 0;
+   string nombre;
+   int modificador;
+   int usos;   
    accesorio* prox;
 };
 
-// Función para crear un nuevo accesorio
-accesorio* crear_accesorio(string nom,string tipo, int mod_dano, int mod_vida, int mod_reduccion_dao) {
-   accesorio* nuevo = new accesorio;
-   nuevo->nombre = nom;
-   nuevo->tipo=tipo;
-   nuevo->modificador_dano = mod_dano;
-   nuevo->modificador_vida = mod_vida;
-   nuevo->modificador_reduccion_dao = mod_reduccion_dao;
-   nuevo->prox = NULL;
-   return nuevo;
+bool listaVaciaAccesorios(accesorio*accesorios)
+{
+    return accesorios==NULL;
 }
 
-// Verifica si la lista de accesorios está vacía
-bool listaVaciaAccesorios(accesorio* lista) {
-   return lista == NULL;
+accesorio*crear_accesorio(int usos,int modificador,string nombre,string tipo)
+{
+    accesorio*nuevo_accesorio=new accesorio;
+    nuevo_accesorio->tipo=tipo;
+    nuevo_accesorio->nombre=nombre;
+    nuevo_accesorio->modificador=modificador;
+    nuevo_accesorio->usos=usos;
+    nuevo_accesorio->prox=NULL;
+    return nuevo_accesorio;
+}
+/*---------------------- FUNCION MOSTRAR  -------------------*/
+void mostrar_accesorio(accesorio*lista_accesorio)
+{
+    accesorio*mover=lista_accesorio;
+    if(listaVaciaAccesorios(lista_accesorio))
+    {
+        cout<<"lista de accesorio vacia:"<<endl;
+    }
+    else{
+        while(mover!=NULL)
+        {
+            cout << "-------------------------------------------------------" << endl;
+            cout<<"Tipo: "<<mover->tipo<<endl;
+            cout<<"nombre: "<<mover->nombre<<endl;
+            cout<<"modificador: "<<mover->modificador<<endl;
+            cout<<"usos: "<<mover->usos<<endl;
+            cout << "-------------------------------------------------------" << endl;
+            mover=mover->prox;
+        }
+        
+    }
+    
+}
+/*-------------------- FUNCIONES PEDIR  ------------------*/
+string pedir_tipo_accesorio()
+{
+    string tipo;
+    char opcion;
+    
+    cout << "\t\t------------------>";
+    cout << "\n\tSeleccione el tipo de accesorio a registrar:\n";
+    cout << "1. Accesorio de ataque\n";
+    cout << "2. Accesorio de defensa\n";
+    cout << "3. Accesorio de supervivencia\n";    
+    cout << "Ingrese su opcion: ";
+    cin >> opcion;
+    switch (opcion)
+    {
+    case '1':
+        return "Ataque";        
+
+    case  '2':
+        return "Defensa";        
+
+    case  '3':
+        return "Supervivencia";       
+
+    
+    default:
+        cout << "Opción inválida." << endl;
+        return "Indefinido";
+        break;
+    }
+
 }
 
-// Muestra la lista de accesorios
-void mostrarListaAccesorios(accesorio* lista) {
-   accesorio* mover = lista;
-   if (!listaVaciaAccesorios(lista)) {
-      while (mover != NULL) {
-         cout << endl << "-------------------------------------------------------" << endl;
-         cout << "Nombre del accesorio: " << mover->nombre << endl;
-         cout << "Tipo de accesorio: " << mover->tipo << endl;
-         cout << "Modificador de dano: " << mover->modificador_dano << endl;
-         cout << "Modificador de vida: " << mover->modificador_vida << endl;
-         cout << "Modificador de reducción de daño: " << mover->modificador_reduccion_dao << endl;
-         cout << "-------------------------------------------------------" << endl;
-         mover = mover->prox;
-      }
-   } else {
-      cout << "No hay accesorios escritos" << endl;
-   }
+string pedir_nombre_accesorio()
+{
+    string nombre;
+    cout<<"Escriba nombre del accesorio: ";
+    cin>>nombre;
+    return nombre;
 }
 
-// Inserta un accesorio al final de la lista
-void insertar_ultimo_accesorio(accesorio** lista_accesorios, string nom,string tipo, int mod_dano, int mod_vida, int mod_reduccion_dao) {
-   accesorio* nuevo_accesorio = crear_accesorio(nom,tipo, mod_dano, mod_vida, mod_reduccion_dao);
-   if (listaVaciaAccesorios(*lista_accesorios)) {
-      *lista_accesorios = nuevo_accesorio;
-   } else {
-      accesorio* aux = *lista_accesorios;
-      while (aux->prox != NULL) {
-         aux = aux->prox;
-      }
-      aux->prox = nuevo_accesorio;
-   }
+int pedir_modificador_accesorio()
+{
+    int modificador;
+    cout<<"Escriba modificador correspondiente: ";
+    cin>>modificador;
+    return modificador;
 }
 
-// Busca un accesorio en la lista por nombre
-bool buscar_accesorio(accesorio* lista_accesorios, string nom) {
-   if (listaVaciaAccesorios(lista_accesorios)) {
-      cout << "No hay accesorios disponibles" << endl;
-      return false;
-   } else {
-      accesorio* aux = lista_accesorios;
-      while (aux != NULL) {
-         if (aux->nombre == nom) {
-            cout << "El accesorio: " << nom << " existe" << endl;
-            return true;
-         }
-         aux = aux->prox;
-      }
-      cout << "El accesorio: " << nom << " no existe" << endl;
-      return false;
-   }
+int pedir_usos_accesorio()
+{
+    int usos;
+    cout<<"Escriba usos para el accesorio correspondiente: ";
+    cin>>usos;
+    return usos;
 }
-
-// Modifica los atributos de un accesorio
-void modificar_accesorio(accesorio** lista_accesorios, string nom) {
-   if (listaVaciaAccesorios(*lista_accesorios)) {
-      cout << "Lista vacía" << endl;
-      return;
-   } else {
-      accesorio* aux = *lista_accesorios;
-      bool encontrado = false;
-
-      while (aux != NULL && !encontrado) {
-         if (aux->nombre == nom) {
-            int opcion = 0;
-            while (opcion != 6) {
-               cout << "***********     MENU DE MODIFICACION    **********" << endl;
-               cout << "1.- Editar Nombre del accesorio" << endl;
-               cout << "1.- Cambiar tipo de accesorio" << endl;
-               cout << "3.- Editar modificador de dano del accesorio" << endl;
-               cout << "4.- Editar modificador de vida del accesorio" << endl;
-               cout << "5.- Editar modificador de reduccion de dano del accesorio" << endl;
-               cout << "6.- Salir del programa" << endl;
-
-               cout << "Ingrese la opción deseada del menú: ";
-               cin >> opcion;
-
-               switch (opcion) {
-                  case 1: {
-                     string nombre;
-                     cout << "Escriba un nuevo nombre: ";
-                     cin >> nombre;
-                     aux->nombre = nombre;
-                     break;
-                  }
-                  case 2: {
-                     string tipo;
-                     cout << "Escriba el nuevo tipo ";
-                     cin >> tipo;
-                     aux->tipo = tipo;
-                     break;
-                  }
-                  case 3: {
-                     int mod_dano;
-                     cout << "Redefina el modificador de daño: ";
-                     cin >> mod_dano;
-                     aux->modificador_dano = mod_dano;
-                     break;
-                  }
-                  case 4: {
-                     int mod_vida;
-                     cout << "Redefina el modificador de vida: ";
-                     cin >> mod_vida;
-                     aux->modificador_vida = mod_vida;
-                     break;
-                  }
-                  case 5: {
-                     int mod_reduccion_dao;
-                     cout << "Redefina el modificador de reducción de daño: ";
-                     cin >> mod_reduccion_dao;
-                     aux->modificador_reduccion_dao = mod_reduccion_dao;
-                     break;
-                  }
-                  case 6: {
-                     break;
-                  }
-                  default:
-                     break;
-               }
+/*-------------------- FUNCION INSERTAR ------------------*/
+void insertar_ultimo_accesorio(accesorio**lista_accesorio)
+{
+    accesorio*nuevo_accesorio=crear_accesorio(pedir_usos_accesorio(),pedir_modificador_accesorio(),pedir_nombre_accesorio(),pedir_tipo_accesorio());
+    if(listaVaciaAccesorios(*lista_accesorio))
+    {
+        (*lista_accesorio)=nuevo_accesorio;
+    }
+    else{
+        accesorio*mover=(*lista_accesorio);
+        while(mover->prox!=NULL)
+        {
+            mover=mover->prox;
+        }
+        mover->prox=nuevo_accesorio;
+    }
+}
+/*------------------------ FUNCION ELIMINAR  ---------------------*/
+void eliminar_accesorio_sin_nombre(accesorio**Lista_accesorio)
+{
+    string nombre_accesorio;
+    cout<<"Nombre del accesorio a eliminar: ";
+    cin>>nombre_accesorio;
+    accesorio*actual=(*Lista_accesorio);
+    if(listaVaciaAccesorios(*Lista_accesorio))
+    {
+        cout<<"no hay accesorio por eliminar: "<<endl;        
+    }
+    else{
+        accesorio*anterior=NULL;
+        while(actual!=NULL and actual->nombre!=nombre_accesorio)
+        {
+            anterior=actual;
+            actual=actual->prox;
+        }
+        if(actual!=NULL)
+        {
+            cout<<"accesorio no encontrado"<<endl;
+        }
+        else{
+            if(actual==(*Lista_accesorio))
+            {
+                (*Lista_accesorio)=(*Lista_accesorio)->prox;
             }
-            encontrado = true;
-         }
-         aux = aux->prox;
-      }
+            else{
+                anterior->prox=actual->prox;
+            }
+            delete actual;
+        }
 
-      if (!encontrado) {
-         cout << "Nombre no encontrado" << endl;
-      }
-   }
+    }
 }
 
-// Elimina un accesorio de la lista
-void eliminar_accesorio(accesorio** lista_accesorios, string nom) {
-   if (listaVaciaAccesorios(*lista_accesorios)) {
-      cout << "Lista vacía" << endl;
-      return;
-   } else {
-      accesorio* mover = *lista_accesorios;
-      accesorio* anterior = NULL;
+void eliminar_accesorio_con_nombre(accesorio**Lista_accesorio,string nombre_accesorio)
+{
+    
+    accesorio*actual=(*Lista_accesorio);
+    if(listaVaciaAccesorios(*Lista_accesorio))
+    {
+        cout<<"no hay accesorio por eliminar: "<<endl;        
+    }
+    else{
+        accesorio*anterior=NULL;
+        while(actual!=NULL and actual->nombre!=nombre_accesorio)
+        {
+            anterior=actual;
+            actual=actual->prox;
+        }
+        if(actual!=NULL)
+        {
+            cout<<"accesorio no encontrado"<<endl;
+        }
+        else{
+            if(actual==(*Lista_accesorio))
+            {
+                (*Lista_accesorio)=(*Lista_accesorio)->prox;
+            }
+            else{
+                anterior->prox=actual->prox;
+            }
+            delete actual;
+        }
 
-      while (mover != NULL && mover->nombre != nom) {
-         anterior = mover;
-         mover = mover->prox;
-      }
+    }
+}
+/*---------------------- FUNCION MODIFICAR-------------------*/
+void modificar_accesorio(accesorio**lista_accesorio)
+{
+    string nombre_accesorio;
+    cout<<"Nombre del accesorio a eliminar: ";
+    cin>>nombre_accesorio;
+    if(listaVaciaAccesorios(*lista_accesorio))
+    {
+        cout<<"No hay accesorios "<<endl;
+        return;
+    }
+    else{
+        accesorio*actual=(*lista_accesorio);
+        bool encontrado=false;
+        while(actual!=NULL and encontrado==false)
+        {
+            if(actual->nombre==nombre_accesorio)
+            {
+                encontrado=true;
+                cout<<"accesorio: "<<actual->nombre;
+                char opcion;
+                while(opcion!='6')
+                {
+                    cout << "Seleccione el campo a modificar:" << endl;
+                    cout << "1. Modificar nombre" << endl;
+                    cout << "2. Modificar tipo" << endl;
+                    cout << "3. Modificar modificador" << endl;
+                    cout << "4. Modificar usos" << endl;
+                    cout << "5. Eliminar accesorio" << endl;
+                    cout << "6. Salir" << endl;
+                    cout << "Ingrese su opcion: ";
+                    cin >> opcion;
+                    switch (opcion)
+                    {
+                    case '1':
+                    {
+                        string nuevo_nombre;
+                        nuevo_nombre=pedir_nombre_accesorio();
+                        actual->nombre = nuevo_nombre;
+                        break;
+                     }
+                    case '2':
+                    {
+                        string nuevo_tipo = pedir_tipo_accesorio();
+                        actual->tipo = nuevo_tipo;
+                        break;
+                    }
+                    case '3':
+                    {
+                        int modificador;
+                        modificador=pedir_modificador_accesorio();
+                        actual->modificador=modificador;
+                        break;
+                    }
+                    case '4':
+                    {
+                        int usos;
+                        usos=pedir_usos_accesorio();
+                        actual->usos=usos;
+                        break;
+                    }
+                    case '5':
+                    {
+                        eliminar_accesorio_con_nombre(&actual,actual->nombre);
+                        break;                        
+                    }
+                    case '6':
+                    {
+                        cout << "Saliendo de la modificación." << endl;
+                        break;                        
+                    }                         
+                    
+                    default:
+                        break;
+                    }
+                }
+            }
+            else{
+                actual=actual->prox;
+            }
+        }
+        if(encontrado==false)
+        {
+            cout<<"no se encontro accesorio"<<endl;
+        }
+    }
 
-      if (mover == NULL) {
-         cout << "Accesorio no encontrado" << endl;
-         return;
-      } else {
-         if (mover == *lista_accesorios) {
-            *lista_accesorios = (*lista_accesorios)->prox;
-         } else {
-            anterior->prox = mover->prox;
-         }
-         delete mover;
-      }
-   }
 }
 
 

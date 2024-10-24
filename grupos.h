@@ -5,7 +5,7 @@
 #include <fstream>
 using namespace std;
 
-struct grupos{//nuevo
+struct grupos{
     string nombre_grupo;
     grupos *sig;
     jugador *grupo_jugador;
