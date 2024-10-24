@@ -3,7 +3,7 @@
 using namespace std;
 
 int main(){
-    jugador *lista_soldados=NULL;
+    //jugador *lista_soldados=NULL;
     arma*arma=NULL;
     char opcion;
     zombies *lista_zombies = NULL;
@@ -44,7 +44,15 @@ int main(){
                             while (opcion != '6') {
                             system("cls");
                             cout << "          2.1. Gestionar zombies      " << endl;
+                            while (opcion != '6') {
+                            system("cls");
+                            cout << "          2.1. Gestionar zombies      " << endl;
                             cout << "-----------------------------------------------" << endl;
+                            cout << "2.1.1.- Agregar zombie" << endl;
+                            cout << "2.1.2.- Modificar zombie" << endl;
+                            cout << "2.1.3.- Mostrar zombies" << endl;
+                            cout << "2.1.4.- Eliminar tipo de zombie" << endl;
+                            cout << "2.1.5.- Salir del programa" << endl;
                             cout << "2.1.1.- Agregar zombie" << endl;
                             cout << "2.1.2.- Modificar zombie" << endl;
                             cout << "2.1.3.- Mostrar zombies" << endl;
@@ -52,10 +60,50 @@ int main(){
                             cout << "2.1.5.- Salir del programa" << endl;
                             cout << "-----------------------------------------------" << endl;
                             cout << "Ingrese la opcion deseada del Menu del (1 al 5): ";
+                            cout << "Ingrese la opcion deseada del Menu del (1 al 5): ";
                             cin >> opcion;
 
                             switch (opcion) {
                                 case '1':
+                                    while(opcion!='6'){
+                                        system("cls");
+                                        cout << "*********** 2.1.1.- Agregar zombie **********" << endl;
+                                        cout << "-----------------------------------------------" << endl;
+                                        cout << "2.1.1.1.- Rapidos y agiles" << endl;
+                                        cout << "2.1.1.2.- Tanques" << endl;
+                                        cout << "2.1.1.3.- Inteligentes" << endl;
+                                        cout << "2.1.1.4.- Infectados por hongos" << endl;
+                                        cout << "2.1.1.5.- Bioluminicentes" << endl;
+                                        cout << "2.1.1.6.- volver" << endl;
+                                        cout << "-----------------------------------------------" << endl;
+                                        cout << "Ingrese la opcion deseada del Menu del (1 al 6): ";
+                                        cin >> opcion;
+                                        switch (opcion){
+                                            case '1':
+                                                insertar_ultimo_zombie(&lista_zombies,"Rapidos y agiles", 4, 0, 20);
+                                                system("pause");
+                                            break;
+                                            case '2':
+                                                insertar_ultimo_zombie(&lista_zombies,"Tanques", 5, 0, 25);
+                                                system("pause");
+                                            break;
+                                            case '3':
+                                                insertar_ultimo_zombie(&lista_zombies,"Inteligentes", 3, 0, 15);
+                                                system("pause");
+                                            break;
+                                            case '4':
+                                                insertar_ultimo_zombie(&lista_zombies,"Infectados por hongos", 2, 0, 10);
+                                                system("pause");
+                                            break;
+                                            case '5':
+                                                insertar_ultimo_zombie(&lista_zombies,"Bioluminicentes", 1, 0, 5);
+                                                system("pause");
+                                            break;
+                                            case '6':
+                                            cout<<"adios.";
+                                            break;
+                                            default:
+                                                cout << "Opcion invalida, vuelva a intentarlo" << endl;
                                     while(opcion!='6'){
                                         system("cls");
                                         cout << "*********** 2.1.1.- Agregar zombie **********" << endl;
@@ -103,8 +151,13 @@ int main(){
                                     modificar_zombie(lista_zombies);    
                                     break;
                                 case '3': 
+                                case '2':
+                                    modificar_zombie(lista_zombies);    
+                                    break;
+                                case '3': 
                                     if (listaVaciaZombies(lista_zombies))
                                         cout << "Lista vacia, no es posible mostrar su contenido" << endl;
+                                    else{
                                     else{
                                         mostrarlistaZombies(lista_zombies);
                                     }
@@ -151,7 +204,52 @@ int main(){
                                 case '5':
                                     cout<<"adios.\n"; 
                                 break;  
+                                    }
+                                    system("pause");
+                                    break;     
+                                case '4': 
+                                    while(opcion!='6'){
+                                        system("cls");
+                                        cout << "*********** 2.1.4.- Eliminar tipo de zombie **********" << endl;
+                                        cout << "-----------------------------------------------" << endl;
+                                        cout << "1.1.- Rapidos y agiles" << endl;
+                                        cout << "1.2.- Tanques" << endl;
+                                        cout << "1.3.- Inteligentes" << endl;
+                                        cout << "1.4.- Infectados por hongos" << endl;
+                                        cout << "1.5.- Bioluminicentes" << endl;
+                                        cout << "1.6.- volver" << endl;
+                                        cout << "-----------------------------------------------" << endl;
+                                        cout << "Ingrese la opcion deseada del Menu del (1 al 6): ";
+                                        cin >> opcion;
+                                        switch(opcion){
+                                            case '1':
+                                                eliminar_apariciones(lista_zombies, "Rapidos y agiles");
+                                            break;
+                                            case '2':
+                                                eliminar_apariciones(lista_zombies, "Tanques");
+                                            break;
+                                            case '3':
+                                                eliminar_apariciones(lista_zombies, "Inteligentes");
+                                            break;
+                                            case '4':
+                                                eliminar_apariciones(lista_zombies, "Infectados por hongos");
+                                            break;
+                                            case '5':
+                                                eliminar_apariciones(lista_zombies, "Bioluminicentes");
+                                            break;
+                                            case '6':
+                                                cout<<"adios";
+                                            break;
+                                            default:
+                                                cout << "Opcion invalida, vuelva a intentarlo" << endl;
+                                            break;
+                                        }
+                                    }  
+                                case '5':
+                                    cout<<"adios.\n"; 
+                                break;  
                                 default: 
+                                    cout << "Opción inválida. Intente nuevamente.\n" << endl;
                                     cout << "Opción inválida. Intente nuevamente.\n" << endl;
                             }
                             }
@@ -191,7 +289,7 @@ int main(){
                                                     system("pause");
                                                 break;
                                                 case '2':                                                   
-                                                    mostrarListaJugador(lista_soldados);
+                                                    //mostrar_lista_jugador(lista_soldados);
                                                     system("pause");
                                                 break;
                                                 case '3':                                                    
@@ -207,17 +305,11 @@ int main(){
                                         system("pause");
                                     break;
                                     case '2':
-                                        //agregar_arma_soldado(&lista_soldados);
-                                        //agregar_accesorio_soldado(&lista_soldados);
-                                        modificar_soldado(&lista_soldados);
-                                        system("pause");
-                                        system("cls");                                   
-                                        mostrarListaJugador_armas_accesorios(lista_soldados);
+                                        //modificar_jugador(lista_soldados);
                                         system("pause");
                                     break;
                                     case '3':
-                                        eliminar_jugador(&lista_soldados,pedir_nombre());
-                                        mostrarListaJugador_armas_accesorios(lista_soldados);
+                                        //eliminar_jugador_lista(lista_soldados);
                                         system("pause");
                                     break;
                                     case '4':
@@ -254,6 +346,8 @@ int main(){
             case '4':
                 delete lista_zombies;
                 delete arma;
+                delete lista_zombies;
+                delete arma;
                 system("pause");
             break;
             default:
@@ -269,3 +363,4 @@ int main(){
     delete arma;
     return 0;
 }
+

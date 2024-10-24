@@ -198,7 +198,6 @@ int modificar_nivel(zombies *list, int nuevo_valor, int actual_valor){
       }
       mover=mover->prox;
    }
-   return 0;
 }
 
 void modificar_vida(zombies *list, int nuevo_valor, int actual_valor){
