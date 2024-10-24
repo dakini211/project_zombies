@@ -23,8 +23,13 @@ int main(){
         cin>>opcion;
         switch (opcion){
             case '1':
-                cout<<"falta programar"<<"\n";
-                system("pause");
+                cout << "Esta opción no está disponible aún. Presione '1' para volver." << "\n";
+                char volver;
+                cout << "Presione '1' para volver al menú anterior: ";
+                cin >> volver;
+                if (volver == '1') {
+                continue; // segun deberia volver
+    }
             break;
             case '2': 
                 while(opcion!='5'){
@@ -233,8 +238,13 @@ int main(){
                             }
                         break;
                         case '4':
-                            cout<<"falta programar"<<"\n";
-                            system("pause");
+                        cout << "Esta opción no está disponible aún. Presione '1' para volver." << "\n";
+                        char volver;
+                        cout << "Presione '1' para volver al menú anterior: ";
+                        cin >> volver;
+                        if (volver == '1') {
+                        continue; // Esto hará que vuelva al inicio del bucle principal
+                            }
                         break; 
                         case '5':
                             system("pause");
@@ -248,8 +258,13 @@ int main(){
                     }
                 }
             case '3':
-                cout<<"falta programar";
-                system("pause");
+            cout << "Esta opción no está disponible aún. Presione '1' para volver." << "\n";
+            char volver;
+            cout << "Presione '1' para volver al menú anterior: ";
+            cin >> volver;
+            if (volver == '1') {
+            continue; // Esto hará que vuelva al inicio del bucle principal
+    }
             break;
             case '4':
                 delete lista_zombies;
@@ -269,5 +284,3 @@ int main(){
     delete arma;
     return 0;
 }
-
-
