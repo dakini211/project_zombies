@@ -279,7 +279,10 @@ void modificar_accesorio(accesorio**lista_accesorio)
     }
 
 }
-
+void hola()
+{
+   
+}
 
 
 #endif 

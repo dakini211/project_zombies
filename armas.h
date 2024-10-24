@@ -474,7 +474,9 @@ void modificar_arma(arma**lista_arma)
     }
 
 }
-
+void adios(){
+    
+}
 
 
 #endif 

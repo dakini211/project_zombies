@@ -437,6 +437,10 @@ void modificar_soldado(jugador**lista_soldados)
         }
     }
 }
+void vacia()
+{
+    
+}
 
 
 

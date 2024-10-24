@@ -343,4 +343,7 @@ void eliminar_apariciones(zombies *&inicio, string nombre_zombie){
    }
    cout<<"Total de elementos eliminados "<<contador<<endl;
 }
+void chao(){
+   
+}
 #endif 
