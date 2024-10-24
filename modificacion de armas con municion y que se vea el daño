@@ -1,0 +1,339 @@
+#ifndef ARMAS_H
+#define ARMAS_H
+#include <iostream>
+#include <fstream>
+#include<string.h>
+using namespace std;
+struct arma{
+    string tipo_arma;    
+    string nombre_arma; // campo que almacena el nombre del arma
+    int dano;
+    arma*sgte;   
+};    
+arma* crear_arma(string tipo_arma, string nombre_arma, int dano) {    
+    arma* nueva_arma = new arma;
+    nueva_arma->tipo_arma = tipo_arma;
+    nueva_arma->nombre_arma = nombre_arma;
+    nueva_arma->dano = dano;
+    nueva_arma->municion = 0; // inicializar munición en 0
+    nueva_arma->sgte = NULL;
+    return nueva_arma;
+} lista_vacia_arma(arma *lista)
+{
+    return lista==NULL;
+}
+void menu_registro_arma(){
+    cout << "\n\t\t[    REGISTRO DE  ARMA    ]\n";
+    cout << "\t\t----------------------------\n\n";
+    cout << " 1. REGISTRAR ARMA                       " << endl;
+    cout << " 2. ELIMINAR DATOS DEL ARMA               " << endl;
+    cout << " 3. MOSTRAR LISTADO                       " << endl;
+    cout << " 4. SALIR                                 " << endl;
+    cout << "\n Ingrese opcion : ";
+}
+/*-------------------- FUNCION REGISTRAR ARMA ------------------*/
+string pedir_tipo() {
+    string tipo;
+    char opcion;
+    
+    cout << "\t\t------------------>";
+    cout << "\n\tSeleccione el tipo de arma a registrar:\n";
+    cout << "1. Armas de fuego\n";
+    cout << "2. Armas arrojadizas\n";
+    cout << "3. Armas proyectiles\n";
+    cout << "4. Armas blancas\n";
+    cout << "5. Armas contundentes\n";
+    cout << "Ingrese su opcion: ";
+    cin >> opcion;
+
+    switch (opcion)
+    {
+    case '1': // Armas de fuego
+    {        
+        char subOpcion;
+        cout << "Seleccione el arma de fuego:\n";
+        cout << "1. Pistola\n";
+        cout << "2. Escopeta\n";
+        cout << "3. Fusiles de asalto\n";
+        cout << "4. Rifles de francotirador\n";
+        cout << "Ingrese su opción: ";
+        cin >> subOpcion;
+
+        switch (subOpcion)
+        {
+        case '1':
+            return "Pistola";            
+        case '2':
+            return "Escopeta";            
+        case '3':
+            return "Fusil de asalto";            
+        case '4':
+            return "Rifle francotirador";            
+        default:
+            cout << "Arma de fuego no valida." << endl;
+            return "No disponible";
+        }
+    }
+
+    case '2': // Armas arrojadizas
+    {
+        char subOpcion;
+        cout << "Seleccione el arma arrojadiza:\n";
+        cout << "1. Granadas\n";
+        cout << "2. Cocteles molotov\n";
+        cin >> subOpcion;
+
+        switch (subOpcion)
+        {
+        case '1':
+            return "Granada";            
+        case '2':
+            return "Cocteles molotov";            
+                
+        default:
+            cout << "Arma arrojadiza no valida." << endl;
+            return "No disponible";
+        }
+    }
+        
+
+    case '3': // Armas proyectiles
+    {
+        char subOpcion;
+        cout << "Seleccione el arma de proyectil:\n";
+        cout << "1. Ballestas\n";
+        cout << "2. Tira chinas\n";
+        cin >> subOpcion;
+
+        switch (subOpcion)
+        {
+        case '1':
+            return "Ballesta";            
+        case '2':
+            return "Tira china";            
+                
+        default:
+            cout << "Arma de projectil no valida." << endl;
+            return "No disponible";
+        }
+    }
+       
+
+    case '4': // Armas blancas
+    {
+        char subOpcion;
+        cout<<"Seleccione el arma blanca:\n";
+        cout<<"1. Cuchillos\n";
+        cout<<"2. Machete\n";
+        cout<<"3. Espada\n";
+        cin>>subOpcion;
+        switch (subOpcion)
+        {
+        case '1': 
+            return  "Cuchillo";            
+        case '2':
+            return "Machete";
+        case '3':
+            return "Espada";             
+                
+        default:
+            cout << "Arma blanca no valida." << endl;
+            return "No disponible";
+        }
+    }
+        return "Arma blanca";
+
+    case '5': // Armas contundentes
+    {
+        char subOpcion;
+        cout << "1. Bat de beisbol\n";
+        cout << "2. Martillo\n";
+        cout << "3. Tuberia\n";
+        cin >> subOpcion;
+        switch (subOpcion)
+        {
+        case '1': 
+            return  "Bat de beisbol";            
+        case '2':
+            return "Martillo";
+        case '3':
+            return "Tuberia";             
+                
+        default:
+            cout << "Arma Contudente no valida." << endl;
+            return "No disponible";
+        }
+            
+    }
+        
+
+    default:
+        cout << "Opción inválida." << endl;
+        return "Indefinido";
+    }
+}
+int pedir_dano_arma()
+{
+    int dano=0;
+    cout<<"escriba daño del arma: ";
+    cin>>dano;
+    return dano;
+}
+
+void agregar_municion(arma* &arma_obj) {
+    if (arma_obj->tipo_arma == "Pistola" || arma_obj->tipo_arma == "Escopeta" || 
+        arma_obj->tipo_arma == "Fusil de asalto" || arma_obj->tipo_arma == "Rifle francotirador" || 
+        arma_obj->tipo_arma == "Granada" || arma_obj->tipo_arma == "Cocteles molotov" || 
+        arma_obj->tipo_arma == "Ballesta" || arma_obj->tipo_arma == "Tira china") {
+        
+        arma_obj->municion += 50; // Agregar 50 unidades de munición
+        cout << "Se han agregado 50 unidades de munición a " << arma_obj->nombre_arma << endl;
+    } else {
+        cout << "No se puede agregar munición a " << arma_obj->nombre_arma << endl;
+    }
+}
+
+void insertar_ultimo_armas(arma **lista)
+{
+    arma*nueva_arma=crear_arma(pedir_tipo(),pedir_nombre(),pedir_dano_arma());
+    if(lista_vacia_arma(*lista))
+    {
+        (*lista)=nueva_arma;
+    }
+    else{
+        arma*mover=(*lista);
+        while(mover->sgte!=NULL)
+        {
+            mover=mover->sgte;
+        }
+        mover->sgte=nueva_arma;
+    }
+}
+
+
+/*------------------------ FUNCION ELIMINAR ARMA ---------------------*/
+void eliminar_arma(arma **lista) {
+    int opcion, subOpcion;
+    arma *q, *t = nullptr;
+    q = (*lista);
+
+    cout << "\n\n\n\tELIMINAR UN ARMA";
+    cout << "\n\n\tSeleccione el tipo de arma a eliminar:\n";
+    cout << "1. Armas de fuego\n";
+    cout << "2. Armas arrojadizas\n";
+    cout << "3. Armas proyectiles\n";
+    cout << "4. Armas blancas\n";
+    cout << "5. Armas contundentes\n";
+    cout << "Ingrese su opcion: ";
+    cin >> opcion;
+
+    const char* nombreArma = nullptr;
+    switch (opcion) {
+        case 1:
+            cout << "Seleccione el arma de fuego:\n";
+            cout << "1. Pistola\n";
+            cout << "2. Escopeta\n";
+            cout << "3. Fusiles de asalto\n";
+            cout << "4. Rifles de francotirador\n";
+            cin >> subOpcion;
+            switch (subOpcion) {
+                case 1: nombreArma = "Pistola"; break;
+                case 2: nombreArma = "Escopeta"; break;
+                case 3: nombreArma = "Fusiles de asalto"; break;
+                case 4: nombreArma = "Rifles de francotirador"; break;
+                default: cout << "\nOpcion invalida."; return;
+            }
+            break;
+        case 2:
+            cout << "Seleccione el arma arrojadiza:\n";
+            cout << "1. Granadas\n";
+            cout << "2. Cocteles molotov\n";
+            cin >> subOpcion;
+            switch (subOpcion) {
+                case 1: nombreArma = "Granadas"; break;
+                case 2: nombreArma = "Cocteles molotov"; break;
+                default: cout << "\nOpcion invalida."; return;
+            }
+            break;
+        case 3:
+            cout << "Seleccione el arma de proyectil:\n";
+            cout << "1. Ballestas\n";
+            cout << "2. Tira chinas\n";
+            cin >> subOpcion;
+            switch (subOpcion) {
+                case 1: nombreArma = "Ballestas"; break;
+                case 2: nombreArma = "Tira chinas"; break;
+                default: cout << "\nOpcion invalida."; return;
+            }
+            break;
+        case 4:
+            cout << "Seleccione el arma blanca:\n";
+            cout << "1. Cuchillos\n";
+            cout << "2. Machete\n";
+            cout << "3. Espada\n";
+            cin >> subOpcion;
+            switch (subOpcion) {
+                case 1: nombreArma = "Cuchillos"; break;
+                case 2: nombreArma = "Machete"; break;
+                case 3: nombreArma = "Espada"; break;
+                default: cout << "\nOpcion invalida."; return;
+            }
+            break;
+        case 5:
+            cout << "Seleccione el arma contundente:\n";
+            cout << "1. Bat de beisbol\n";
+            cout << "2. Martillo\n";
+            cout << "3. Tuberia\n";
+            cin >> subOpcion;
+            switch (subOpcion) {
+                case 1: nombreArma = "Bat de beisbol"; break;
+                case 2: nombreArma = "Martillo"; break;
+                case 3: nombreArma = "Tuberia"; break;
+                default: cout << "\nOpcion invalida."; return;
+            }
+            break;
+        default:
+            cout << "\nOpcion invalida. No se eliminara el arma.\n";
+            return;
+    }
+
+     while (q != NULL) {
+        if (q->nombre_arma == nombreArma) {  //eliminar normal
+            if (q == *lista) {
+                *lista = q->sgte;  
+            } else {
+                t->sgte = q->sgte;  
+            }
+
+            delete q;  
+            cout << "\n\n\tREGISTRO ELIMINADO...!!!!!\n";
+            return;
+        } else {
+            t = q;
+            q = q->sgte;
+        }
+    }
+    cout << "\n\tARMA NO ENCONTRADA...!!\n";
+}
+
+/*---------------------- FUNCION MOSTRAR ARMA -------------------*/
+void mostrar_arma(arma* q) {
+    int i = 1;
+    arma* p = q;
+
+    while (p != NULL) {
+        cout << "\n\tDATOS DEL ARMA[" << i << "] ";
+        cout << "\n\t------------------------";
+        cout << "\n\n\tNOMBRE DEL ARMA  : " << p->nombre_arma << endl;
+        cout << "\tTIPO DE ARMA     : " << p->tipo_arma << endl;
+        cout << "\tDAÑO             : " << p->dano << endl;
+        cout << "\tMUNICIÓN         : " << p->municion << endl; // Mostrar la cantidad de munición
+        p = p->sgte;
+        i++;
+    }
+}
+
+
+
+
+#endif 
