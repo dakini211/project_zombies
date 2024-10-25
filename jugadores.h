@@ -55,19 +55,28 @@ string pedir_nombre_soldado()
 /*-------------------- FUNCION INSERTAR ------------------*/
 void insertar_ultimo_jugador(jugador**soldado)
 {
-    jugador*nueva_soldado=crear_soldado(pedir_reduccion_dano(),pedir_vida(),pedir_nombre_soldado());
-    if(lista_vacia_jugador(*soldado))
+    int cantidad;
+    cout<<"Cantidad de soldados a ingresar  en el equipo: ";
+    cin>>cantidad;
+    for(int i=0;i<cantidad;i++)
     {
-        (*soldado)=nueva_soldado;
-    }
-    else{
-        jugador*mover=(*soldado);
-        while(mover->prox!=NULL)
+        jugador*nueva_soldado=crear_soldado(pedir_reduccion_dano(),pedir_vida(),pedir_nombre_soldado());
+        if(lista_vacia_jugador(*soldado))
         {
-            mover=mover->prox;
+            (*soldado)=nueva_soldado;
+            
         }
-        mover->prox=nueva_soldado;
+        else{
+            jugador*mover=(*soldado);
+            while(mover->prox!=NULL)
+            {
+                mover=mover->prox;
+            }
+            mover->prox=nueva_soldado;
+        }
+
     }
+    
 }
 /*---------------------- FUNCION MOSTRAR SOLADADO(SOLO) -------------------*/
 void mostrarListaJugador(jugador *lista){
@@ -75,7 +84,7 @@ void mostrarListaJugador(jugador *lista){
    jugador *mover;
 
    if (!lista_vacia_jugador(lista)){
-       mover = lista;
+      mover = lista;
       cout<<"Soldado "<<endl;
       while (mover != NULL)
         {
@@ -84,7 +93,6 @@ void mostrarListaJugador(jugador *lista){
            cout <<" reduccion: "<<mover->reduccion_dano <<endl;
            mover = mover->prox;
          }
-
    }  
   else
      cout<<"No existen soldados"<<endl;
@@ -92,6 +100,7 @@ void mostrarListaJugador(jugador *lista){
 /*---------------------- FUNCION MOSTRAR SOLADADO_ARMAS_ACCESORIOS -------------------*/
 void mostrarListaJugador_armas_accesorios(jugador *lista)
 {
+    system("cls");
     jugador *mover;arma*mover2;accesorio*mover3;
 
    if (!lista_vacia_jugador(lista)){
@@ -266,6 +275,8 @@ void agregar_accesorio_soldado(jugador**lista_soldados)
         
     }
 }
+
+
 void agregar_accesorio_soldado_con_nombre(jugador**lista_soldados,string nombre)
 {
     //accesorio*accesorio_nuevo=NULL;
@@ -287,6 +298,63 @@ void agregar_accesorio_soldado_con_nombre(jugador**lista_soldados,string nombre)
         
     }
 }
+
+void insertar_arma_accesorio_jugador_final(jugador**soldado)
+{
+    int cantidad;
+    cout<<"Cantidad de soldados a ingresar  en el equipo: ";
+    cin>>cantidad;
+    for(int i=0;i<cantidad;i++)
+    {
+        jugador*nueva_soldado=crear_soldado(pedir_reduccion_dano(),pedir_vida(),pedir_nombre_soldado());
+        if(lista_vacia_jugador(*soldado))
+        {
+            (*soldado)=nueva_soldado;
+            agregar_arma_soldado_con_nombre(&(*soldado),nueva_soldado->nombre);
+            agregar_accesorio_soldado_con_nombre(&(*soldado),nueva_soldado->nombre);
+            
+        }
+        else{
+            jugador*mover=(*soldado);
+            while(mover->prox!=NULL)
+            {
+                mover=mover->prox;
+            }
+            mover->prox=nueva_soldado;
+            agregar_arma_soldado_con_nombre(&(mover),nueva_soldado->nombre);
+            agregar_accesorio_soldado_con_nombre(&(mover),nueva_soldado->nombre);
+        }
+
+    }
+    
+}
+
+void insertar_arma_accesorio_jugador_final_sin_ciclo_for(jugador**soldado)
+{
+    
+        jugador*nueva_soldado=crear_soldado(pedir_reduccion_dano(),pedir_vida(),pedir_nombre_soldado());
+        if(lista_vacia_jugador(*soldado))
+        {
+            (*soldado)=nueva_soldado;
+            agregar_arma_soldado_con_nombre(&(*soldado),nueva_soldado->nombre);
+            agregar_accesorio_soldado_con_nombre(&(*soldado),nueva_soldado->nombre);
+            
+        }
+        else{
+            jugador*mover=(*soldado);
+            while(mover->prox!=NULL)
+            {
+                mover=mover->prox;
+            }
+            mover->prox=nueva_soldado;
+            agregar_arma_soldado_con_nombre(&(mover),nueva_soldado->nombre);
+            agregar_accesorio_soldado_con_nombre(&(mover),nueva_soldado->nombre);
+        }
+
+    
+    
+}
+
 /*---------------------- FUNCION ELIMINAR SOLDADO(TODO)-------------------*/
 void eliminar_jugador(jugador**lista_soldado,string nombre)
 {
@@ -365,69 +433,89 @@ void modificar_soldado(jugador**lista_soldados)
         {
             system("cls");
             cout << "Seleccione el campo a modificar:" << endl;
-            cout << "1. Modificar nombre" << endl;
-            cout << "2. Modificar salud " << endl;
-            cout << "3. Modificar reduccion al dano" << endl;
-            cout << "4. Agregar armas" << endl;
-            cout << "5. Modificar armas" << endl;
-            cout << "6. Agregar accesorios" << endl;
-            cout << "7. Modificar accesorios" << endl;
-            cout << "8. Mostrar soldado" << endl;
+            cout << "0. Modificar nombre" << endl;
+            cout << "1. Modificar salud " << endl;
+            cout << "2. Modificar reduccion al dano" << endl;
+            cout << "3. Agregar armas" << endl;
+            cout << "4. Modificar armas" << endl;
+            cout << "5. Agregar accesorios" << endl;
+            cout << "6. Modificar accesorios" << endl;
+            cout << "7. Mostrar soldado" << endl;
+            cout << "8. Eliminar soldado" << endl;
             cout << "9. Salir" << endl;
             cout << "Ingrese su opcion: ";
             cin>>opcion;
             switch (opcion)
             {
-            case '1':
+            case '0':
                 {
+                    system("cls");
                     string nombre;
                     nombre=pedir_nombre_soldado();
                     soldado_actual->nombre=nombre;
                     break;
                 }
-            case '2':
+            case '1':
                 {
+                    system("cls");
                     int salud;
                     salud=pedir_vida();
                     soldado_actual->salud=salud;
                     break;
                 }
-            case '3':
+            case '2':
                 {
+                    system("cls");
                     int reduccion_dano;
                     reduccion_dano=pedir_reduccion_dano();
                     soldado_actual->reduccion_dano=reduccion_dano;
                     break;
                 }
+            case '3':
+                {
+                    system("cls");
+                    agregar_arma_soldado_con_nombre(&(soldado_actual),soldado_actual->nombre);
+                    break;
+                }
             case '4':
                 {
-                    agregar_arma_soldado_con_nombre(&(soldado_actual),soldado_actual->nombre);
+                    system("cls");
+                    modificar_arma(&(soldado_actual)->arma_jugador);
                     break;
                 }
             case '5':
                 {
-                    modificar_arma(&(soldado_actual)->arma_jugador);
+                    system("cls");
+                    agregar_accesorio_soldado_con_nombre(&(soldado_actual),soldado_actual->nombre);
                     break;
                 }
             case '6':
                 {
-                    agregar_accesorio_soldado_con_nombre(&(soldado_actual),soldado_actual->nombre);
+                    system("cls");
+                    modificar_accesorio(&(soldado_actual)->accesorio_jugador);
                     break;
                 }
             case '7':
                 {
-                    modificar_accesorio(&(soldado_actual)->accesorio_jugador);
-                    break;
-                }
-            case '8':
-                {
+                    system("cls");
                     mostrarListaJugador_armas_accesorios((soldado_actual));
                     system("pause");
                     break;
                 }
+            case '8':
+                {
+                    system("cls");
+                    eliminar_jugador(&(*lista_soldados),soldado_actual->nombre);
+                    system("pause");
+                    opcion = '9';
+                    break;
+                }
+
             case '9':
                 {
+                    system("cls");
                     cout<<"Salir"<<endl;
+                    system("pause");
                     break;
                 }
             
@@ -439,7 +527,7 @@ void modificar_soldado(jugador**lista_soldados)
 }
 void vacia()
 {
-    
+
 }
 
 

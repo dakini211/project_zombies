@@ -52,7 +52,8 @@ string pedir_tipo() {
     switch (opcion)
     {
     case '1': // Armas de fuego
-    {        
+    { 
+        system("cls");       
         char subOpcion;
         cout << "Seleccione el arma de fuego:\n";
         cout << "1. Pistola\n";
@@ -80,6 +81,7 @@ string pedir_tipo() {
 
     case '2': // Armas arrojadizas
     {
+        system("cls");  
         char subOpcion;
         cout << "Seleccione el arma arrojadiza:\n";
         cout << "1. Granadas\n";
@@ -102,6 +104,7 @@ string pedir_tipo() {
 
     case '3': // Armas proyectiles
     {
+        system("cls");  
         char subOpcion;
         cout << "Seleccione el arma de proyectil:\n";
         cout << "1. Ballestas\n";
@@ -124,6 +127,7 @@ string pedir_tipo() {
 
     case '4': // Armas blancas
     {
+        system("cls");  
         char subOpcion;
         cout<<"Seleccione el arma blanca:\n";
         cout<<"1. Cuchillos\n";
@@ -148,6 +152,7 @@ string pedir_tipo() {
 
     case '5': // Armas contundentes
     {
+        system("cls");  
         char subOpcion;
         cout << "1. Bat de beisbol\n";
         cout << "2. Martillo\n";
@@ -177,6 +182,7 @@ string pedir_tipo() {
 }
 int pedir_dano_arma()
 {
+     system("cls");  
     int dano=0;
     cout<<"escriba dano del arma: ";
     cin>>dano;
@@ -347,35 +353,38 @@ void eliminar_arma_sin_nombre(arma**lista_arma)
     }
 }
 
-void eliminar_arma_con_nombre(arma**lista_arma,string nombre_arma)
+void eliminar_arma_con_nombre(arma** lista_arma, string nombre_arma)
 {   
-    arma*actual=(*lista_arma);
-    if(lista_vacia_arma(*lista_arma))
+    if(lista_vacia_arma(*lista_arma))  // Verificación de lista vacía antes
     {
-        cout<<"no hay arma por eliminar: "<<endl;        
+        cout << "No hay armas por eliminar." << endl;        
+        return;
     }
-    else{
-        arma*anterior=NULL;
-        while(actual!=NULL and actual->nombre_arma!=nombre_arma)
-        {
-            anterior=actual;
-            actual=actual->sgte;
-        }
-        if(actual!=NULL)
-        {
-            cout<<"accesorio no encontrado"<<endl;
-        }
-        else{
-            if(actual==(*lista_arma))
-            {
-                (*lista_arma)=(*lista_arma)->sgte;
-            }
-            else{
-                anterior->sgte=actual->sgte;
-            }
-            delete actual;
-        }
 
+    arma* actual = (*lista_arma);
+    arma* anterior = NULL;
+
+    while(actual != NULL && actual->nombre_arma != nombre_arma)
+    {
+        anterior = actual;
+        actual = actual->sgte;
+    }
+
+    if(actual == NULL)
+    {
+        cout << "Arma no encontrada." << endl;  // Cambié "accesorio" por "arma"
+    }
+    else
+    {
+        if(actual == (*lista_arma))  // Si es el primer elemento
+        {
+            (*lista_arma) = (*lista_arma)->sgte;
+        }
+        else
+        {
+            anterior->sgte = actual->sgte;
+        }
+        delete actual;
     }
 }
 
@@ -412,7 +421,7 @@ void modificar_arma(arma**lista_arma)
             if(actual->nombre_arma==nombre_arma)
             {
                 encontrado=true;
-                cout<<"accesorio: "<<actual->nombre_arma;
+                cout<<"arma: "<<actual->nombre_arma<<endl;
                 char opcion;
                 while(opcion!='5')
                 {
@@ -449,7 +458,7 @@ void modificar_arma(arma**lista_arma)
                     }
                     case '4':
                     {
-                        eliminar_arma_con_nombre(&actual,actual->nombre_arma);
+                        eliminar_arma_con_nombre(&(*lista_arma),actual->nombre_arma);
                         break;                        
                     }
                     case '5':

@@ -159,36 +159,38 @@ void eliminar_accesorio_sin_nombre(accesorio**Lista_accesorio)
     }
 }
 
-void eliminar_accesorio_con_nombre(accesorio**Lista_accesorio,string nombre_accesorio)
+void eliminar_accesorio_con_nombre(accesorio** Lista_accesorio, string nombre_accesorio)
 {
-    
-    accesorio*actual=(*Lista_accesorio);
-    if(listaVaciaAccesorios(*Lista_accesorio))
+    if(listaVaciaAccesorios(*Lista_accesorio))  
     {
-        cout<<"no hay accesorio por eliminar: "<<endl;        
+        cout << "No hay accesorios por eliminar." << endl;
+        return;
     }
-    else{
-        accesorio*anterior=NULL;
-        while(actual!=NULL and actual->nombre!=nombre_accesorio)
-        {
-            anterior=actual;
-            actual=actual->prox;
-        }
-        if(actual!=NULL)
-        {
-            cout<<"accesorio no encontrado"<<endl;
-        }
-        else{
-            if(actual==(*Lista_accesorio))
-            {
-                (*Lista_accesorio)=(*Lista_accesorio)->prox;
-            }
-            else{
-                anterior->prox=actual->prox;
-            }
-            delete actual;
-        }
 
+    accesorio* actual = (*Lista_accesorio);
+    accesorio* anterior = NULL;
+
+    while(actual != NULL && actual->nombre != nombre_accesorio)
+    {
+        anterior = actual;
+        actual = actual->prox;
+    }
+
+    if(actual == NULL)
+    {
+        cout << "Accesorio no encontrado." << endl;
+    }
+    else
+    {
+        if(actual == (*Lista_accesorio))  // Si es el primer elemento
+        {
+            (*Lista_accesorio) = (*Lista_accesorio)->prox;
+        }
+        else
+        {
+            anterior->prox = actual->prox;
+        }
+        delete actual;
     }
 }
 /*---------------------- FUNCION MODIFICAR-------------------*/
@@ -254,7 +256,7 @@ void modificar_accesorio(accesorio**lista_accesorio)
                     }
                     case '5':
                     {
-                        eliminar_accesorio_con_nombre(&actual,actual->nombre);
+                        eliminar_accesorio_con_nombre(&(*lista_accesorio),actual->nombre);
                         break;                        
                     }
                     case '6':
