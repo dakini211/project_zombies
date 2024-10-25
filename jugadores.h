@@ -166,6 +166,7 @@ void mostrar_lista_arma_jugador(jugador*soldado)
             cout<<"arma no disponible"<<endl;
         }
         else{
+            system("cls");
              while(arma_actual!=NULL)
                 {
                     cout<<endl<<"arma y propiedades"<<endl;
