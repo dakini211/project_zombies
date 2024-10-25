@@ -250,7 +250,7 @@ void modificar_zombie(zombies*&lista){
    }
    else{
       int valor_nivel=pedir_nivel();
-      bool ok=verificar_valor_nivel(valor_nivel, 1, 5);
+      //bool ok=verificar_valor_nivel(valor_nivel, 1, 5);
       buscar_zombie(auxiliar, valor_nivel);
 
       while (opcion != '4') {
