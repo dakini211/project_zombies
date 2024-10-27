@@ -1,5 +1,5 @@
-#ifndef ARMAS_H
-#define ARMAS_H
+#ifndef ARMASJ_H
+#define ARMASJ_H
 #include <iostream>
 #include <fstream>
 #include<string.h>
