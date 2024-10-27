@@ -37,6 +37,18 @@ void mostrar_zombies(zombies *list, int valor){
    cout<<endl<<"============================================\n";
 }
 
+int contar_zombies(zombies *lista, int valor){
+   zombies *mover=lista;
+   int cont=0;
+   while(mover!=NULL){
+      if(mover->nivel==valor){
+         cont++;
+      }
+      mover=mover->prox;
+   }
+   return cont;
+}
+
 int contar_zombies_rapidos(zombies *list){
    zombies *buscar=list;
    int contador=0;
@@ -111,8 +123,7 @@ void mostrarlistaZombies(zombies *lista)//muestra la lsita de zombies agregados
    int numero_hongos=contar_zombies_Infectados_hongos(lista);
    int numero_Bioluminicentes=contar_zombies_Bioluminicentes(lista);
 
-   if(!listaVaciaZombies(lista))
-   {
+   if(!listaVaciaZombies(lista)){
    mover=lista;
    while(mover!=NULL){
 
@@ -163,6 +174,23 @@ void insertar_ultimo_zombie(zombies **lista_zombies,string nom, int nivel, int s
    }
 }
 
+void insertar_ultimo_zombie_mapa(zombies **lista_zombies_nueva, zombies *lista_zombie){
+   zombies*nuevo_zombie=crear_zombies(lista_zombie->nombre, lista_zombie->nivel, lista_zombie->salud, lista_zombie->dano_ataque);
+   if(listaVaciaZombies(*lista_zombies_nueva))
+   {
+      *lista_zombies_nueva=nuevo_zombie;
+   }
+   else
+   {
+      zombies*aux=*lista_zombies_nueva;
+      while(aux->prox!=NULL)
+      {
+         aux=aux->prox;
+      }
+      aux->prox=nuevo_zombie;
+   }
+}
+
 string pedir_nombre(){
    string nombre;
    cout<<"Indica nombre: ";
@@ -181,11 +209,33 @@ void buscar_zombie(zombies*list, int buscar)
       bool encontrado=false;
       while(aux!=NULL && encontrado==false){
          if(aux->nivel==buscar){
-            cout<<"el zombie: "<< buscar<<" existe";            
+            cout<<"el zombie "<< buscar<<" existe";            
          }
          aux=aux->prox;
       }
-      cout<<"el zombie: "<<buscar<<" no existe, puede hacer el cambio pero no sera efectivo"<<endl;
+      cout<<"el zombie "<<buscar<<" no existe, puede hacer el cambio pero no sera efectivo"<<endl;
+   }
+}
+
+zombies *buscar_zombie_para_mapa(zombies*list, int buscar){
+   zombies*aux=list; 
+   bool encontrado=false;
+
+   if(!listaVaciaZombies(list)){
+      
+      while(aux!=NULL && encontrado==false){
+         if(aux->nivel==buscar){
+            cout<<"El zombie "<< buscar<<" existe\n"; 
+            encontrado=true;
+         }
+         aux=aux->prox;
+      }
+      return aux;
+   }
+   else{
+      cout<<"El zombie de nivel "<<buscar<<" no existe\n"<<endl;
+      return NULL;
+      system("pause");
    }
 }
 
@@ -193,12 +243,11 @@ int modificar_nivel(zombies *list, int nuevo_valor, int actual_valor){
    zombies *mover=list;
    while(mover!=NULL){
       if(mover->nivel==actual_valor){
-         mover->nivel=nuevo_valor;
-         return mover->nivel;
+         mover->nivel=nuevo_valor;  
       }
       mover=mover->prox;
    }
-   return 0;
+   return nuevo_valor;
 }
 
 void modificar_vida(zombies *list, int nuevo_valor, int actual_valor){
@@ -228,10 +277,10 @@ int pedir_nivel(){
    return valor;
 }
 
-bool verificar_valor_nivel(int valor_dato, int x, int y) {
+void verificar_valor_nivel(int valor_dato, int x, int y) {
    while (true) {
       if ((valor_dato >= x) && (valor_dato <= y)) {
-         return true;
+         cout<<"el nivel esta en el rango.\n";
       } 
       else{
          cout<<"Ingrese un valor entre "<<x<<" y "<<y<<endl;
@@ -250,7 +299,7 @@ void modificar_zombie(zombies*&lista){
    }
    else{
       int valor_nivel=pedir_nivel();
-      //bool ok=verificar_valor_nivel(valor_nivel, 1, 5);
+      verificar_valor_nivel(valor_nivel, 1, 5);
       buscar_zombie(auxiliar, valor_nivel);
 
       while (opcion != '4') {
@@ -343,7 +392,5 @@ void eliminar_apariciones(zombies *&inicio, string nombre_zombie){
    }
    cout<<"Total de elementos eliminados "<<contador<<endl;
 }
-void chao(){
-   
-}
+
 #endif 
