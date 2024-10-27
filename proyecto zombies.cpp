@@ -559,8 +559,14 @@ int main(){
         cin>>opcion;
         switch (opcion){
             case '1':
-                cout<<"falta programar"<<"\n";
-                system("pause");
+                cout << "Esta opción aún no está disponible." << "\n";
+                cout << "Presione 1 para volver: ";
+                char volver;
+                cin >> volver;
+                while (volver != '1') {
+                    cout << "Entrada no válida. Presione 1 para volver: ";
+                    cin >> volver;
+                }               
             break;
             case '2': 
                 while(opcion!='5'){
