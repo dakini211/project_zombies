@@ -271,9 +271,15 @@ int main(){
                             }
                         break;
                         case '4':
-                            cout<<"falta programar"<<"\n";
-                            system("pause");
-                        break; 
+                             cout << "Esta opción aún no está disponible." << "\n";
+                             cout << "Presione 1 para volver: ";
+                             char volver;
+                             cin >> volver;
+                             while (volver != '1') {
+                             cout << "Entrada no válida. Presione 1 para volver: ";
+                             cin >> volver;
+                }
+                break; 
                         case '5':
                             system("pause");
                         break;
@@ -286,8 +292,15 @@ int main(){
                     }
                 }
             case '3':
-                cout<<"falta programar";
-                system("pause");
+                cout << "Esta opción aún no está disponible." << "\n";
+                cout << "Presione 1 para volver: ";
+                char volver;
+                cin >> volver;
+                while (volver != '1') {
+                    cout << "Entrada no válida. Presione 1 para volver: ";
+                    cin >> volver;
+                }
+                break;
             break;
             case '4':
                 system("pause");
