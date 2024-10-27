@@ -85,6 +85,7 @@ string pedir_tipo_accesorio()
 
 string pedir_nombre_accesorio()
 {
+    system("cls");
     string nombre;
     cout<<"Escriba nombre del accesorio: ";
     cin>>nombre;
@@ -93,6 +94,7 @@ string pedir_nombre_accesorio()
 
 int pedir_modificador_accesorio()
 {
+    system("cls");
     int modificador;
     cout<<"Escriba modificador correspondiente: ";
     cin>>modificador;
@@ -101,6 +103,7 @@ int pedir_modificador_accesorio()
 
 int pedir_usos_accesorio()
 {
+    system("cls");
     int usos;
     cout<<"Escriba usos para el accesorio correspondiente: ";
     cin>>usos;
