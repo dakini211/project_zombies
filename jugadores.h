@@ -100,7 +100,7 @@ void mostrarListaJugador(jugador *lista){
 /*---------------------- FUNCION MOSTRAR SOLADADO_ARMAS_ACCESORIOS -------------------*/
 void mostrarListaJugador_armas_accesorios(jugador *lista)
 {
-    system("cls");
+    
     jugador *mover;arma*mover2;accesorio*mover3;
 
    if (!lista_vacia_jugador(lista)){
