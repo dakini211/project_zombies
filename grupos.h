@@ -46,17 +46,16 @@ void mostrar_grupos(grupo*lista_grupo)
     }
     else{
          grupo*mover=lista_grupo;
-         while(mover!=NULL)
-         {
-            cout<<mover->nombre_grupo<<"->";
+         cout<<endl;
+         while(mover!=NULL){
+            cout<<"[Grupo: "<<mover->nombre_grupo<<"; numero de jugadores: "<< mover->numero_miembros<<"]->";
             mover=mover->prox;
-         }
-         cout<<"Operativos"<<endl;
+        }
+         cout<<"Operativos\n\n";
 
     }
 }
-void mostrar_grupo_integrantes(grupo*lista_grupo)
-{
+void mostrar_grupo_integrantes(grupo*lista_grupo){
    
     if(listaVaciaGrupo(lista_grupo))
     {
@@ -84,7 +83,7 @@ void insertar_ultimo_grupos(grupo **lista_grupo)
 {
     
     int cantidad;
-    cout<<"Inserte la cantidad de Grupos ";
+    cout<<"Inserte la cantidad de Grupos: ";
     cin>>cantidad;
     for(int i=0;i<cantidad;i++)
     {
@@ -181,11 +180,11 @@ void eliminar_grupo(grupo**lista_grupo,string nombre_grupo)
     jugador*borrar_jugador=NULL;
     if(listaVaciaGrupo(*lista_grupo))
     {
-        cout<<"No hya grupos para eliminar"<<endl;
+        cout<<"No hay grupos para eliminar"<<endl;
     }
     else{
         grupo*actual=(*lista_grupo);
-        while(actual!=NULL and actual->nombre_grupo!=nombre_grupo)
+        while(actual!=NULL && actual->nombre_grupo!=nombre_grupo)
         {
             anterior=actual;
             actual=actual->prox;
@@ -223,7 +222,7 @@ void eliminar_grupo(grupo**lista_grupo,string nombre_grupo)
 void modificar_grupo(grupo ** lista_grupo)
 {
     string nombre_grupo;
-    cout<<"ingrese nombre de grupo a modificar: ";
+    cout<<"Ingrese nombre de grupo a modificar: ";
     cin>>nombre_grupo;   
     grupo*grupo_actual=buscar_grupo(*lista_grupo,nombre_grupo);
     if(grupo_actual==NULL)
@@ -236,11 +235,13 @@ void modificar_grupo(grupo ** lista_grupo)
         {
             system("cls");
             cout << "Seleccione el campo a modificar:" << endl;
-            cout<<"1.Modificar nombre del grupo"<<endl;
-            cout<<"2.Insertar soldados "<<endl;
-            cout<<"3.Mochila de jugador"<<endl;
-            cout<<"4.Mostrar integrantes del grupo"<<endl;
-            cout<<"5.salir"<<endl;
+            cout<<"==================================================="<<"\n";
+            cout<<"1. Modificar nombre del grupo"<<endl;
+            cout<<"2. Insertar soldados "<<endl;
+            cout<<"3. Mochila de jugador"<<endl;
+            cout<<"4. Mostrar integrantes del grupo"<<endl;
+            cout<<"5. salir"<<endl;
+            cout<<"==================================================="<<"\n";
             cin>>opcion;
             switch (opcion)
             {
