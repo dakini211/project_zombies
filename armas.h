@@ -335,7 +335,7 @@ void eliminar_arma_sin_nombre(arma**lista_arma)
             anterior=actual;
             actual=actual->sgte;
         }
-        if(actual!=NULL)
+        if(actua ==NULL)
         {
             cout<<"accesorio no encontrado"<<endl;
         }
