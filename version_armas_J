@@ -1,4 +1,4 @@
-//Esto es un archivo de pruebas, no incluir en el principal
+//Esto es una version en desarrollo, no incluir en el principal
 #ifndef ARMASJ_H
 #define ARMASJ_H
 #include <iostream>
