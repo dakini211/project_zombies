@@ -103,7 +103,7 @@ int pedir_modificador_accesorio()
 int pedir_usos_accesorio()
 {
     int usos;
-    cout<<"Escriba usos para el accesorio correspondiente: ";
+    cout<<"Escriba Usos o Municiones para el accesorio correspondiente: ";
     cin>>usos;
     return usos;
 }
