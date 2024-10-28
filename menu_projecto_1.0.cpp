@@ -1,18 +1,20 @@
 #include "zombies.h"
+#include "mapa.h"
 #include "grupos.h" 
 using namespace std;
 
-int main()
-{
+int main(){
+
     jugador *lista_soldados = NULL;
     arma *arma = NULL;
     grupo *lista_grupo = NULL;
     zombies *lista_zombies = NULL;
+    mapa *lista_mapa=NULL;
     char opcion = '0'; // Inicializamos la opción
 
     while (opcion != '4') {
         system("cls");
-        cout << "        Menu        " << "\n";
+        cout << "        \e[47mMenu\e[0m        " << "\n";
         cout << "Cristian Teran" << "\n";
         cout << "Maximiliano Urdaneta" << "\n";
         cout << "Javier Bonilla" << "\n";
@@ -27,14 +29,8 @@ int main()
 
         switch (opcion) {
             case '1':
-                cout << "Esta opción aún no está disponible." << "\n";
-                cout << "Presione 1 para volver: ";
-                char volver;
-                cin >> volver;
-                while (volver != '1') {
-                    cout << "Entrada no válida. Presione 1 para volver: ";
-                    cin >> volver;
-                }
+                cout << "Esta opción no está disponible aún." << "\n";
+                system("pause");
                 break;
 
             case '2': {
@@ -42,7 +38,7 @@ int main()
 
                 while (opcion_opciones != '4') {
                     system("cls");
-                    cout << "        2. Opciones        " << "\n";
+                    cout << "        \e[47mOpciones\e[0m        " << "\n";
                     cout << "===========================" << "\n";
                     cout << "1. Gestionar zombies " << "\n";
                     cout << "2. Gestionar grupos " << "\n";
@@ -57,7 +53,7 @@ int main()
                             char opcion_zombies = '0';
                             while (opcion_zombies != '5') {
                                 system("cls");
-                                cout << "          2.1. Gestionar zombies      " << endl;
+                                cout << "          \e[47mGestionar zombies\e[0m      " << endl;
                                 cout << "-----------------------------------------------" << endl;
                                 cout << "1.- Agregar zombie" << endl;
                                 cout << "2.- Modificar zombie" << endl;
@@ -73,7 +69,7 @@ int main()
                                         char tipo_zombie = '0';
                                         while (tipo_zombie != '6') {
                                             system("cls");
-                                            cout << "*********** 2.1.1.- Agregar zombie **********" << endl;
+                                            cout << "               \e[47mAgregar zombie\e[0m          " << endl;
                                             cout << "-----------------------------------------------" << endl;
                                             cout << "1.- Rapidos y agiles" << endl;
                                             cout << "2.- Tanques" << endl;
@@ -125,7 +121,7 @@ int main()
                                         char tipo_eliminar = '0';
                                         while (tipo_eliminar != '6') {
                                             system("cls");
-                                            cout << "*********** 2.1.4.- Eliminar tipo de zombie **********" << endl;
+                                            cout << "         \e[47mEliminar tipo de zombie\e[0m" << endl;
                                             cout << "-----------------------------------------------" << endl;
                                             cout << "1.- Rapidos y agiles" << endl;
                                             cout << "2.- Tanques" << endl;
@@ -174,11 +170,11 @@ int main()
                             char opcion_grupos = '0';
                             while (opcion_grupos != '5') {
                                 system("cls");
-                                cout << "        2.3. Gestionar Grupos        " << "\n";
+                                cout << "        \e[47mGestionar Grupos\e[0m        " << "\n";
                                 cout << "======================================" << "\n";
                                 cout << "1. Agregar Grupo " << "\n";
-                                cout << "2. Modificar Grupo " << "\n";
-                                cout << "3. Eliminar Grupos " << "\n";
+                                cout << "2. Modificar Grupo y añadir jugadores" << "\n";
+                                cout << "3. Eliminar Grupo" << "\n";
                                 cout << "4. Mostrar Grupo " << "\n";
                                 cout << "5. Volver " << "\n";
                                 cout << "======================================" << "\n";
@@ -213,17 +209,95 @@ int main()
                             break;
                         }
                         case '3':
-                            cout << "Esta opción no está disponible aún." << "\n";
-                            system("pause");
-                            break;
+                            while (opcion != '5'){
+                                system("cls");
+                                cout << "    \e[47mGestionar mapa\e[0m    \n";
+                                cout<<"===================================="<<"\n";
+                                cout << " 1. Crear estacion" << endl;
+                                cout << " 2. modificar estacion" << endl;
+                                cout << " 3. Mostrar mapa" << endl;
+                                cout << " 4. Eliminar estacion" << endl;
+                                cout << " 5. Volver" << endl;
+                                cout<<"===================================="<<"\n";
+                                cout<<"Ingrese una opcion (1 al 5): ";
+                                cin >> opcion;
+                                switch (opcion) {
+                                    case '1':
+                                        system("cls");
+                                        cout << "        \e[47mCrear estacion\e[0m    \n";
+                                        cout<<"=========================================="<<"\n";
+                                        insertar_Ultimo_mapa(lista_mapa, pedir_dato_estacion());
+                                        cout<<"La estacion se creo con exito!!! si desea crear otra estacion ingrese a 'Crear estacion'\n";
+                                        system("pause");
+                                    break;
+                                    case '2'    :
+                                        while(opcion!='4'){
+                                            system("cls");
+                                            cout << "           \e[47mmodificar estacion\e[0m         " << endl;
+                                            cout<<"==================================================="<<"\n";
+                                            cout << " 1. Modificar nombre estacion" << endl;
+                                            cout << " 2. Añadir zombie a estacion" << endl;
+                                            cout << " 3. Eliminar zombies de estacion" << endl;
+                                            cout << " 4. volver" << endl;
+                                            cout<<"==================================================="<<"\n";
+                                            cout<<"Ingrese una opcion (1 al 4): ";
+                                            cin>>opcion;
+                                            switch (opcion){
+                                                case '1':
+                                                    modificar_estacion(lista_mapa);
+                                                break;
 
+                                                case '2':
+                                                    system("cls");
+                                                    cout << "          \e[47mAñadir zombie a estacion\e[0m     " << endl;
+                                                    cout<<"==================================================="<<"\n";
+                                                    agregar_zombies_mapa(lista_zombies, lista_mapa);
+                                                    system("pause");
+                                                break;
+                                
+                                                case '3':
+                                                    system("cls");
+                                                    cout << "          \e[47mEliminar zombies de estacion\e[0m    " << endl;
+                                                    cout<<"========================================================="<<"\n";
+                                                    modificar_zombi(lista_mapa);
+                                                    system("pause");
+                                                break;
+
+                                                default:
+                                                    cout<<"Opcion invalida.\n";
+                                                break;
+                                            }
+                                        }
+                                        system("pause");
+                                    break;
+                                    case '3':
+                                        system("cls");
+                                        cout << "                \e[47mMostrar mapa\e[0m     " << endl;
+                                        cout<<"==================================================="<<"\n";
+                                        mostrar_mapa(lista_mapa);
+                                        system("pause");
+                                    break;
+                                    case '4':
+                                        system("cls");
+                                        cout << "           \e[47mEliminar estacion\e[0m          " << endl;
+                                        cout<<"==================================================="<<"\n";
+                                        eliminar_estacion(&lista_mapa, pedir_dato_estacion());
+                                        system("pause");
+                                    break;
+                                    default:
+                                        cout<<"Opcion invalida.\n";
+                                        system("pause");
+                                    break;
+                                }
+                            }
+                        break;
                         case '4':
-                            break;
+                        break;
 
                         default:
                             cout << "Opción inválida. Intente nuevamente." << endl;
                             system("pause");
-                            break;
+                        break;
                     }
                 }
                 break;
@@ -249,6 +323,7 @@ int main()
     delete lista_zombies;
     delete arma;
     delete lista_grupo;
+    delete lista_mapa;
 
     return 0;
 }
