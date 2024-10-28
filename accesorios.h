@@ -56,11 +56,12 @@ string pedir_tipo_accesorio()
     string tipo;
     char opcion;
     
-    cout << "\t\t------------------>";
+    cout<<"============================================"<<endl;
     cout << "\n\tSeleccione el tipo de accesorio a registrar:\n";
     cout << "1. Accesorio de ataque\n";
     cout << "2. Accesorio de defensa\n";
-    cout << "3. Accesorio de supervivencia\n";    
+    cout << "3. Accesorio de supervivencia\n"; 
+    cout<<"============================================"<<endl;   
     cout << "Ingrese su opcion: ";
     cin >> opcion;
     switch (opcion)
@@ -85,7 +86,6 @@ string pedir_tipo_accesorio()
 
 string pedir_nombre_accesorio()
 {
-    system("cls");
     string nombre;
     cout<<"Escriba nombre del accesorio: ";
     cin>>nombre;
@@ -94,7 +94,6 @@ string pedir_nombre_accesorio()
 
 int pedir_modificador_accesorio()
 {
-    system("cls");
     int modificador;
     cout<<"Escriba modificador correspondiente: ";
     cin>>modificador;
@@ -103,7 +102,6 @@ int pedir_modificador_accesorio()
 
 int pedir_usos_accesorio()
 {
-    system("cls");
     int usos;
     cout<<"Escriba usos para el accesorio correspondiente: ";
     cin>>usos;
@@ -139,7 +137,7 @@ void eliminar_accesorio_sin_nombre(accesorio**Lista_accesorio)
     }
     else{
         accesorio*anterior=NULL;
-        while(actual!=NULL and actual->nombre!=nombre_accesorio)
+        while(actual!=NULL && actual->nombre!=nombre_accesorio)
         {
             anterior=actual;
             actual=actual->prox;
@@ -210,7 +208,7 @@ void modificar_accesorio(accesorio**lista_accesorio)
     else{
         accesorio*actual=(*lista_accesorio);
         bool encontrado=false;
-        while(actual!=NULL and encontrado==false)
+        while(actual!=NULL && encontrado==false)
         {
             if(actual->nombre==nombre_accesorio)
             {
@@ -219,14 +217,16 @@ void modificar_accesorio(accesorio**lista_accesorio)
                 char opcion;
                 while(opcion!='6')
                 {
-                    cout << "Seleccione el campo a modificar:" << endl;
+                    cout <<      "Seleccione el campo a modificar:" << endl;
+                    cout<<"============================================"<<endl;
                     cout << "1. Modificar nombre" << endl;
                     cout << "2. Modificar tipo" << endl;
                     cout << "3. Modificar modificador" << endl;
                     cout << "4. Modificar usos" << endl;
                     cout << "5. Eliminar accesorio" << endl;
                     cout << "6. Salir" << endl;
-                    cout << "Ingrese su opcion: ";
+                    cout<<"============================================"<<endl;
+                    cout << "Ingrese su opcion (1 al 6): ";
                     cin >> opcion;
                     switch (opcion)
                     {
@@ -284,10 +284,5 @@ void modificar_accesorio(accesorio**lista_accesorio)
     }
 
 }
-void hola()
-{
-   
-}
-
 
 #endif 
