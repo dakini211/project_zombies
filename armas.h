@@ -46,7 +46,7 @@ string pedir_tipo() {
     cout << "3. Armas proyectiles\n";
     cout << "4. Armas blancas\n";
     cout << "5. Armas contundentes\n";
-    cout << "Ingrese su opcion: ";
+    cout << "6. Armas improvisadas\n";
     cin >> opcion;
 
     switch (opcion)
@@ -148,7 +148,7 @@ string pedir_tipo() {
             return "No disponible";
         }
     }
-        return "Arma blanca";
+       
 
     case '5': // Armas contundentes
     {
@@ -173,12 +173,116 @@ string pedir_tipo() {
         }
             
     }
-        
+
+    case '6': // Armas improvisadas
+    {
+        system("cls");  
+        char subOpcion;
+        cout << "Seleccione el  tipo de arma improvisada:\n";
+        cout << "1. Objetos punzantes\n";
+        cout << "2. Objetos contundentes\n";
+        cout << "3. Objetos armas incendiarias\n";
+        cout << "4. Tranpas\n";
+        cin >> subOpcion;
+        switch (subOpcion)
+        {
+        case '1':
+        {
+            system("cls");  
+            char subOpcion2;
+            cout << "Seleccione el  arma a  improvisar:\n";
+            cout << "1. Clavo\n";
+            cout << "2. Tijeras\n";
+            cout << "3. Destornillandor\n";        
+            cin >> subOpcion2;
+            switch (subOpcion2)
+            {
+                case '1':               
+                    return "Clavo";
+                case '2':               
+                    return "Tijeras";
+                case '3':               
+                    return "Destornillandor";            
+                default:
+                    break;
+            }
+            break;    
+        }                     
+        case '2':
+        {
+            system("cls");  
+            char subOpcion2;
+            cout << "Seleccione el  arma a  improvisar:\n";
+            cout << "1. Ladrillos\n";
+            cout << "2. Rocas\n";
+            cout << "3. Palo\n";        
+            cin >> subOpcion2;
+            switch (subOpcion2)
+            {
+                case '1':               
+                    return "Ladrillo";
+                case '2':               
+                    return "Roca";
+                case '3':               
+                    return "Palo";            
+                default:
+                    break;
+            }
+            break;    
+
+        }
+            
+      case '3':
+        {
+            system("cls");  
+            char subOpcion2;
+            cout << "Seleccione el  arma a  improvisar:\n";
+            cout << "1. Fosforo\n";
+            cout << "2. Gasolina\n";                   
+            cin >> subOpcion2;
+            switch (subOpcion2)
+            {
+                case '1':               
+                    return "Fosforo";
+                case '2':               
+                    return "Gasolina";                       
+                default:
+                    break;
+            } 
+            break;               
+        } 
+         case '4':
+        {
+            system("cls");  
+            char subOpcion2;
+            cout << "Seleccione el  arma a  improvisar:\n";
+            cout << "1. Alambre electrificado\n";
+            cout << "2. Trampa de caida\n";                   
+            cin >> subOpcion2;
+            switch (subOpcion2)
+            {
+                case '1':               
+                    return " Alambre electrificado";
+                case '2':               
+                    return "Trampa de caida";                       
+                default:
+                    break;
+            }
+            break;            
+        }                 
+        default:
+            cout << "Arma inprovisada no valida." << endl;
+            return "No disponible";
+        }
+        break;
+            
+    }      
 
     default:
         cout << "Opción inválida." << endl;
         return "Indefinido";
     }
+    return "No disponible";
 }
 int pedir_dano_arma()
 {
@@ -335,7 +439,7 @@ void eliminar_arma_sin_nombre(arma**lista_arma)
             anterior=actual;
             actual=actual->sgte;
         }
-        if(actua ==NULL)
+        if(actual==NULL)
         {
             cout<<"accesorio no encontrado"<<endl;
         }
