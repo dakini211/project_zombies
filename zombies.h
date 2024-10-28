@@ -235,162 +235,178 @@ zombies *buscar_zombie_para_mapa(zombies*list, int buscar){
    else{
       cout<<"El zombie de nivel "<<buscar<<" no existe\n"<<endl;
       return NULL;
-      system("pause");
    }
 }
 
-int modificar_nivel(zombies *list, int nuevo_valor, int actual_valor){
-   zombies *mover=list;
-   while(mover!=NULL){
-      if(mover->nivel==actual_valor){
-         mover->nivel=nuevo_valor;  
-      }
-      mover=mover->prox;
-   }
-   return nuevo_valor;
+int modificar_nivel(zombies *list, int nuevo_valor, int actual_valor) {
+    zombies *mover = list;
+    while (mover != NULL) {
+        if (mover->nivel == actual_valor) {
+            mover->nivel = nuevo_valor;
+        }
+        mover = mover->prox;
+    }
+    return nuevo_valor;
 }
 
-void modificar_vida(zombies *list, int nuevo_valor, int actual_valor){
-   zombies *mover=list;
-   while(mover!=NULL){
-      if(mover->nivel==actual_valor){
-         mover->salud=nuevo_valor;
-      }
-      mover=mover->prox;
-   }
+void modificar_vida(zombies *list, int nuevo_valor, int actual_valor) {
+    zombies *mover = list;
+    while (mover != NULL) {
+        if (mover->nivel == actual_valor) {
+            mover->salud = nuevo_valor;
+        }
+        mover = mover->prox;
+    }
 }
 
-void modificar_dano(zombies *list, int nuevo_valor, int actual_valor){
-   zombies *mover=list;
-   while(mover!=NULL){
-      if(mover->nivel==actual_valor){
-         mover->dano_ataque=nuevo_valor;
-      }
-      mover=mover->prox;
-   }
+void modificar_dano(zombies *list, int nuevo_valor, int actual_valor) {
+    zombies *mover = list;
+    while (mover != NULL) {
+        if (mover->nivel == actual_valor) {
+            mover->dano_ataque = nuevo_valor;
+        }
+        mover = mover->prox;
+    }
 }
 
-int pedir_nivel(){
-   int valor;
-   cout<<"Ingrese el nivel del zombie a modificar: ";
-   cin>>valor;
-   return valor;
+int pedir_nivel() {
+    int valor;
+    cout << "Ingrese el nivel del zombie a modificar: ";
+    cin >> valor;
+    return valor;
 }
 
-void verificar_valor_nivel(int valor_dato, int x, int y) {
-   while (true) {
-      if ((valor_dato >= x) && (valor_dato <= y)) {
-         cout<<"el nivel esta en el rango.\n";
-      } 
-      else{
-         cout<<"Ingrese un valor entre "<<x<<" y "<<y<<endl;
-         valor_dato = pedir_nivel();
-      }
-   }
+int verificar_valor_nivel(int valor_dato, int x, int y) {
+    while (true) {
+        if ((valor_dato >= x) && (valor_dato <= y)) {
+            cout << "El nivel está en el rango.\n";
+            return valor_dato; // Retorna el valor válido
+        } else {
+            cout << "Ingrese un valor entre " << x << " y " << y << endl;
+            valor_dato = pedir_nivel();
+        }
+    }
 }
 
-void modificar_zombie(zombies*&lista){
-   zombies *auxiliar= lista;
-   int nueva_salud;
-   char opcion;
+void modificar_zombie(zombies *&lista) {
+    if (listaVaciaZombies(lista)) {
+        cout << "La lista de zombies está vacía" << endl;
+        return;
+    }
 
-   if(listaVaciaZombies(lista)){
-      cout<<"La lista de zombies esta vacia"<<endl;
-   }
-   else{
-      int valor_nivel=pedir_nivel();
-      verificar_valor_nivel(valor_nivel, 1, 5);
-      buscar_zombie(auxiliar, valor_nivel);
+    int valor_nivel = pedir_nivel();
+    valor_nivel = verificar_valor_nivel(valor_nivel, 1, 5); // Asegura que el nivel esté en rango
 
-      while (opcion != '4') {
-         system("cls");
-         cout << "***********     MENU DE MODIFICACION    **********" << endl;
-         cout << "-----------------------------------------------" << endl;
-         cout << "1.- Editar Nivel de peligro del zombie" << endl;
-         cout << "2.- Editar vida del zombie" << endl;
-         cout << "3.- Editar dano del zombie" << endl;              
-         cout << "4.- Salir del programa" << endl;
-         cout << "-----------------------------------------------" << endl;
-         cout << "Ingrese la opcion deseada del Menu: ";
-         cin >> opcion;
-         switch (opcion){
-            case '1':
-               int nivel;
-               cout<<"Redefina el nivel de peligro: ";
-               cin>>nivel;
-               if((nivel>=1) && (nivel<=5)){
-                  valor_nivel=modificar_nivel(auxiliar, nivel, valor_nivel);
-               }
-               else{
-                  cout<<"Ingrese un nivel entre 1 y 5"<<endl;
-               }
-               system("pause");
-            break;
-            case '2':
-               cout<<"Redefina la salud actual: ";
-               cin>>nueva_salud;
-               modificar_vida(auxiliar, nueva_salud, valor_nivel);
-               system("pause");
-            break;
-            case '3':
-               int dano_ataque;
-               cout<<"Redefina el atributo de dano: ";
-               cin>>dano_ataque;
-               modificar_dano(auxiliar, dano_ataque, valor_nivel);
-               system("pause");
-            break;
+    char opcion = '0'; // Inicializa la opción
+    while (opcion != '4') {
+        system("cls");
+        cout << "              \e[47MENU DE MODIFICACION\e[0m" << endl;
+        cout << "-----------------------------------------------" << endl;
+        cout << "1.- Editar Nivel de peligro del zombie" << endl;
+        cout << "2.- Editar vida del zombie" << endl;
+        cout << "3.- Editar daño del zombie" << endl;
+        cout << "4.- Salir del programa" << endl;
+        cout << "-----------------------------------------------" << endl;
+        cout << "Ingrese la opción deseada del menú: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case '1': {
+                int nivel;
+                cout << "Redefina el nivel de peligro: ";
+                cin >> nivel;
+                if ((nivel >= 1) && (nivel <= 5)) {
+                    modificar_nivel(lista, nivel, valor_nivel);
+                    valor_nivel = nivel; // Actualiza el valor_nivel para futuras modificaciones
+                } else {
+                    cout << "Ingrese un nivel entre 1 y 5" << endl;
+                }
+                system("pause");
+                break;
+            }
+            case '2': {
+                int nueva_salud;
+                cout << "Redefina la salud actual: ";
+                cin >> nueva_salud;
+                modificar_vida(lista, nueva_salud, valor_nivel);
+                system("pause");
+                break;
+            }
+            case '3': {
+                int dano_ataque;
+                cout << "Redefina el atributo de daño: ";
+                cin >> dano_ataque;
+                modificar_dano(lista, dano_ataque, valor_nivel);
+                system("pause");
+                break;
+            }
+            case '4':
+                cout << "Saliendo del programa." << endl;
+                break;
             default:
-               cout<<"Opcion invalida"<<endl;
-            break;
-         }
-      }      
-   }
+                cout << "Opción inválida" << endl;
+                break;
+        }
+    }
 }
 
 
-void eliminar(zombies*&lista_zombies, string valor){
-   if(listaVaciaZombies(lista_zombies))
-   {
-      cout<<"lista vacia"<<endl;
+void eliminar(zombies*& lista_zombies, string valor) {
+   if (listaVaciaZombies(lista_zombies)) {
+      cout << "Lista vacía" << endl;
       return;
    }
-   else{
-      zombies*mover,*anterior=NULL;
-      mover=lista_zombies;
-      while(mover->prox!=NULL && mover->nombre!=valor)
-      {
-         anterior=mover;
-         mover=mover->prox;
+
+   zombies* mover = lista_zombies;
+   zombies* anterior = NULL;
+
+   while (mover != NULL && mover->nombre != valor) {
+      anterior = mover;
+      mover = mover->prox;
+   }
+
+   if (mover == NULL) {
+      cout << "Zombie no encontrado" << endl;
+      return;
+    } 
+    else{
+      if (mover == lista_zombies) {
+         lista_zombies = lista_zombies->prox;
+      } 
+      else {
+         anterior->prox = mover->prox;
       }
-      if(mover==NULL)
-      {
-         cout<<"zombie no encontrado"<<endl;
-         return;
-      }
-      else{
-         if(mover==lista_zombies)
-         {
-            lista_zombies=lista_zombies->prox;
-         }
-         else{
-            anterior->prox=mover->prox;
-         }
-         delete mover;
-      }
-   }  
+      delete mover;
+   }
 }
 
-void eliminar_apariciones(zombies *&inicio, string nombre_zombie){
-   zombies *aux=inicio;
-   int contador=0;
-   while(aux!=NULL){
-      if(aux->nombre==nombre_zombie){
-         eliminar(aux, nombre_zombie);
+void eliminar_apariciones(zombies*& inicio, string nombre_zombie) {
+   zombies* aux = inicio;
+   zombies* anterior = NULL;
+   int contador = 0;
+
+   while (aux != NULL) {
+      if (aux->nombre == nombre_zombie) {
+         zombies* a_eliminar = aux; 
+         if (anterior == NULL) {
+               inicio = aux->prox;
+               aux = inicio;
+         } 
+         else{
+
+            anterior->prox = aux->prox;
+            aux = anterior->prox; 
+         }
+         delete a_eliminar;
          contador++;
+      } 
+      else {
+         anterior = aux; 
+         aux = aux->prox; 
       }
-      aux=aux->prox;
    }
-   cout<<"Total de elementos eliminados "<<contador<<endl;
+
+   cout << "Total de elementos eliminados: " << contador << endl;
 }
 
 #endif 
