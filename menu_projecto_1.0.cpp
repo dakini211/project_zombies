@@ -100,7 +100,9 @@ int main(){
                                                 case '6':
                                                     break;
                                                 default:
-                                                    cout << "Opcion invalida, vuelva a intentarlo" << endl;
+                                                    cout<<"\e[47m \e[0m";
+                                                    cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                                                    cout<<"\e[47m \e[0m\n\n";
                                             }
                                             system("pause");
                                         }
@@ -117,7 +119,7 @@ int main(){
                                             mostrarlistaZombies(lista_zombies);
                                         system("pause");
                                         break;
-                                    case '4': {
+                                    case '4':
                                         char tipo_eliminar = '0';
                                         while (tipo_eliminar != '6') {
                                             system("cls");
@@ -152,16 +154,20 @@ int main(){
                                                 case '6':
                                                     break;
                                                 default:
-                                                    cout << "Opcion invalida, vuelva a intentarlo" << endl;
+                                                    cout<<"\e[47m \e[0m";
+                                                    cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                                                    cout<<"\e[47m \e[0m\n\n";
+                                                    system("pause");
                                             }
-                                            system("pause");
+                                            
                                         }
-                                        break;
-                                    }
+                                    break;
                                     case '5':
                                         break;
                                     default:
-                                        cout << "Opcion invalida, vuelva a intentarlo" << endl;
+                                        cout<<"\e[47m \e[0m";
+                                        cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                                        cout<<"\e[47m \e[0m\n\n";
                                 }
                             }
                             break;
@@ -173,7 +179,7 @@ int main(){
                                 cout << "        \e[47mGestionar Grupos\e[0m        " << "\n";
                                 cout << "======================================" << "\n";
                                 cout << "1. Agregar Grupo " << "\n";
-                                cout << "2. Modificar Grupo y añadir jugadores" << "\n";
+                                cout << "2. Modificar Grupo y anadir jugadores" << "\n";
                                 cout << "3. Eliminar Grupo" << "\n";
                                 cout << "4. Mostrar Grupo " << "\n";
                                 cout << "5. Volver " << "\n";
@@ -202,7 +208,9 @@ int main(){
                                     case '5':
                                         break;
                                     default:
-                                        cout << "Opcion invalida, vuelva a intentarlo" << endl;
+                                        cout<<"\e[47m \e[0m";
+                                        cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                                        cout<<"\e[47m \e[0m\n\n";
                                         system("pause");
                                 }
                             }
@@ -264,7 +272,9 @@ int main(){
                                                 break;
 
                                                 default:
-                                                    cout<<"Opcion invalida.\n";
+                                                    cout<<"\e[47m \e[0m";
+                                                    cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                                                    cout<<"\e[47m \e[0m\n\n";
                                                 break;
                                             }
                                         }
@@ -285,7 +295,9 @@ int main(){
                                         system("pause");
                                     break;
                                     default:
-                                        cout<<"Opcion invalida.\n";
+                                        cout<<"\e[47m \e[0m";
+                                        cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                                        cout<<"\e[47m \e[0m\n\n";
                                         system("pause");
                                     break;
                                 }
@@ -295,7 +307,9 @@ int main(){
                         break;
 
                         default:
-                            cout << "Opción inválida. Intente nuevamente." << endl;
+                            cout<<"\e[47m \e[0m";
+                            cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                            cout<<"\e[47m \e[0m\n\n";
                             system("pause");
                         break;
                     }
@@ -313,7 +327,9 @@ int main(){
                 break;
 
             default:
-                cout << "Opción inválida. Intente nuevamente." << endl;
+                cout<<"\e[47m \e[0m";
+                cout<<"\e[41mERROR, no esta en las opciones vuelva a intentar\e[0m";
+                cout<<"\e[47m \e[0m\n\n";
                 system("pause");
         }
     }
