@@ -330,7 +330,7 @@ void eliminar_arma_sin_nombre(arma**lista_arma)
     }
     else{
         arma*anterior=NULL;
-        while(actual!=NULL and actual->nombre_arma!=nombre_arma)
+        while(actual!=NULL && actual->nombre_arma!=nombre_arma)
         {
             anterior=actual;
             actual=actual->sgte;
@@ -416,7 +416,7 @@ void modificar_arma(arma**lista_arma)
     else{
         arma*actual=(*lista_arma);
         bool encontrado=false;
-        while(actual!=NULL and encontrado==false)
+        while(actual!=NULL && encontrado==false)
         {
             if(actual->nombre_arma==nombre_arma)
             {
