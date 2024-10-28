@@ -100,7 +100,7 @@ void mostrarListaJugador(jugador *lista){
 /*---------------------- FUNCION MOSTRAR SOLADADO_ARMAS_ACCESORIOS -------------------*/
 void mostrarListaJugador_armas_accesorios(jugador *lista)
 {
-    
+    system("cls");
     jugador *mover;arma*mover2;accesorio*mover3;
 
    if (!lista_vacia_jugador(lista)){
@@ -189,7 +189,7 @@ jugador *buscar_jugador(jugador *lisita_jugador,string nombre)
         return NULL;
     }
     else{
-        while(mover!=NULL and encontrado==false)
+        while(mover!=NULL && encontrado==false)
         {
             if(mover->nombre==nombre)
             {
@@ -369,7 +369,7 @@ void eliminar_jugador(jugador**lista_soldado,string nombre)
     }    
     else{
         actual=(*lista_soldado);
-        while(actual!=NULL and actual->nombre!=nombre )
+        while(actual!=NULL && actual->nombre!=nombre)
         {
             anterior=actual;
             actual=actual->prox;
