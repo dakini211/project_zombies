@@ -38,6 +38,17 @@ void menu_registro_arma(){
 string pedir_tipo() {
     string tipo;
     char opcion;
+
+    cout << "\n\t\tRECOMENDACIONES\n";
+    cout << "\t\t----------------\n";
+    cout << "1. Contra zombies rapidos y agiles, las armas mas efectivas son mas efectivas.\n";
+    cout << "2. Contra zombies lentos las armas cuerpo a cuerpo son mas utiles.\n";
+    cout << "3. En espacios cerrados, las armas cortas y cuerpo a cuerpo son mas practicas.\n";
+    cout << "4. En espacios abiertos las aermas  de largo alcence son mas eficientes.\n";
+    cout << "5. Asegurate de tener suficiente municion para el arma que elijas.\n";
+    cout << "6. En espacios abiertos las aermas  de largo alcence son mas eficientes.\n";
+    cout << "7. Si no conoces bien un arma, es mejor elegir la opcion mas  facil de usar.\n";
+    cout << "8. Considera usar armas silenciosas porque alteran a los zombies.\n";
     
     cout << "\t\t------------------>";
     cout << "\n\tSeleccione el tipo de arma a registrar:\n";
