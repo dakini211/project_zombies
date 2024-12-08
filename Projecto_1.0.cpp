@@ -1,6 +1,7 @@
 #include "zombies.h"
-#include "mapa.h"
+//#include "mapa.h"
 #include "grupos.h" 
+#include <fstream>
 using namespace std;
 
 int main(){
@@ -9,7 +10,8 @@ int main(){
     arma *arma = NULL;
     grupo *lista_grupo = NULL;
     zombies *lista_zombies = NULL;
-    mapa *lista_mapa=NULL;
+    //mapa *lista_mapa=NULL;
+    ifstream leer_zombies;
     char opcion = '0'; // Inicializamos la opción
 
     while (opcion != '4') {
@@ -51,117 +53,61 @@ int main(){
                     switch (opcion_opciones) {
                         case '1': {
                             char opcion_zombies = '0';
-                            while (opcion_zombies != '5') {
+                            while (opcion_zombies != '6') {
                                 system("cls");
-                                cout << "          \e[47mGestionar zombies\e[0m      " << endl;
-                                cout << "-----------------------------------------------" << endl;
-                                cout << "1.- Agregar zombie" << endl;
-                                cout << "2.- Modificar zombie" << endl;
-                                cout << "3.- Mostrar zombies" << endl;
-                                cout << "4.- Eliminar tipo de zombie" << endl;
-                                cout << "5.- Volver" << endl;
-                                cout << "-----------------------------------------------" << endl;
-                                cout << "Ingrese la opcion deseada (1 al 5): ";
+                                cout << "          \e[47mGestionar zombies\e[0m      \n";
+                                cout << "======================================================\n";
+                                cout << "1. Cargar Zombies\n";
+                                cout << "2. Anadir Zombies\n";
+                                cout << "3. Mostrar Zombies\n";
+                                cout << "4. Modificar Zombies\n";
+                                cout << "5. Eliminar tipo de Zombies\n";
+                                cout << "6. Salir\n";
+                                cout << "======================================================\n";
+                                cout << "Ingrese una opcion: ";
                                 cin >> opcion_zombies;
-
                                 switch (opcion_zombies) {
-                                    case '1': {
-                                        char tipo_zombie = '0';
-                                        while (tipo_zombie != '6') {
-                                            system("cls");
-                                            cout << "               \e[47mAgregar zombie\e[0m          " << endl;
-                                            cout << "-----------------------------------------------" << endl;
-                                            cout << "1.- Rapidos y agiles" << endl;
-                                            cout << "2.- Tanques" << endl;
-                                            cout << "3.- Inteligentes" << endl;
-                                            cout << "4.- Infectados por hongos" << endl;
-                                            cout << "5.- Bioluminicentes" << endl;
-                                            cout << "6.- Volver" << endl;
-                                            cout << "-----------------------------------------------" << endl;
-                                            cout << "Ingrese la opcion deseada (1 al 6): ";
-                                            cin >> tipo_zombie;
-
-                                            switch (tipo_zombie) {
-                                                case '1':
-                                                    insertar_ultimo_zombie(&lista_zombies, "Rapidos y agiles", 4, 0, 20);
-                                                    break;
-                                                case '2':
-                                                    insertar_ultimo_zombie(&lista_zombies, "Tanques", 5, 0, 25);
-                                                    break;
-                                                case '3':
-                                                    insertar_ultimo_zombie(&lista_zombies, "Inteligentes", 3, 0, 15);
-                                                    break;
-                                                case '4':
-                                                    insertar_ultimo_zombie(&lista_zombies, "Infectados por hongos", 2, 0, 10);
-                                                    break;
-                                                case '5':
-                                                    insertar_ultimo_zombie(&lista_zombies, "Bioluminicentes", 1, 0, 5);
-                                                    break;
-                                                case '6':
-                                                    break;
-                                                default:
-                                                    cout << "Opcion invalida, vuelva a intentarlo" << endl;
-                                            }
-                                            system("pause");
-                                        }
-                                        break;
-                                    }
+                                    case '1':
+                                        cargar_zombies(lista_zombies);
+                                        system("pause");
+                                    break;
                                     case '2':
+                                        llenar_zombie(lista_zombies);
+                                        system("pause");    
+                                    break;
+                                    case '3':
+                                        mostrar_zombies(lista_zombies);
+                                        system("pause");
+                                    break;
+                                    case '4':
                                         modificar_zombie(lista_zombies);
                                         system("pause");
-                                        break;
-                                    case '3':
-                                        if (listaVaciaZombies(lista_zombies))
-                                            cout << "Lista vacia, no es posible mostrar su contenido" << endl;
-                                        else
-                                            mostrarlistaZombies(lista_zombies);
-                                        system("pause");
-                                        break;
-                                    case '4': {
-                                        char tipo_eliminar = '0';
-                                        while (tipo_eliminar != '6') {
-                                            system("cls");
-                                            cout << "         \e[47mEliminar tipo de zombie\e[0m" << endl;
-                                            cout << "-----------------------------------------------" << endl;
-                                            cout << "1.- Rapidos y agiles" << endl;
-                                            cout << "2.- Tanques" << endl;
-                                            cout << "3.- Inteligentes" << endl;
-                                            cout << "4.- Infectados por hongos" << endl;
-                                            cout << "5.- Bioluminicentes" << endl;
-                                            cout << "6.- Volver" << endl;
-                                            cout << "-----------------------------------------------" << endl;
-                                            cout << "Ingrese la opcion deseada (1 al 6): ";
-                                            cin >> tipo_eliminar;
-
-                                            switch (tipo_eliminar) {
-                                                case '1':
-                                                    eliminar_apariciones(lista_zombies, "Rapidos y agiles");
-                                                    break;
-                                                case '2':
-                                                    eliminar_apariciones(lista_zombies, "Tanques");
-                                                    break;
-                                                case '3':
-                                                    eliminar_apariciones(lista_zombies, "Inteligentes");
-                                                    break;
-                                                case '4':
-                                                    eliminar_apariciones(lista_zombies, "Infectados por hongos");
-                                                    break;
-                                                case '5':
-                                                    eliminar_apariciones(lista_zombies, "Bioluminicentes");
-                                                    break;
-                                                case '6':
-                                                    break;
-                                                default:
-                                                    cout << "Opcion invalida, vuelva a intentarlo" << endl;
-                                            }
-                                            system("pause");
-                                        }
-                                        break;
-                                    }
+                                    break;
                                     case '5':
-                                        break;
+                                        char eleccion;
+                                        cout << "Desea eliminar un solo zombie (1) o todas las apariciones de un zombie (2)?: ";
+                                        cin >> eleccion;
+
+                                        if (eleccion == '1') {
+                                            string nombre_zombie;
+                                            cout << "Ingrese el nombre del zombie a eliminar: ";
+                                            cin >> nombre_zombie;
+                                            eliminar(lista_zombies, nombre_zombie);
+                                        } 
+                                        else if (eleccion == '2'){
+                                            string nombre_zombie;
+                                            cout << "Ingrese el nombre del zombie a eliminar todas sus apariciones: ";
+                                            cin >> nombre_zombie;
+                                            eliminar_apariciones(lista_zombies, nombre_zombie);
+                                        } 
+                                        else{
+                                            cout << "Opcion invalida\n";
+                                        }
+                                        system("pause");
+                                    break;
                                     default:
-                                        cout << "Opcion invalida, vuelva a intentarlo" << endl;
+                                        cout << "Opcion invalida\n";
+                                    break;
                                 }
                             }
                             break;
@@ -208,7 +154,7 @@ int main(){
                             }
                             break;
                         }
-                        case '3':
+                        /*case '3':
                             while (opcion != '5'){
                                 system("cls");
                                 cout << "    \e[47mGestionar mapa\e[0m    \n";
@@ -290,10 +236,7 @@ int main(){
                                     break;
                                 }
                             }
-                        break;
-                        case '4':
-                        break;
-
+                        break;*/
                         default:
                             cout << "Opción inválida. Intente nuevamente." << endl;
                             system("pause");
@@ -323,7 +266,7 @@ int main(){
     delete lista_zombies;
     delete arma;
     delete lista_grupo;
-    delete lista_mapa;
+    //delete lista_mapa;
 
     return 0;
 }
