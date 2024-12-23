@@ -1,0 +1,248 @@
+#include <iostream>
+#include <fstream>
+#include <unordered_map>
+#include <vector>
+#include <climits>
+#include <algorithm>
+#include <sstream>
+
+// Estructura para representar una arista
+struct Edge {
+    std::string destination;
+    int distance;
+};
+
+// Estructura para representar una estación con su cantidad de zombis y tipo de zombis
+struct Zombie {
+    int count;
+    std::string type;
+};
+
+struct Station {
+    std::string name;
+    std::vector<Zombie> zombies;
+    std::vector<Edge> connections;
+};
+
+// Clase para representar el grafo
+class Graph {
+public:
+    void addStation(const std::string& station, int index) {
+        stations[station] = {station, {}, {}};
+        stationsByIndex[index] = station;
+    }
+
+    void addZombieToStation(const std::string& station, int count, const std::string& type) {
+        stations[station].zombies.push_back({count, type});
+    }
+
+    void addRoute(const std::string& from, const std::string& to, int distance) {
+        stations[from].connections.push_back({to, distance});
+    }
+
+    void displayRoutes() {
+        for (const auto& pair : stations) {
+            std::cout << "Estación " << pair.first << " tiene rutas a:\n";
+            for (const auto& edge : pair.second.connections) {
+                std::cout << "  - " << edge.destination << " a " << edge.distance << " km\n";
+            }
+            for (const auto& zombie : pair.second.zombies) {
+                std::cout << "  Zombis: " << zombie.count << " de tipo " << zombie.type << "\n";
+            }
+        }
+    }
+
+    int getDistance(const std::string& from, const std::string& to) {
+        for (const auto& edge : stations[from].connections) {
+            if (edge.destination == to) {
+                return edge.distance;
+            }
+        }
+        return INT_MAX;
+    }
+
+    std::vector<Edge> getDestinations(const std::string& from) {
+        return stations[from].connections;
+    }
+
+    int getZombiesCount(const std::string& station) {
+        int totalZombies = 0;
+        for (const auto& zombie : stations[station].zombies) {
+            totalZombies += zombie.count;
+        }
+        return totalZombies;
+    }
+
+    std::string recommendStation(const std::string& currentStation) {
+        std::vector<Edge> connections = getDestinations(currentStation);
+        std::sort(connections.begin(), connections.end(), [this](const Edge& a, const Edge& b) {
+            int zombiesA = getZombiesCount(a.destination);
+            int zombiesB = getZombiesCount(b.destination);
+            return zombiesA == zombiesB ? a.distance < b.distance : zombiesA < zombiesB;
+        });
+        return connections.empty() ? "" : connections.front().destination;
+    }
+
+    void loadFromFile(const std::string& filename) {
+        std::ifstream file(filename);
+        if (!file) {
+            std::cerr << "No se pudo abrir el archivo " << filename << "\n";
+            return;
+        }
+
+        int numStations;
+        file >> numStations;
+
+        std::string line;
+        std::getline(file, line); // Leer el salto de línea restante
+
+        for (int i = 0; i < numStations; ++i) {
+            int number;
+            std::string name;
+
+            std::getline(file, line);
+            std::istringstream iss(line);
+            iss >> number;
+
+            std::getline(file, name);
+
+            addStation(name, number);
+            std::getline(file, line); // Leer la línea de guiones
+
+            // Leer zombis de la estación
+            while (std::getline(file, line) && line != "--") {
+                std::istringstream issZombie(line);
+                int count;
+                std::string type;
+                issZombie >> count >> type;
+                addZombieToStation(name, count, type);
+            }
+
+            // Leer conexiones de la estación
+            std::getline(file, line);
+            std::istringstream issConnections(line);
+            std::string connection;
+            while (std::getline(issConnections, connection, '|')) {
+                std::istringstream issConn(connection);
+                int connectedStation, distance;
+                char colon;
+                issConn >> connectedStation >> colon >> distance;
+                std::string connectedStationName = stationsByIndex[connectedStation];
+                addRoute(name, connectedStationName, distance);
+            }
+        }
+    }
+
+    std::unordered_map<int, std::string> stationsByIndex;
+
+private:
+    std::unordered_map<std::string, Station> stations;
+};
+
+void showMainMenu() {
+    std::cout << "Bienvenido al sistema de estaciones de metro... SOBREVIVE ANTE EL ATAQUE ZOMBIE.\n";
+    std::cout << "1. Mostrar todas las rutas entre estaciones\n";
+    std::cout << "2. Moverse entre estaciones\n";
+    std::cout << "3. Salir\n";
+}
+
+void showSubmenuForRoutes() {
+    std::cout << "Presione 1 para volver\n";
+    std::cout << "Presione 2 para salir\n";
+}
+
+void showSubmenuForMovement() {
+    std::cout << "Presione 1 para moverse a otra estación\n";
+    std::cout << "Presione 2 para volver\n";
+    std::cout << "Presione 3 para salir\n";
+}
+
+int main() {
+    Graph metro;
+
+    // Aquí es donde se especifica la ruta del archivo
+    std::string filePath = "C:\\Users\\Familia\\Downloads\\Mapa.zmb"; // Cambia esta línea según sea necesario
+
+    metro.loadFromFile(filePath);
+
+    int choice;
+    int subChoice;
+    std::string nextStation;
+    std::string currentStation = metro.stationsByIndex[1]; // Comenzamos en la estación 1
+    int totalDistance = 0;
+    bool exitProgram = false;
+
+    while (!exitProgram) {
+        showMainMenu();
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                metro.displayRoutes();
+                while (true) {
+                    showSubmenuForRoutes();
+                    std::cin >> subChoice;
+                    if (subChoice == 1) {
+                        break;
+                    } else if (subChoice == 2) {
+                        exitProgram = true;
+                        break;
+                    } else {
+                        std::cout << "Opción no válida. Por favor, intenta de nuevo.\n";
+                    }
+                }
+                break;
+
+            case 2:
+                while (true) {
+                    std::cout << "Estás en " << currentStation << ". Puedes moverte a las siguientes estaciones:\n";
+                    for (const auto& edge : metro.getDestinations(currentStation)) {
+                        std::cout << "  - " << edge.destination << " a " << edge.distance << " km. Zombis: " << metro.getZombiesCount(edge.destination) << "\n";
+                    }
+                    std::cout << "Introduce el nombre de la estación a la que deseas moverte: ";
+                    std::cin >> nextStation;
+                    int distance = metro.getDistance(currentStation, nextStation);
+                    if (distance != INT_MAX) {
+                        totalDistance += distance;
+                        std::cout << "Te has movido a " << nextStation << " con una distancia de " << distance << " km.\n";
+                        std::cout << "Distancia total recorrida: " << totalDistance << " km.\n";
+                        currentStation = nextStation;
+                        std::string recommendedStation = metro.recommendStation(currentStation);
+                        if (!recommendedStation.empty()) {
+                            std::cout << "Recomendación: Moverse a " << recommendedStation << " con " << metro.getZombiesCount(recommendedStation) << " zombis y una distancia de " << metro.getDistance(currentStation, recommendedStation) << " km.\n";
+                        }
+                    } else {
+                        std::cout << "No hay una ruta directa a " << nextStation << ".\n";
+                    }
+                    while (true) {
+                        showSubmenuForMovement();
+                        std::cin >> subChoice;
+                        if (subChoice == 1) {
+                            break;
+                        } else if (subChoice == 2) {
+                            break;
+                        } else if (subChoice == 3) {
+                            exitProgram = true;
+                            break;
+                        } else {
+                            std::cout << "Opción no válida. Por favor, intenta de nuevo.\n";
+                        }
+                    }
+                    if (subChoice == 2 || subChoice == 3) {
+                        break;
+                    }
+                }
+                break;
+
+            case 3:
+                exitProgram = true;
+                break;
+
+            default:
+                std::cout << "Opción no válida. Por favor, intenta de nuevo.\n";
+        }
+    }
+
+    std::cout << "Saliendo del sistema.\n";
+    return 0;
+}
