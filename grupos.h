@@ -2,6 +2,7 @@
 #define GRUPOS_H
 #include "jugadores.h"
 #include <iostream>
+#include <stdlib.h>
 #include <fstream>
 using namespace std;
 
@@ -284,6 +285,128 @@ void modificar_grupo(grupo ** lista_grupo)
         }
     }    
 }
+
+/*-------------------- Cargar zmb-----------------*/
+
+bool archivoExiste(const string& nombreArchivo) {
+    ifstream archivo(nombreArchivo);  
+    return archivo.good();           
+}
+
+bool archivoVacio(const string& nombreArchivo) {
+    ifstream archivo(nombreArchivo);  
+    if (!archivo) {
+        return true;  
+    }
+    archivo.seekg(0, ios::end);  
+    return archivo.tellg() == 0; 
+}
+
+void carga_de_accesorio(accesorio**lista_de_accesorio)
+{
+    ifstream archivo("Accesorio.zmb");
+    int cantidad_de_accesorios;
+    archivo>>cantidad_de_accesorios;
+    archivo.ignore();
+    int id;
+    string nombre;
+    string tipo;
+    int modificador;
+    int usos;
+    string linea;
+    int contador=0;
+    while(getline(archivo,linea)and contador<cantidad_de_accesorios)
+    {
+        if(linea=="---" and archivo.good())
+        {
+            archivo>>id;
+            archivo.ignore();
+            getline(archivo,nombre);
+            getline(archivo,tipo);
+            archivo>>modificador>>usos;
+            archivo.ignore();
+            contador++; 
+        }
+        
+        accesorio*nuevo=crear_accesorio(usos,modificador,nombre,tipo,id);
+        /*cout<<cantidad_de_accesorios<<endl;
+        cout<<id<<endl;
+        cout<<nombre<<endl;
+        cout<<tipo<<endl;
+        cout<<modificador<<endl;
+        cout<<usos<<endl;*/
+        //mostrar_accesorio(nuevo);         
+        insertar_ultimo_accesorio_con_id(&(*lista_de_accesorio),&nuevo);
+    }
+    archivo.close();    
+    mostrar_accesorio(*lista_de_accesorio);
+    system("pause");
+    system("cls");    
+}
+
+
+void cargar_jugadores(jugador** lista_de_jugadores) {
+    ifstream archivo("Soldado.zmb");
+    if (!archivo.is_open()) {
+        cout << "Error: No se pudo abrir el archivo de jugadores." << endl;
+        return;
+    }
+
+    int cantidad_de_jugadores;
+    archivo >> cantidad_de_jugadores;
+    archivo.ignore();
+
+    string nombre, linea;
+    int salud;
+
+    for (int i = 0; i < cantidad_de_jugadores; i++) {
+        getline(archivo, linea); 
+        if (linea == "---") {
+            getline(archivo, nombre);
+            archivo >> salud;
+            archivo.ignore();
+
+            jugador* nuevo = crear_soldado(salud,nombre);
+            insertar_ultimo_soldado_existente(&(*lista_de_jugadores), &nuevo);
+        }
+    }
+    archivo.close();
+    mostrarListaJugador(*lista_de_jugadores);
+}
+
+void crear_grupos_usuario(grupo** lista_de_grupos, jugador** lista_de_jugadores) {
+    int cantidad_grupos;
+    cout << "Ingrese la cantidad de grupos a crear: ";
+    cin >> cantidad_grupos;
+
+    for (int i = 0; i < cantidad_grupos; i++) {
+        string nombre_grupo = pedir_nombre_grupo();
+        grupo* nuevo_grupo = crear_grupo(nombre_grupo);
+        insertar_ultimo_grupos(lista_de_grupos);
+    }
+
+    
+    jugador* jugador_actual = *lista_de_jugadores;
+    while (jugador_actual != NULL) {
+        mostrar_grupos(*lista_de_grupos);
+        cout << "Seleccione un grupo para el jugador: " << jugador_actual->nombre << endl;
+        string nombre_grupo;
+        cin >> nombre_grupo;
+
+        grupo* grupo_actual = buscar_grupo(*lista_de_grupos, nombre_grupo);
+        if (grupo_actual) {
+            //insertar_jugador_en_grupo(&grupo_actual->grupo_jugador, jugador_actual); por hacer
+            grupo_actual->numero_miembros++;
+        } else {
+            cout << "Grupo no encontrado. Intente nuevamente." << endl;
+        }
+
+        jugador_actual = jugador_actual->prox; 
+    }
+}
+
+
+
 
 
 #endif 

@@ -6,10 +6,10 @@ using namespace std;
 
 int main(){
 
-    jugador *lista_soldados = NULL;
-    arma *arma = NULL;
+    jugador *lista_soldados = NULL;    
     grupo *lista_grupo = NULL;
     zombies *lista_zombies = NULL;
+    accesorio*lista_accesorios=NULL;
     //mapa *lista_mapa=NULL;
     ifstream leer_zombies;
     char opcion = '0'; // Inicializamos la opción
@@ -24,17 +24,59 @@ int main(){
         cout << "1. Jugar " << "\n";
         cout << "2. Opciones " << "\n";
         cout << "3. Reglas " << "\n";
-        cout << "4. Salir " << "\n";
+        cout << "4. Salir " << "\n";                    
         cout << "====================" << "\n";
         cout << "Ingrese una opcion (1 al 4): ";
         cin >> opcion;
 
         switch (opcion) {
-            case '1':
-                cout << "Esta opción no está disponible aún." << "\n";
+            case '1':{
+                //cout << "Esta opción no está disponible aún." << "\n";
+                cout<<"Desa cargar partida o crear una desde cero?"<<endl;
+                char opcion_opciones = '0';
+                while(opcion_opciones!='3'){
+                    cout << "1. Cargar partida " << "\n";
+                    cout << "2. Crear partida " << "\n";
+                    cout << "3. Salir " << "\n";
+                    cout << "Ingrese una opcion (1 al 3): ";
+                    cin >> opcion_opciones;
+                    switch (opcion_opciones)
+                    {
+                    case '1':{
+                            if((archivoExiste("Accesorio")))
+                            {
+                                cout<<"partida no se puede cargar"<<endl;
+                                opcion_opciones='3';
+                            }
+                            else{
+                                carga_de_accesorio(&lista_accesorios);
+                                cargar_jugadores(&lista_soldados);
+                            }
+                            break;  
+                        }
+
+                    case '2':{
+                           cout<<"en desarrollo";
+                           break;
+                        }
+
+                     case '3':{
+                           cout<<"saliendo";
+                           break;
+                        }
+                        
+                        
+                        
+                    
+                    default:
+                        break;
+                    }
+                }
+
                 system("pause");
                 break;
-
+                
+            }
             case '2': {
                 char opcion_opciones = '0'; // Variable para las opciones del submenú
 
@@ -45,7 +87,7 @@ int main(){
                     cout << "1. Gestionar zombies " << "\n";
                     cout << "2. Gestionar grupos " << "\n";
                     cout << "3. Gestionar mapas " << "\n";
-                    cout << "4. Volver " << "\n";
+                    cout << "4. Volver " << "\n";                     
                     cout << "===========================" << "\n";
                     cout << "Ingrese una opcion (1 al 4): ";
                     cin >> opcion_opciones;
@@ -61,7 +103,7 @@ int main(){
                                 cout << "2. Anadir Zombies\n";
                                 cout << "3. Mostrar Zombies\n";
                                 cout << "4. Modificar Zombies\n";
-                                cout << "5. Eliminar tipo de Zombies\n";
+                                cout << "5. Eliminar tipo de Zombies\n";                                                             
                                 cout << "6. Salir\n";
                                 cout << "======================================================\n";
                                 cout << "Ingrese una opcion: ";
@@ -263,10 +305,12 @@ int main(){
 
     // Liberación de memoria
     delete lista_soldados;
-    delete lista_zombies;
-    delete arma;
+    delete lista_zombies;    
     delete lista_grupo;
     //delete lista_mapa;
-
+    //if((archivoExiste("Soldado") or archivoVacio("Soldado"))and(archivoExiste("Accesorio") or archivoVacio("Accesorio")))
     return 0;
 }
+
+
+

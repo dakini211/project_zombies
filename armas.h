@@ -295,6 +295,7 @@ string pedir_tipo() {
     }
     return "No disponible";
 }
+
 int pedir_dano_arma()
 {
      system("cls");  
@@ -574,6 +575,7 @@ void modificar_arma(arma**lista_arma)
                     case '4':
                     {
                         eliminar_arma_con_nombre(&(*lista_arma),actual->nombre_arma);
+                        opcion='5';
                         break;                        
                     }
                     case '5':
