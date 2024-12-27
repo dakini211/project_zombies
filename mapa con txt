@@ -5,6 +5,7 @@
 #include <climits>
 #include <algorithm>
 #include <sstream>
+#include <map>
 
 // Estructura para representar una arista
 struct Edge {
@@ -27,7 +28,19 @@ struct Station {
 // Clase para representar el grafo
 class Graph {
 public:
-    void addStation(const std::string& station, int index) {
+    void addStation(std::string& station, int index) {
+        switch(index) {
+            case 1: station = "01"; break;
+            case 2: station = "02"; break;
+            case 3: station = "03"; break;
+            case 4: station = "04"; break;
+            case 5: station = "05"; break;
+            case 6: station = "06"; break;
+            case 7: station = "07"; break;
+            case 8: station = "08"; break;
+            case 9: station = "09"; break;
+            default: break;
+        }
         stations[station] = {station, {}, {}};
         stationsByIndex[index] = station;
     }
@@ -94,7 +107,7 @@ public:
         file >> numStations;
 
         std::string line;
-        std::getline(file, line); // Leer el salto de línea restante
+        std::getline(file, line);
 
         for (int i = 0; i < numStations; ++i) {
             int number;
@@ -106,10 +119,9 @@ public:
 
             std::getline(file, name);
 
-            addStation(name, number);
-            std::getline(file, line); // Leer la línea de guiones
+            addStation(name, i+1);
+            std::getline(file, line);
 
-            // Leer zombis de la estación
             while (std::getline(file, line) && line != "--") {
                 std::istringstream issZombie(line);
                 int count;
@@ -118,7 +130,6 @@ public:
                 addZombieToStation(name, count, type);
             }
 
-            // Leer conexiones de la estación
             std::getline(file, line);
             std::istringstream issConnections(line);
             std::string connection;
@@ -126,17 +137,19 @@ public:
                 std::istringstream issConn(connection);
                 int connectedStation, distance;
                 char colon;
+                size_t datos = connection.find(':');
+                std::string dato1 = connection.substr(0, datos);
                 issConn >> connectedStation >> colon >> distance;
                 std::string connectedStationName = stationsByIndex[connectedStation];
-                addRoute(name, connectedStationName, distance);
+                addRoute(name, dato1, distance);
             }
         }
     }
 
     std::unordered_map<int, std::string> stationsByIndex;
 
-private:
-    std::unordered_map<std::string, Station> stations;
+public:
+    std::map<std::string, Station> stations;
 };
 
 void showMainMenu() {
@@ -160,11 +173,10 @@ void showSubmenuForMovement() {
 int main() {
     Graph metro;
 
-    // Aquí es donde se especifica la ruta del archivo
-    std::string filePath = "C:\\Users\\Familia\\Downloads\\Mapa.zmb"; // Cambia esta línea según sea necesario
+    // Ruta del archivo actualizada
+    std::string filePath = "C:\\Users\\Familia\\Downloads\\Mapa.zmb";
 
     metro.loadFromFile(filePath);
-
     int choice;
     int subChoice;
     std::string nextStation;
