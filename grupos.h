@@ -1,9 +1,11 @@
 #ifndef GRUPOS_H
 #define GRUPOS_H
 #include "jugadores.h"
+#include "accesorios.h"
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
+#include <string>
 using namespace std;
 
 struct grupo{
@@ -286,6 +288,39 @@ void modificar_grupo(grupo ** lista_grupo)
     }    
 }
 
+void insertar_soldado_txt_grupo(jugador*& lista_de_jugadores, jugador* nuevo_soldado) {
+    jugador* nuevo_soldado_copia = crear_soldado(nuevo_soldado->salud, nuevo_soldado->nombre);
+    insertar_ultimo_soldado_existente(&lista_de_jugadores, &nuevo_soldado_copia);
+}
+
+void crear_grupos_usuario(grupo*& grupo_actual, jugador* lista_de_jugadores) {
+    grupo* ubicacion = NULL;
+    jugador* jugador_actual = lista_de_jugadores;
+    string nombre_grupo;
+
+    insertar_ultimo_grupos(&grupo_actual);
+    
+    while (jugador_actual != NULL) {
+        cout << "Seleccione un grupo para el jugador: " << jugador_actual->nombre << endl;
+        cin >> nombre_grupo;
+
+        ubicacion = buscar_grupo(grupo_actual, nombre_grupo);
+        if (ubicacion) {
+            insertar_soldado_txt_grupo(ubicacion->grupo_jugador, jugador_actual);
+            agregar_accesorio_soldado_TXT(ubicacion->grupo_jugador);
+            pedir_tipo_accesorio();
+            pedir_modificador_accesorio();
+            pedir_usos_accesorio();
+            pedir_tipo_arma();
+            ubicacion->numero_miembros++;
+        } else {
+            cout << "Grupo no encontrado. Intente nuevamente." << endl;
+        }
+
+        jugador_actual = jugador_actual->prox; 
+    }
+}
+
 /*-------------------- Cargar zmb-----------------*/
 
 bool archivoExiste(const string& nombreArchivo) {
@@ -302,9 +337,8 @@ bool archivoVacio(const string& nombreArchivo) {
     return archivo.tellg() == 0; 
 }
 
-void carga_de_accesorio(accesorio**lista_de_accesorio)
-{
-    ifstream archivo("Accesorio.zmb");
+void carga_de_accesorio(accesorio**lista_de_accesorio){
+    ifstream archivo("Accesorio.zmb",ios::in);
     int cantidad_de_accesorios;
     archivo>>cantidad_de_accesorios;
     archivo.ignore();
@@ -315,9 +349,9 @@ void carga_de_accesorio(accesorio**lista_de_accesorio)
     int usos;
     string linea;
     int contador=0;
-    while(getline(archivo,linea)and contador<cantidad_de_accesorios)
+    while(getline(archivo,linea)&& contador<cantidad_de_accesorios)
     {
-        if(linea=="---" and archivo.good())
+        if(linea=="---" && archivo.good())
         {
             archivo>>id;
             archivo.ignore();
@@ -335,20 +369,17 @@ void carga_de_accesorio(accesorio**lista_de_accesorio)
         cout<<tipo<<endl;
         cout<<modificador<<endl;
         cout<<usos<<endl;*/
-        //mostrar_accesorio(nuevo);         
+        //mostrar_accesorio(nuevo);     
         insertar_ultimo_accesorio_con_id(&(*lista_de_accesorio),&nuevo);
     }
-    archivo.close();    
-    mostrar_accesorio(*lista_de_accesorio);
-    system("pause");
-    system("cls");    
+    archivo.close();      
 }
 
 
 void cargar_jugadores(jugador** lista_de_jugadores) {
     ifstream archivo("Soldado.zmb");
     if (!archivo.is_open()) {
-        cout << "Error: No se pudo abrir el archivo de jugadores." << endl;
+        cout << "Error, No se pudo abrir el archivo de jugadores." << endl;
         return;
     }
 
@@ -371,7 +402,6 @@ void cargar_jugadores(jugador** lista_de_jugadores) {
         }
     }
     archivo.close();
-    mostrarListaJugador(*lista_de_jugadores);
 }
 
 void crear_grupos_usuario(grupo** lista_de_grupos, jugador** lista_de_jugadores) {
@@ -381,7 +411,7 @@ void crear_grupos_usuario(grupo** lista_de_grupos, jugador** lista_de_jugadores)
 
     for (int i = 0; i < cantidad_grupos; i++) {
         string nombre_grupo = pedir_nombre_grupo();
-        grupo* nuevo_grupo = crear_grupo(nombre_grupo);
+        grupo*nuevo_grupo = crear_grupo(nombre_grupo);
         insertar_ultimo_grupos(lista_de_grupos);
     }
 
@@ -395,7 +425,6 @@ void crear_grupos_usuario(grupo** lista_de_grupos, jugador** lista_de_jugadores)
 
         grupo* grupo_actual = buscar_grupo(*lista_de_grupos, nombre_grupo);
         if (grupo_actual) {
-            //insertar_jugador_en_grupo(&grupo_actual->grupo_jugador, jugador_actual); por hacer
             grupo_actual->numero_miembros++;
         } else {
             cout << "Grupo no encontrado. Intente nuevamente." << endl;
