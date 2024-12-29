@@ -8,14 +8,16 @@ using namespace std;
 struct zombies {
     string nombre;
     int salud;
+    int cantidad_zombies;
     int dano_ataque;
     zombies *prox;
 };
 
-zombies* crear_zombies(string nom, int salud, int dano_ataque) {
+zombies* crear_zombies(string nom, int salud, int dano_ataque, int cantidad_zombies) {
     zombies* zombie = new zombies;
     zombie->nombre = nom;
     zombie->salud = salud;
+    zombie->cantidad_zombies = cantidad_zombies; // Asumimos que se crea un zombie a la vez
     zombie->dano_ataque = dano_ataque;
     zombie->prox = NULL;
     return zombie;
@@ -23,24 +25,23 @@ zombies* crear_zombies(string nom, int salud, int dano_ataque) {
 
 void mostrar_zombies(zombies *list) {
     if (list == NULL) {
-        cout << "La lista de zombies esta vacia" << endl;
+        cout << "La lista de zombies está vacía" << endl;
     } else {
         zombies *mover = list;
         cout << "\n          \e[47m*****LISTA DE ZOMBIES*****\e[0m      \n";
         while (mover != NULL) {
-            
             cout << "\n[zombie " << mover->nombre << "]";
+            cout << "\nSalud: " << mover->salud;
+            cout << "\nCantidad: " << mover->cantidad_zombies;
+            cout << "\nDano de ataque: " << mover->dano_ataque;
             cout << endl << "============================================" << endl;
-            cout << "Salud: " << mover->salud << endl;
-            cout << "Dano de ataque: " << mover->dano_ataque << endl;
-            cout << "============================================\n\n";
             mover = mover->prox;
         }
     }
 }
 
-void insertar_ultimo_zombie(zombies *&lista_zombies, string nom, int salud, int dano_ataque) {
-    zombies* nuevo_zombie = crear_zombies(nom, salud, dano_ataque);
+void insertar_ultimo_zombie(zombies *&lista_zombies, string nom, int salud, int dano_ataque, int cantidad_zombies) {
+    zombies* nuevo_zombie = crear_zombies(nom, salud, dano_ataque, cantidad_zombies);
     if (lista_zombies == NULL) {
         lista_zombies = nuevo_zombie;
     } else {
@@ -56,7 +57,7 @@ void cargar_zombies(zombies *&lista) {
     ifstream lectura("Zombie.zmb", ios::in);
     
     if (!lectura) {
-        cout << "Error al abrir el archivo." << endl;
+        cout << "\e[0;31mError al abrir el archivo.\e[0m" << endl;
         return;
     }
     int cantidad;
@@ -75,7 +76,7 @@ void cargar_zombies(zombies *&lista) {
         int salud_zombie=stoi(salud);
         getline(lectura, dano);
         int dano_zombie=stoi(dano);
-        insertar_ultimo_zombie(lista, nombre_zombi, salud_zombie, dano_zombie);
+        insertar_ultimo_zombie(lista, nombre_zombi, salud_zombie, dano_zombie, 1);
     }
 
     lectura.close();
@@ -124,7 +125,7 @@ void modificar_dano(zombies *list, int nuevo_valor, string tipo_zomb) {
 
 void modificar_zombie(zombies *lista) {
     if (lista == NULL) {
-        cout << "La lista de zombies esta vacia" << endl;
+        cout << "\e[0;31mLa lista de zombies esta vacia\e[0m" << endl;
         return;
     }
     
@@ -173,7 +174,7 @@ void modificar_zombie(zombies *lista) {
                     case '4':
                         return; // Salir de la función
                     default:
-                        cout << "Opcion invalida" << endl;
+                        cout << "\e[0;31mOpcion invalida\e[0m" << endl;
                         break;
                 }
                 system("pause");
@@ -181,12 +182,12 @@ void modificar_zombie(zombies *lista) {
         }
         buscar = buscar->prox;
     }
-    cout << "Zombie no encontrado." << endl;
+    cout << "\e[0;31mZombie no encontrado.\e[0m" << endl;
 }
 
 void eliminar(zombies*& lista_zombies, string valor) {
    if (lista_zombies==NULL) {
-      cout << "Lista vacia" << endl;
+      cout << "\e[0;31mLista vacia\e[0m" << endl;
       return;
    }
 
@@ -199,7 +200,7 @@ void eliminar(zombies*& lista_zombies, string valor) {
    }
 
    if (mover == NULL) {
-      cout << "Zombie no encontrado" << endl;
+      cout << "\e[0;31mZombie no encontrado\e[0m" << endl;
       return;
     } 
     else{
@@ -239,14 +240,13 @@ void eliminar_apariciones(zombies*& inicio, string nombre_zombie) {
       }
    }
 
-   cout << "Total de elementos eliminados: " << contador << endl;
+   cout << "\e[0;32mTotal de elementos eliminados: \e[0m" << contador << endl;
 }
 
 void llenar_zombie(zombies *&list){
     int cantidad;
     cout << "Ingrese la cantidad de zombies que desea agregar: ";
     cin >> cantidad;
-    for(int i=0; i < cantidad; i++){
         string nombre;
         cout<<"Ingrese el tipo de zombie: ";
         cin>>nombre;
@@ -256,9 +256,7 @@ void llenar_zombie(zombies *&list){
         int ataque;
         cout<<"Ingrese el ataque del zombie: ";
         cin>>ataque;
-        insertar_ultimo_zombie(list, nombre, vida, ataque);
-
-    }
+        insertar_ultimo_zombie(list, nombre, vida, ataque, cantidad);
 }
 
 #endif 
