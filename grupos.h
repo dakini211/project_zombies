@@ -288,37 +288,40 @@ void modificar_grupo(grupo ** lista_grupo)
     }    
 }
 
-void insertar_soldado_txt_grupo(jugador*& lista_de_jugadores, jugador* nuevo_soldado) {
+void insertar_soldado_txt_grupo(jugador** lista_de_jugadores, jugador* nuevo_soldado) {
     jugador* nuevo_soldado_copia = crear_soldado(nuevo_soldado->salud, nuevo_soldado->nombre);
-    insertar_ultimo_soldado_existente(&lista_de_jugadores, &nuevo_soldado_copia);
+    insertar_ultimo_soldado_existente(&(*lista_de_jugadores), &nuevo_soldado_copia);
 }
 
-void crear_grupos_usuario(grupo*& grupo_actual, jugador* lista_de_jugadores) {
+void crear_grupos_usuario(grupo** grupo_actual, jugador* lista_de_jugadores) {
     grupo* ubicacion = NULL;
     jugador* jugador_actual = lista_de_jugadores;
     string nombre_grupo;
-
-    insertar_ultimo_grupos(&grupo_actual);
+    insertar_ultimo_grupos(&(*grupo_actual));
     
     while (jugador_actual != NULL) {
+        system("cls");
+        mostrar_grupos(*grupo_actual);
         cout << "Seleccione un grupo para el jugador: " << jugador_actual->nombre << endl;
         cin >> nombre_grupo;
 
-        ubicacion = buscar_grupo(grupo_actual, nombre_grupo);
+        ubicacion = buscar_grupo(*grupo_actual, nombre_grupo);
         if (ubicacion) {
-            insertar_soldado_txt_grupo(ubicacion->grupo_jugador, jugador_actual);
-            agregar_accesorio_soldado_TXT(ubicacion->grupo_jugador);
-            pedir_tipo_accesorio();
-            pedir_modificador_accesorio();
-            pedir_usos_accesorio();
-            pedir_tipo_arma();
+            insertar_soldado_txt_grupo(&(ubicacion->grupo_jugador), jugador_actual);
+            //agregar_accesorio_soldado_TXT(ubicacion->grupo_jugador);
+            //pedir_tipo_accesorio();
+            //pedir_modificador_accesorio();
+            //pedir_usos_accesorio();
+            //pedir_tipo_arma();
             ubicacion->numero_miembros++;
+            jugador_actual = jugador_actual->prox;
         } else {
             cout << "Grupo no encontrado. Intente nuevamente." << endl;
-        }
-
-        jugador_actual = jugador_actual->prox; 
-    }
+        }       
+        
+    }    
+    system("cls");
+    mostrar_grupos(*grupo_actual);       
 }
 
 /*-------------------- Cargar zmb-----------------*/
@@ -404,18 +407,8 @@ void cargar_jugadores(jugador** lista_de_jugadores) {
     archivo.close();
 }
 
-void crear_grupos_usuario(grupo** lista_de_grupos, jugador** lista_de_jugadores) {
-    int cantidad_grupos;
-    cout << "Ingrese la cantidad de grupos a crear: ";
-    cin >> cantidad_grupos;
-
-    for (int i = 0; i < cantidad_grupos; i++) {
-        string nombre_grupo = pedir_nombre_grupo();
-        grupo*nuevo_grupo = crear_grupo(nombre_grupo);
-        insertar_ultimo_grupos(lista_de_grupos);
-    }
-
-    
+void crear_grupos_usuario(grupo** lista_de_grupos, jugador** lista_de_jugadores) {            
+    insertar_ultimo_grupos(lista_de_grupos);  
     jugador* jugador_actual = *lista_de_jugadores;
     while (jugador_actual != NULL) {
         mostrar_grupos(*lista_de_grupos);

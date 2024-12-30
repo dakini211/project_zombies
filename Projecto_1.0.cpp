@@ -58,9 +58,9 @@ int main(){
                                 cout<<"\e[0;32mLos archivos se han cargado con exito!!\e[0m\n";
                                 cout<<"\e[0;33mPara editar debes ir a >> Menu >> Opciones\e[0m"<<endl;
                                 mostrarListaJugador(lista_soldados);
-                                crear_grupos_usuario(lista_grupo,lista_soldados);
+                                crear_grupos_usuario(&lista_grupo,lista_soldados);
                             }
-                            system("pause"); 
+                            system("cls");                             
                             break;  
                         }
                     case '2':{
@@ -68,14 +68,13 @@ int main(){
                            break;
                         }
                     case '3':{
-                           cout<<"saliendo";
+                           cout<<"saliendo"<<endl;
                            break;
                         }
                     default:
                         break;
                     }
-                }
-                system("pause");
+                }                
                 break;   
             }
             case '2': {
@@ -251,6 +250,10 @@ int main(){
                                 }
                             }
                         break;
+                        case '4':
+                        {                            
+                            break;
+                        }
                         default:
                             cout << "Opcion invalida. Intente nuevamente." << endl;
                             system("pause");
