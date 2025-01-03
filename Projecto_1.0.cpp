@@ -3,6 +3,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include "ultimo_mapa.h"
 #include "zombies.h"
 #include "mapa.h"
 #include "grupos.h"
@@ -10,14 +11,18 @@
 using namespace std;
 
 int main(){
-
-    jugador *lista_soldados = NULL;    
+ jugador *lista_soldados = NULL;    
     grupo *lista_grupo = NULL;
     zombies *lista_zombies = NULL;
     accesorio*lista_accesorios=NULL;
-    vertice *lista_mapa=NULL;
+    nodo  *lista_mapa=NULL;
+    nodo *lista_mapa2=NULL;
+    nodo *camino_corto_peso = NULL;//nuevo
+    nodo *camino_corto_zombies = NULL;//nuevo
+    nodo *camino_corto_sobreviviente = NULL;//nuevo
     ifstream leer_zombies;
-    char opcion = '0'; // Inicializamos la opción
+    string nombre_grupo, estacion_partida, estacion_llegada;//nuevo
+    char opcion = '0'; // Inicializamos la opción    
 
     while (opcion != '4') {
         system("cls");

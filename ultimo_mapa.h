@@ -415,7 +415,10 @@ void dijkstra(nodo* lista, nodo*& camino_corto, string origen, string destino) {
             insertar_ultimo_estacion(camino_corto, nuevo_nodo->estacion, nuevo_nodo->numero_estacion);
             mov = mov->camino;
         }
+        system("pause");
+        system("cls");
         cout << "La distancia más corta desde " << origen << " hasta " << destino << " es: " << nodoDestino->distancia << endl;
+        system("pause");
     }
     nodo* mover_camino = camino_corto;
     nodo* mover_lista = lista;

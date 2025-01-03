@@ -134,6 +134,34 @@ grupo *buscar_grupo(grupo*lista_grupo,string nombre)
 
 }
 
+grupo *buscar_grupo2(grupo*lista_grupo)
+{
+    string nombre;
+    cout << "Ingrese el nombre del grupo a insertar en estacion: ";
+    cin >> nombre;
+    grupo*mover=lista_grupo; bool encontrado=false;
+    if(listaVaciaGrupo(lista_grupo))
+    {
+        cout<<"No hay grupos disponibles"<<endl;
+        return NULL;        
+    }
+    else{
+        while(mover!=NULL && encontrado==false)
+        {
+            if(mover->nombre_grupo==nombre)
+            {
+                encontrado=true;
+            }
+            else{
+                mover=mover->prox;
+            }
+           
+        }
+        return mover;
+    }
+
+}
+
 void insertar_soldado_grupo(grupo**lista_grupo)
 {
     string nombre;

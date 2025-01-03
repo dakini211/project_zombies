@@ -1,8 +1,12 @@
-#include "zombies.h"
-#include "ultimo_mapa.h"
-#include "grupos.h" 
+#include <iostream> 
 #include <fstream>
 #include <string>
+#include <cstdlib>
+#include <ctime>
+#include "ultimo_mapa.h"
+#include "zombies.h"
+#include "mapa.h"
+#include "grupos.h"
 using namespace std;
 
 int main(){
@@ -17,9 +21,9 @@ int main(){
     nodo *camino_corto_sobreviviente = NULL;//nuevo
     ifstream leer_zombies;
     string nombre_grupo, estacion_partida, estacion_llegada;//nuevo
-    char opcion = '0'; // Inicializamos la opción
+    char opcion_principal = '0'; // Inicializamos la opción principal
 
-    while (opcion != '4') {
+    while (opcion_principal != '4') {
         system("cls");
         cout << "        \e[47mMenu\e[0m        " << "\n";
         cout << "Cristian Teran" << "\n";
@@ -32,30 +36,30 @@ int main(){
         cout << "4. Salir " << "\n";                    
         cout << "====================" << "\n";
         cout << "Ingrese una opcion (1 al 4): ";
-        cin >> opcion;
+        cin >> opcion_principal;
 
-        switch (opcion) {
-            case '1':
-                //cout << "Esta opción no está disponible aún." << "\n";
+        switch (opcion_principal) {
+            case '1':{
+                char opcion_jugar = '0';
                 cout<<"Desa cargar partida o crear una desde cero?"<<endl;
-                while(opcion!='3'){
+                while(opcion_jugar != '3'){
                     cout << "1. Cargar partida " << "\n";
                     cout << "2. Crear partida " << "\n";
                     cout << "3. Salir " << "\n";
                     cout << "Ingrese una opcion (1 al 3): ";
-                    cin >> opcion;
-                    switch (opcion)
+                    cin >> opcion_jugar;
+                    switch (opcion_jugar)
                     {
                     case '1':{
-                            if((archivoExiste("Accesorio")))
-                            {
+                            if((archivoExiste("Accesorio"))){
                                 cout<<"partida no se puede cargar"<<endl;
-                                opcion='3';
+                                opcion_jugar = '3';
                             }
                             else{
                                 carga_de_accesorio(&lista_accesorios);
                                 cargar_jugadores(&lista_soldados);
-                                while(opcion!='5'){
+                                char opcion_misiones = '0';
+                                while(opcion_misiones != '5'){
                                     system("cls");
                                     cout << "        \e[47mMenu de Misiones\e[0m        " << "\n";
                                     cout << "1. Definir puntos de partida y llegada de cada equipo" << "\n";
@@ -65,13 +69,15 @@ int main(){
                                     cout << "5. Volver " << "\n";                    
                                     cout << "=============================================" << "\n";
                                     cout << "Ingrese una opcion (1 al 5): ";
-                                    cin >> opcion;
-                                    switch (opcion){
+                                    cin >> opcion_misiones;
+                                    switch (opcion_misiones){
                                     case '1':{
-                                        cout << "Ingrese el nombre del grupo a insertar en estacion: ";
-                                        cin >> nombre_grupo;
+                                        carga_de_accesorio(&lista_accesorios);
+                                        cargar_jugadores(&lista_soldados);
+                                        mostrarListaJugador(lista_soldados);
+                                        crear_grupos_usuario(&lista_grupo, lista_soldados);
 
-                                        grupo* grupo_actual = buscar_grupo(lista_grupo, nombre_grupo);
+                                        grupo* grupo_actual = buscar_grupo2(lista_grupo);
                                         if (grupo_actual == NULL) {
                                             cout << "Grupo no encontrado." << endl;
                                             system("pause");
@@ -83,14 +89,17 @@ int main(){
                                         break;
                                     }
                                     case '2':{
+                                        cargar_mapa(lista_mapa);
+                                        asignar_nombres(lista_mapa, lista_mapa2);
+                                        mostrar_estaciones(lista_mapa2);
                                         if (lista_mapa == NULL) {
                                             cout << "El grafo está vacío." << endl;
                                         } 
                                         else {
                                             cout << "Ingrese la estación de partida: ";
-                                            getline(cin, estacion_partida);
+                                            cin>> estacion_partida;
                                             cout << "Ingrese la estación de llegada: ";
-                                            getline(cin, estacion_llegada);
+                                            cin>>estacion_llegada;
                                             camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
                                             dijkstra(lista_mapa, camino_corto_peso, estacion_partida, estacion_llegada);
                                             mostrar_estaciones(camino_corto_peso); // Mostrar la lista camino_corto_peso
@@ -104,9 +113,9 @@ int main(){
                                         } 
                                         else {
                                             cout << "Ingrese la estación de partida: ";
-                                            getline(cin, estacion_partida);
+                                            cin>> estacion_partida;
                                             cout << "Ingrese la estación de llegada: ";
-                                            getline(cin, estacion_llegada);
+                                            cin>>estacion_llegada;
                                             camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
                                             camino_menor_zombies(lista_mapa, camino_corto_zombies, estacion_partida, estacion_llegada);
                                             mostrar_estaciones(camino_corto_zombies); // Mostrar la lista camino_corto_peso
@@ -120,9 +129,9 @@ int main(){
                                         } 
                                         else {
                                             cout << "Ingrese la estación de partida: ";
-                                            getline(cin, estacion_partida);
+                                            cin>> estacion_partida;                                            
                                             cout << "Ingrese la estación de llegada: ";
-                                            getline(cin, estacion_llegada);
+                                            cin>> estacion_llegada;
                                             camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
                                             camino_posible_sobreviviente(lista_mapa, camino_corto_sobreviviente, estacion_partida, estacion_llegada, 10);
                                             mostrar_estaciones(camino_corto_sobreviviente); // Mostrar la lista camino_corto_peso
@@ -147,14 +156,9 @@ int main(){
                            break;
                         }
 
-                     case '3':{
-                           cout<<"saliendo";
-                           break;
+                    case '3':{                                                  
+                         break;
                         }
-                        
-                        
-                        
-                    
                     default:
                         break;
                     }
@@ -162,8 +166,10 @@ int main(){
 
                 system("pause");
             break;
-            case '2': 
-                while (opcion != '4') {
+            }
+            case '2': {
+                char opcion_opciones = '0';
+                while (opcion_opciones != '4') {
                     system("cls");
                     cout << "        \e[47mOpciones\e[0m        " << "\n";
                     cout << "===========================" << "\n";
@@ -173,11 +179,12 @@ int main(){
                     cout << "4. Volver " << "\n";                     
                     cout << "===========================" << "\n";
                     cout << "Ingrese una opcion (1 al 4): ";
-                    cin >> opcion;
+                    cin >> opcion_opciones;
 
-                    switch (opcion) {
-                        case '1':
-                            while (opcion != '6') {
+                    switch (opcion_opciones) {
+                        case '1': {
+                            char opcion_zombies = '0';
+                            while (opcion_zombies != '6') {
                                 system("cls");
                                 cout << "          \e[47mGestionar zombies\e[0m      \n";
                                 cout << "======================================================\n";
@@ -189,8 +196,8 @@ int main(){
                                 cout << "6. Salir\n";
                                 cout << "======================================================\n";
                                 cout << "Ingrese una opcion: ";
-                                cin >> opcion;
-                                switch (opcion) {
+                                cin >> opcion_zombies;
+                                switch (opcion_zombies) {
                                     case '1':
                                         cargar_zombies(lista_zombies);
                                         system("pause");
@@ -235,8 +242,10 @@ int main(){
                                 }
                             }
                             break;
-                        case '2':
-                            while (opcion != '5') {
+                        }
+                        case '2': {
+                            char opcion_grupos = '0';
+                            while (opcion_grupos != '5') {
                                 system("cls");
                                 cout << "        \e[47mGestionar Grupos\e[0m        " << "\n";
                                 cout << "======================================" << "\n";
@@ -247,9 +256,9 @@ int main(){
                                 cout << "5. Volver " << "\n";
                                 cout << "======================================" << "\n";
                                 cout << "Ingrese una opcion (1 al 5): ";
-                                cin >> opcion;
+                                cin >> opcion_grupos;
 
-                                switch (opcion) {
+                                switch (opcion_grupos) {
                                     case '1':
                                         insertar_ultimo_grupos(&lista_grupo);
                                         system("pause");
@@ -275,8 +284,10 @@ int main(){
                                 }
                             }
                         break;
-                        case '3':
-                            while (opcion != '8'){
+                        }
+                        case '3': {
+                            char opcion_mapa = '0';
+                            while (opcion_mapa != '8'){
                                 system("cls");
                                 cout << "    \e[47mGestionar mapa\e[0m    \n";
                                 cout << "======================================================\n";
@@ -290,8 +301,8 @@ int main(){
                                 cout << "8.- Salir\n";
                                 cout << "======================================================\n";
                                 cout << "Ingrese la opcion deseada del menu: ";
-                                cin >> opcion;
-                                switch (opcion) {
+                                cin >> opcion_mapa;
+                                switch (opcion_mapa) {
                                     case '1':
                                         cargar_mapa(lista_mapa);
                                         asignar_nombres(lista_mapa, lista_mapa2);
@@ -346,7 +357,7 @@ int main(){
                                         }
                                         system("pause");
                                     break;
-                                    case '6'    :
+                                    case '6':
                                         if (lista_mapa2 == NULL) {
                                             cout << "El grafo está vacío." << endl;
                                         }   
@@ -371,11 +382,14 @@ int main(){
                                 }
                             }
                         break;
+                        }
                         default:
                             cout << "Opcion invalida, vuelva a intentarlo" << endl;
                             system("pause");
                         }
-                        break;
+                    }
+                break;
+            }
             case '3':
                 cout << "Reglas del juego no disponibles aún." << "\n";
                 system("pause");
@@ -397,11 +411,5 @@ int main(){
     delete lista_grupo;
     delete lista_mapa2;
     delete lista_mapa;
-    //if((archivoExiste("Soldado") or archivoVacio("Soldado"))and(archivoExiste("Accesorio") or archivoVacio("Accesorio")))
     return 0;
 }
-}
-
-
-
-

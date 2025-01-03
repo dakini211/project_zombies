@@ -62,6 +62,7 @@
     "random": "cpp",
     "*.tcc": "cpp",
     "iosfwd": "cpp",
-    "new": "cpp"
+    "new": "cpp",
+    "string": "cpp"
   }
 }
