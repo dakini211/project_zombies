@@ -6,7 +6,8 @@
 #include <string>
 #include <climits> // Para usar INT_MAX
 #include <cstdlib> // Para usar rand() y srand()
-#include <climits> // Para usar INT_MAX
+#include <ctime> 
+#include <random>
 #include "zombies.h"
 #include "grupos.h"
 using namespace std;
@@ -50,11 +51,14 @@ void agregar_adyacencia(nodo* origen, int distancia, int numero_est, string nomb
 zombies_estaciones* nuevo_zombies(string nom, int salud, int dano_ataque, int cantidad_zombies) {
     zombies_estaciones* zombie = new zombies_estaciones;
     zombie->nombre_zombie = nom;
-    zombie->vida = salud;
+    zombie->vida = salud; 
     zombie->cantidad_zombies = cantidad_zombies; // Asumimos que se crea un zombie a la vez
     zombie->dano_ataque = dano_ataque;
     zombie->prox = NULL;
     return zombie;
+}
+bool listaVaciaZombiesEstaciones(zombies_estaciones* zombies) {
+    return zombies == NULL;
 }
 
 nodo* nuevo_estacion(string estacion, int numero_estacion) {
@@ -69,6 +73,24 @@ nodo* nuevo_estacion(string estacion, int numero_estacion) {
     nuevo->zombies_estacion = NULL;
     nuevo->visitado = false;
     return nuevo;
+}
+
+void mostrar_zombies_estaciones(zombies_estaciones* lista_zombies) {
+    if (lista_zombies == NULL) {
+        cout << "No hay zombies en esta estación." << endl;
+        return;
+    }
+
+    zombies_estaciones* mover = lista_zombies;
+    while (mover != NULL) {
+        cout << "----------------------------------------" << endl;
+        cout << "Nombre del zombie: " << mover->nombre_zombie << endl;
+        cout << "Cantidad de zombies: " << mover->cantidad_zombies << endl;
+        cout << "Vida del zombie: " << mover->vida << endl;
+        cout << "Daño de ataque del zombie: " << mover->dano_ataque << endl;
+        cout << "----------------------------------------" << endl;
+        mover = mover->prox;
+    }
 }
 
 void insertar_ultimo_zombie(zombies_estaciones*& lista, string nombre_zombie, int vida, int dano_ataque, int cantidad_zombies) {
@@ -928,8 +950,146 @@ void mostrar_menu() {
     cout << "Ingrese la opcion deseada del menu: ";
 }
 
+int generar_dado(int limiteinf, int limitesup) {    
+    //system("pause");
+    static default_random_engine generador(time(nullptr));
+    uniform_int_distribution<int> distribucion(limiteinf, limitesup);
+    return distribucion(generador);
+}
+
+zombies_estaciones*zombie_menor_vida(zombies_estaciones*lista_zombies)
+{
+    if(lista_zombies==NULL)
+    {
+        return NULL;
+    }
+    zombies_estaciones*mover=lista_zombies;
+    zombies_estaciones*menor=nuevo_zombies(mover->nombre_zombie,mover->vida,mover->dano_ataque,mover->cantidad_zombies);
+    
+    while(mover!=NULL)
+    {
+        if(mover->vida<menor->vida)
+        {
+            menor->cantidad_zombies=mover->cantidad_zombies;
+            menor->dano_ataque=mover->dano_ataque;
+            menor->nombre_zombie=mover->nombre_zombie;
+            menor->vida=mover->vida;
+        }  
+        mover=mover->prox;
+    }
+    return menor;
+}
+int accesorio_menor_dano(accesorio*lista_accesorios)
+{
+    if(listaVaciaAccesorios(lista_accesorios))
+    {
+        return 0;
+    }
+    accesorio*mover=lista_accesorios;
+    bool primero_accesorio=false;
+    int dano_accesorio=0;
+    while(mover!=NULL)
+    {
+        if(mover->tipo=="Ataque" and primero_accesorio==false)
+        {
+            dano_accesorio=mover->modificador;
+            primero_accesorio=true;
+        }
+        if(mover->tipo=="Ataque" and mover->modificador<dano_accesorio)
+        {
+            dano_accesorio=mover->modificador;
+        }
+        mover=mover->prox;
+    }
+    //mover->usos=mover->usos-1;
+    return dano_accesorio;   
+}
+
+void accesorio_menor_dano_durabilidad(accesorio** lista_accesorios) {
+    if (listaVaciaAccesorios(*lista_accesorios)) {
+        return;
+    }
+
+    accesorio* mover = *lista_accesorios;
+    accesorio* menor_accesorio = NULL;
+
+    while (mover != NULL) {
+        if (mover->tipo == "Ataque") {
+            if (menor_accesorio == NULL || mover->modificador < menor_accesorio->modificador) {
+                menor_accesorio = mover;
+            }
+        }
+        mover = mover->prox;
+    }
+
+    if (menor_accesorio != NULL) {
+        menor_accesorio->usos =menor_accesorio->usos-1;
+    }
+}
+
+void eliminar_zombie_por_cantidad(zombies_estaciones** Lista_zombies, int cantidad)
+{
+    if(listaVaciaZombiesEstaciones(*Lista_zombies))  
+    {
+        return;
+    }
+
+    zombies_estaciones* actual = (*Lista_zombies);
+    zombies_estaciones* anterior = NULL;
+
+    while(actual != NULL && actual->cantidad_zombies != cantidad)
+    {
+        anterior = actual;
+        actual = actual->prox;
+    }
+
+    if(actual == NULL)
+    {
+       return; 
+    }
+    else
+    {
+        if(actual == (*Lista_zombies))  // Si es el primer elemento
+        {
+            (*Lista_zombies) = (*Lista_zombies)->prox;
+        }
+        else
+        {
+            anterior->prox = actual->prox;
+        }
+        delete actual;
+    }
+}
+
+void eliminar_zombie_por_cantidad2(zombies_estaciones** lista_zombies, int cantidad) {
+    if ((*lista_zombies) == NULL) {
+        return;
+    }
+
+    zombies_estaciones* actual = *lista_zombies;
+    zombies_estaciones* anterior = NULL;
+
+    while (actual != NULL) {
+        if (actual->cantidad_zombies == cantidad) {
+            if (anterior == NULL) {
+                
+                *lista_zombies = actual->prox;
+                delete actual;
+                actual = *lista_zombies;
+            } else {                
+                anterior->prox = actual->prox;
+                delete actual;
+                actual = anterior->prox;
+            }
+        } else {
+            anterior = actual;
+            actual = actual->prox;
+        }
+    }
+}
 void juego(grupo**lista_grupos,nodo**camino)
 {
+    int cant=0;
     if(*camino == NULL)
     {
         cout << "No hay un camino seleccionado,selecione algun camino en el menu." << endl;
@@ -942,19 +1102,197 @@ void juego(grupo**lista_grupos,nodo**camino)
             cout<<"No hay grupos creados, cree un grupo para poder jugar."<<endl;
             return;
         }
-        else{
-            grupo*actual=*lista_grupos;
-            nodo*mover=(*camino);
-            while(mover!=NULL or actual!=NULL)
+        else{          
+            
+            
+            grupo*actual=buscar_grupo2(&(*lista_grupos));
+            if(actual==NULL)
             {
-                cout<<"Estacion actual: "<<mover->estacion<<endl;
-                cout<<"Zombies en la estacion: "<<contar_zombies(mover->zombies_estacion)<<endl;
+                cout<<"No se encontro el grupo."<<endl;
+                return;
             }
+            else{
+                    mostrar_grupos(actual);
+                    if(lista_vacia_jugador(actual->grupo_jugador))
+                    {
+                        cout<<"No hay jugadores en el grupo, agregue jugadores para poder jugar."<<endl;
+                        return;
+                    }
+                    else{
+                        nodo*mover=(*camino);
+                        bool jugador_danado=false;            
+                        
+
+                        while(mover!=NULL and actual!=NULL)
+                        {
+                            while(actual->grupo_jugador!=NULL)
+                            {
+                                cout<<"Estacion actual: "<<mover->estacion<<endl;
+                                cout<<"Grupo actual: "<<actual->nombre_grupo<<endl;
+                                cout<<"Cantidad de zombies en la estacion: "<<contar_zombies(mover->zombies_estacion)<<endl;
+                                mostrar_zombies_estaciones(mover->zombies_estacion);
+                                jugador*mover_dano=actual->grupo_jugador;
+                                int dano_grupo=0;
+                                int numero_min_jugadores=1;
+                                int numero_max_jugadores; 
+                                while(mover_dano!=NULL)
+                                {
+                                    numero_max_jugadores++;
+                                    dano_grupo=dano_grupo+accesorio_menor_dano(mover_dano->accesorio_jugador);
+                                    accesorio_menor_dano_durabilidad(&mover_dano->accesorio_jugador);
+                                    eliminar_accesorio_por_durabilidad(&mover_dano->accesorio_jugador,0);
+                                    mover_dano=mover_dano->prox;
+                                }                  
+                               
+                                zombies_estaciones*zombie_con_menor_vida=zombie_menor_vida(mover->zombies_estacion);
+                                while(dano_grupo>=zombie_con_menor_vida->vida and zombie_con_menor_vida->cantidad_zombies!=0)
+                                {
+                                    int vida=zombie_con_menor_vida->vida;
+                                    dano_grupo=dano_grupo-vida;
+                                    cout<<dano_grupo<<endl;
+                                    cout<<"cantidad de zombies: "<<zombie_con_menor_vida->cantidad_zombies<<endl;
+                                    zombie_con_menor_vida->cantidad_zombies=zombie_con_menor_vida->cantidad_zombies-1;                                    
+                                    cout<<"Grupo: "<<actual->nombre_grupo<<" ha eliminado a zombie: "<< zombie_con_menor_vida->nombre_zombie<<endl;
+                                    cout<<"cantidad de zombies: "<<zombie_con_menor_vida->cantidad_zombies<<endl;
+                                    cant++;
+                                }
+                                                              
+                                
+                                if(zombie_con_menor_vida->cantidad_zombies==0)
+                                {
+                                    eliminar_zombie_por_cantidad2(&mover->zombies_estacion,0);
+                                    system("pause");
+                                    system("cls");
+                                    mostrar_zombies_estaciones(mover->zombies_estacion);
+                                    
+                                }
+                                if(listaVaciaZombiesEstaciones(mover->zombies_estacion))
+                                {
+                                    cout<<"Grupo "<<actual->nombre_grupo<<" ha sobrevivido un dia mas."<<endl;
+                                    mover=mover->prox; 
+                                }                                  
+                                system("pause");
+                                system("cls");
+                                if(mover==NULL)
+                                {
+                                    cout<<"El grupo "<<actual->nombre_grupo<<" ha salvado al mundo."<<endl;
+                                    return;
+                                }
+                            }                                                  
+                            
+                        }
+
+                    } 
+
+            }
+            
+                   
+          
             
 
             
         }
 
+    }
+}
+
+void actualizar_zombie(zombies_estaciones** lista_zombies, zombies_estaciones* zombie_actualizado) {
+    if (lista_zombies == NULL || *lista_zombies == NULL || zombie_actualizado == NULL) {
+        return;
+    }
+
+    zombies_estaciones* mover = *lista_zombies;
+    while (mover != NULL) {
+        if (mover->nombre_zombie == zombie_actualizado->nombre_zombie) {
+            mover->vida = zombie_actualizado->vida;
+            mover->dano_ataque = zombie_actualizado->dano_ataque;
+            mover->cantidad_zombies = zombie_actualizado->cantidad_zombies;
+            return;
+        }
+        mover = mover->prox;
+    }
+}
+
+void juego2(grupo** lista_grupos, nodo** camino) {    
+    if (*camino == NULL) {
+        cout << "No hay un camino seleccionado, seleccione algún camino en el menú." << endl;
+        return;
+    }
+
+    if (listaVaciaGrupo(*lista_grupos)) {
+        cout << "No hay grupos creados, cree un grupo para poder jugar." << endl;
+        return;
+    }
+
+    grupo* actual = buscar_grupo2(&(*lista_grupos));
+    if (actual == NULL) {
+        cout << "No se encontró el grupo." << endl;
+        return;
+    }
+
+    mostrar_grupos(actual);
+    if (lista_vacia_jugador(actual->grupo_jugador)) {
+        cout << "No hay jugadores en el grupo, agregue jugadores para poder jugar." << endl;
+        return;
+    }
+
+    nodo* mover = (*camino);
+    while (mover != NULL && actual != NULL) {
+            while(!listaVaciaZombiesEstaciones(mover->zombies_estacion)) {
+            cout << "Estación actual: " << mover->estacion << endl;
+            cout << "Grupo actual: " << actual->nombre_grupo << endl;
+            cout << "Cantidad de zombies en la estación: " << contar_zombies(mover->zombies_estacion) << endl;
+            mostrar_zombies_estaciones(mover->zombies_estacion);
+
+            jugador* mover_dano = actual->grupo_jugador;
+            int dano_grupo = 0;
+            int numero_max_jugadores = 0;
+        
+            while (mover_dano != NULL) {
+                numero_max_jugadores++;
+                dano_grupo += accesorio_menor_dano(mover_dano->accesorio_jugador);
+                accesorio_menor_dano_durabilidad(&mover_dano->accesorio_jugador);
+                eliminar_accesorio_por_durabilidad(&mover_dano->accesorio_jugador, 0);
+                mover_dano = mover_dano->prox;
+            }
+
+            zombies_estaciones* zombie_con_menor_vida = zombie_menor_vida(mover->zombies_estacion);
+            while (dano_grupo >= zombie_con_menor_vida->vida && zombie_con_menor_vida->cantidad_zombies != 0) {
+                int vida = zombie_con_menor_vida->vida;
+                dano_grupo -= vida;
+                zombie_con_menor_vida->cantidad_zombies -= 1;
+                cout << "Grupo: " << actual->nombre_grupo << " ha eliminado a zombie: " << zombie_con_menor_vida->nombre_zombie << endl;
+                
+            }                        
+            actualizar_zombie(&mover->zombies_estacion, zombie_con_menor_vida);
+            if(dano_grupo<=zombie_con_menor_vida->vida)
+            {
+                cout<<"El grupo: "<<actual->nombre_grupo<<" No a logrado despejar el lugar "<<endl;
+                mostrar_zombies_estaciones(mover->zombies_estacion);
+            }
+
+            if (zombie_con_menor_vida->cantidad_zombies == 0) {
+                eliminar_zombie_por_cantidad(&mover->zombies_estacion, 0);                
+                mostrar_zombies_estaciones(mover->zombies_estacion);                
+            }
+
+            if (listaVaciaZombiesEstaciones(mover->zombies_estacion)) {
+                cout << "Grupo " << actual->nombre_grupo << " ha sobrevivido un día más." << endl;
+                mover = mover->prox;
+                break;
+            }
+            
+
+            system("pause");
+            system("cls");           
+            
+
+        }
+        if (mover == NULL) {
+            cout << "El grupo " << actual->nombre_grupo << " ha salvado al mundo." << endl;
+            return;
+        }
+        
     }
 }
 

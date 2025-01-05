@@ -22,6 +22,8 @@ int main(){
     ifstream leer_zombies;
     string nombre_grupo, estacion_partida, estacion_llegada;//nuevo
     char opcion_principal = '0'; // Inicializamos la opción principal
+    bool cargados_soldados=false;
+    bool cargados_estaciones=false;
 
     while (opcion_principal != '4') {
         system("cls");
@@ -60,7 +62,7 @@ int main(){
                                 while(opcion_misiones != '5'){
                                     system("cls");
                                     cout << "        \e[47mMenu de Misiones\e[0m        " << "\n";
-                                    cout << "1. Definir miembros y equipo" << "\n";
+                                    cout << "1. Definir miembros y grupo" << "\n";
                                     cout << "2. Encontrar el camino más corto entre dos puntos" << "\n";
                                     cout << "3. Encontrar el camino con menor cantidad de zombies o menor fuerza de zombies" << "\n";
                                     cout << "4. Encontrar el camino más corto donde pueda existir la posibilidad de un sobreviviente que llegue con la cura" << "\n";
@@ -70,32 +72,49 @@ int main(){
                                     cin >> opcion_misiones;
                                     switch (opcion_misiones){
                                     case '1':{
-                                        carga_de_accesorio(&lista_accesorios);
-                                        cargar_jugadores(&lista_soldados);
-                                        mostrarListaJugador(lista_soldados);
-                                        crear_grupos_usuario_accesorios(&lista_grupo, &lista_soldados,&lista_accesorios);
+                                        if(cargados_soldados==false)
+                                        {
+                                            carga_de_accesorio(&lista_accesorios);
+                                            cargar_jugadores(&lista_soldados);                                            
+                                            crear_grupos_usuario_accesorios(&lista_grupo, &lista_soldados,&lista_accesorios);
+                                            cargar_zombies(lista_zombies);
+                                            cargados_soldados=true;
+                                        }
+                                        else{
+                                            cout<<"Ya se han cargado los datos"<<endl;
+                                        }                                        
                                         system("pause");
-                                        system("cls");                                       
+                                        system("cls");
+                                        break;                                       
                                     }
                                     case '2':{
-                                        cargar_mapa(lista_mapa);
-                                        asignar_nombres(lista_mapa, lista_mapa2);
-                                        mostrar_estaciones(lista_mapa2);
-                                        if (lista_mapa == NULL) {
-                                            cout << "El grafo está vacío." << endl;
-                                        } 
-                                        else {
-                                            cout << "Ingrese la estación de partida: ";
-                                            cin>> estacion_partida;
-                                            cout << "Ingrese la estación de llegada: ";
-                                            cin>>estacion_llegada;
-                                            camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
-                                            dijkstra(lista_mapa, camino_corto_peso, estacion_partida, estacion_llegada);
-                                            mostrar_estaciones(camino_corto_peso); // Mostrar la lista camino_corto_peso
-                                            //juego(&lista_grupo,camino_corto_peso);
-                                            
+                                        if(cargados_estaciones==false)
+                                        {
+                                            cargar_mapa(lista_mapa);
+                                            asignar_nombres(lista_mapa, lista_mapa2);                                           
+                                            cargados_estaciones=true;
                                         }
-                                        system("pause");
+                                                                                    
+                                            mostrar_estaciones(lista_mapa2);
+                                            if (lista_mapa == NULL) {
+                                                cout << "El grafo está vacío." << endl;
+                                            } 
+                                            else {
+                                                cout << "Ingrese la estación de partida: ";
+                                                cin>> estacion_partida;
+                                                cout << "Ingrese la estación de llegada: ";
+                                                cin>>estacion_llegada;
+                                                camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
+                                                dijkstra(lista_mapa, camino_corto_peso, estacion_partida, estacion_llegada);
+                                                mostrar_estaciones(camino_corto_peso); // Mostrar la lista camino_corto_peso
+                                                system("pause");
+                                                system("cls"); 
+                                                juego2(&lista_grupo,&camino_corto_peso);
+                                                
+                                            }
+                                            system("pause");                                            
+                                                                              
+                                       
                                         break;
                                     }
                                     case '3':{
@@ -124,7 +143,7 @@ int main(){
                                             cout << "Ingrese la estación de llegada: ";
                                             cin>> estacion_llegada;
                                             camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
-                                            camino_posible_sobreviviente(lista_mapa, camino_corto_sobreviviente, estacion_partida, estacion_llegada, 10);
+                                            camino_posible_sobreviviente(lista_mapa, camino_corto_sobreviviente, estacion_llegada, estacion_partida, 10);
                                             mostrar_estaciones(camino_corto_sobreviviente); // Mostrar la lista camino_corto_peso
                                         }
                                         system("pause");
@@ -261,6 +280,7 @@ int main(){
                                     case '3':
                                         eliminar_grupo(&lista_grupo, pedir_nombre_grupo());
                                         mostrar_grupos(lista_grupo);
+                                        //cargados=false;
                                         system("pause");
                                         break;
                                     case '4':

@@ -500,6 +500,41 @@ void eliminar_accesorio_con_nombre(accesorio** Lista_accesorio, string nombre_ac
         delete actual;
     }
 }
+
+void eliminar_accesorio_por_durabilidad(accesorio** Lista_accesorio, int durabilidad)
+{
+    if(listaVaciaAccesorios(*Lista_accesorio))  
+    {
+        return;
+    }
+
+    accesorio* actual = (*Lista_accesorio);
+    accesorio* anterior = NULL;
+
+    while(actual != NULL && actual->usos != durabilidad)
+    {
+        anterior = actual;
+        actual = actual->prox;
+    }
+
+    if(actual == NULL)
+    {
+       return; 
+    }
+    else
+    {
+        if(actual == (*Lista_accesorio))  // Si es el primer elemento
+        {
+            (*Lista_accesorio) = (*Lista_accesorio)->prox;
+        }
+        else
+        {
+            anterior->prox = actual->prox;
+        }
+        delete actual;
+    }
+}
+
 /*---------------------- FUNCION MODIFICAR-------------------*/
 void modificar_accesorio(accesorio**lista_accesorio)
 {
