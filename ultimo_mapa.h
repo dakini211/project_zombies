@@ -928,4 +928,36 @@ void mostrar_menu() {
     cout << "Ingrese la opcion deseada del menu: ";
 }
 
+void juego(grupo**lista_grupos,nodo**camino)
+{
+    if(*camino == NULL)
+    {
+        cout << "No hay un camino seleccionado,selecione algun camino en el menu." << endl;
+        return;
+    }
+    else
+    {
+        if(listaVaciaGrupo(*lista_grupos))
+        {
+            cout<<"No hay grupos creados, cree un grupo para poder jugar."<<endl;
+            return;
+        }
+        else{
+            grupo*actual=*lista_grupos;
+            nodo*mover=(*camino);
+            while(mover!=NULL or actual!=NULL)
+            {
+                cout<<"Estacion actual: "<<mover->estacion<<endl;
+                cout<<"Zombies en la estacion: "<<contar_zombies(mover->zombies_estacion)<<endl;
+            }
+            
+
+            
+        }
+
+    }
+}
+
+
+
 #endif

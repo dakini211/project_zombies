@@ -601,5 +601,31 @@ void modificar_accesorio(accesorio**lista_accesorio)
     }
 
 }
+/*---------------------- FUNCION BUSCAR-------------------*/
+
+accesorio*buscar_accesorio(accesorio*lista_accesorio,int codigo)
+{
+    accesorio*mover=lista_accesorio;
+    bool encontrado=false;
+    if(listaVaciaAccesorios(lista_accesorio))
+    {
+        return NULL;
+    }
+    else{
+        while(mover!=NULL && encontrado==false)
+        {
+            if(mover->codigo==codigo)
+            {
+                encontrado=true;
+            }
+            else{
+                mover=mover->prox;
+            }
+        
+        }
+    return mover;
+    }   
+}
+
 
 #endif 

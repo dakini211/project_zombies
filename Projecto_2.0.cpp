@@ -55,14 +55,12 @@ int main(){
                                 cout<<"partida no se puede cargar"<<endl;
                                 opcion_jugar = '3';
                             }
-                            else{
-                                carga_de_accesorio(&lista_accesorios);
-                                cargar_jugadores(&lista_soldados);
+                            else{                                
                                 char opcion_misiones = '0';
                                 while(opcion_misiones != '5'){
                                     system("cls");
                                     cout << "        \e[47mMenu de Misiones\e[0m        " << "\n";
-                                    cout << "1. Definir puntos de partida y llegada de cada equipo" << "\n";
+                                    cout << "1. Definir miembros y equipo" << "\n";
                                     cout << "2. Encontrar el camino más corto entre dos puntos" << "\n";
                                     cout << "3. Encontrar el camino con menor cantidad de zombies o menor fuerza de zombies" << "\n";
                                     cout << "4. Encontrar el camino más corto donde pueda existir la posibilidad de un sobreviviente que llegue con la cura" << "\n";
@@ -75,18 +73,9 @@ int main(){
                                         carga_de_accesorio(&lista_accesorios);
                                         cargar_jugadores(&lista_soldados);
                                         mostrarListaJugador(lista_soldados);
-                                        crear_grupos_usuario(&lista_grupo, lista_soldados);
-
-                                        grupo* grupo_actual = buscar_grupo2(lista_grupo);
-                                        if (grupo_actual == NULL) {
-                                            cout << "Grupo no encontrado." << endl;
-                                            system("pause");
-                                        }
-                                        else{
-                                            cout<<"Grupo asignado para insertar en las estaciones!!"<<endl;
-                                            system("pause");
-                                        }
-                                        break;
+                                        crear_grupos_usuario_accesorios(&lista_grupo, &lista_soldados,&lista_accesorios);
+                                        system("pause");
+                                        system("cls");                                       
                                     }
                                     case '2':{
                                         cargar_mapa(lista_mapa);
@@ -103,6 +92,8 @@ int main(){
                                             camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
                                             dijkstra(lista_mapa, camino_corto_peso, estacion_partida, estacion_llegada);
                                             mostrar_estaciones(camino_corto_peso); // Mostrar la lista camino_corto_peso
+                                            //juego(&lista_grupo,camino_corto_peso);
+                                            
                                         }
                                         system("pause");
                                         break;

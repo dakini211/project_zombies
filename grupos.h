@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <string>
+#include <limits>
 using namespace std;
 
 struct grupo{
@@ -205,6 +206,34 @@ void insertar_soldado_grupo_con_nombre(grupo**lista_grupo,string nombre)
     }
 }
 
+void insertar_soldado_grupo_sin_arma(grupo**lista_grupo,jugador**nuevo_soldado)
+{
+    if(listaVaciaGrupo(*lista_grupo))
+    {
+        cout<<"No hay grupos para insertar soldados"<<endl;
+        return;
+    }
+    else{
+                  
+        jugador*nuevo=(*nuevo_soldado);
+        if(lista_vacia_jugador((*lista_grupo)->grupo_jugador))
+        {
+            (*lista_grupo)->grupo_jugador=nuevo;
+            (*lista_grupo)->numero_miembros++;
+        }
+        else{
+            jugador*mover=(*lista_grupo)->grupo_jugador;
+            while(mover->prox!=NULL)
+            {
+                mover=mover->prox;
+            }
+            mover->prox=nuevo;
+            (*lista_grupo)->numero_miembros++;
+        }        
+        
+    }
+}
+
 void eliminar_grupo(grupo**lista_grupo,string nombre_grupo)
 {
     grupo*anterior=NULL;
@@ -319,6 +348,25 @@ void modificar_grupo(grupo ** lista_grupo)
 void insertar_soldado_txt_grupo(jugador** lista_de_jugadores, jugador* nuevo_soldado) {
     jugador* nuevo_soldado_copia = crear_soldado(nuevo_soldado->salud, nuevo_soldado->nombre);
     insertar_ultimo_soldado_existente(&(*lista_de_jugadores), &nuevo_soldado_copia);
+}
+void insertar_soldado_grupo3(grupo** grupo_actual, jugador** jugador_actual) {
+    if (grupo_actual == NULL || *grupo_actual == NULL || jugador_actual == NULL || *jugador_actual == NULL) {
+        cout << "Error: Puntero nulo pasado a la función." << endl;
+        return;
+    }
+
+    jugador* nuevo_soldado = crear_soldado_con_accesorio((*jugador_actual)->salud, (*jugador_actual)->nombre,(*jugador_actual)->accesorio_jugador);    
+
+    if ((*grupo_actual)->grupo_jugador == NULL) {
+        (*grupo_actual)->grupo_jugador= nuevo_soldado;
+    } else {
+        jugador* mover = (*grupo_actual)->grupo_jugador;
+        while (mover->prox != NULL) {
+            mover = mover->prox;
+        }
+        mover->prox = nuevo_soldado;
+    }
+    (*grupo_actual)->numero_miembros++;
 }
 
 void crear_grupos_usuario(grupo** grupo_actual, jugador* lista_de_jugadores) {
@@ -435,25 +483,103 @@ void cargar_jugadores(jugador** lista_de_jugadores) {
     archivo.close();
 }
 
-void crear_grupos_usuario(grupo** lista_de_grupos, jugador** lista_de_jugadores) {            
-    insertar_ultimo_grupos(lista_de_grupos);  
-    jugador* jugador_actual = *lista_de_jugadores;
-    while (jugador_actual != NULL) {
-        mostrar_grupos(*lista_de_grupos);
-        cout << "Seleccione un grupo para el jugador: " << jugador_actual->nombre << endl;
-        string nombre_grupo;
-        cin >> nombre_grupo;
 
-        grupo* grupo_actual = buscar_grupo(*lista_de_grupos, nombre_grupo);
-        if (grupo_actual) {
-            grupo_actual->numero_miembros++;
-        } else {
-            cout << "Grupo no encontrado. Intente nuevamente." << endl;
+
+void crear_grupos_usuario_accesorios(grupo** lista_de_grupos, jugador** lista_de_jugadores, accesorio** lista_de_accesorios) {            
+    //insertar_ultimo_grupos(lista_de_grupos);
+    int cantidad;
+    cout<<"Inserte la cantidad de Grupos: ";
+    cin>>cantidad;
+    for(int i=0;i<cantidad;i++)
+    {
+        grupo*nuevo_grupo=crear_grupo(pedir_nombre_grupo());        
+       if(listaVaciaGrupo(*lista_de_grupos))
+       {
+        (*lista_de_grupos)=nuevo_grupo;
+        
+       }
+       else{
+        grupo*mover=(*lista_de_grupos);
+        while(mover->prox!=NULL)
+        {
+            mover=mover->prox;
         }
-
-        jugador_actual = jugador_actual->prox; 
+        mover->prox=nuevo_grupo;
+       }
     }
+    if(cantidad>0)
+    {
+        jugador* jugador_actual = *lista_de_jugadores;
+        while (jugador_actual != NULL) { 
+            char opcion = '0'; 
+            while (opcion != '1' && opcion != '2' && opcion != '3') {
+                system("pause");
+                system("cls");
+                cout << "1) Seleccionar 1 accesorio" << endl;
+                cout << "2) Seleccionar 2 accesorios" << endl;
+                cout << "3) Seleccionar 3 accesorios" << endl;            
+                cout << "======================================================\n";
+                cout << "Ingrese la opcion deseada del menu: ";
+                cin >> opcion;
+
+                if (opcion != '1' && opcion != '2' && opcion != '3') {
+                    cout << "Opción inválida. Intente nuevamente." << endl;
+                    continue;
+                }
+
+                int num_accesorios = opcion - '0'; // Convertir char a int
+                for (int i = 0; i < num_accesorios; ++i) {
+                    mostrar_accesorio(*lista_de_accesorios);
+                    int codigo;
+                    while (true) {
+                        cout << "Coloque el codigo del accesorio a seleccionar: ";
+                        cin >> codigo;
+
+                        // Validar que la entrada es un número entero
+                        if (cin.fail() || codigo < 1) {
+                            cin.clear(); // Limpiar el estado de error
+                            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descartar la entrada inválida
+                            cout << "Entrada inválida. Por favor, ingrese un número entero válido." << endl;
+                        } else {
+                            break; // Salir del bucle si la entrada es válida
+                        }
+                    }
+
+                    accesorio* accesorio_seleccionado = buscar_accesorio(*lista_de_accesorios, codigo);
+                    if (accesorio_seleccionado!=NULL) {                  
+                        insertar_ultimo_accesorio_jugador(&jugador_actual, &accesorio_seleccionado);
+                    } else {
+                        cout << "Accesorio no encontrado. Intente nuevamente." << endl;
+                        --i; // se puede repetir la seleccion del accesorio
+                    }
+                }
+            }
+            mostrarListaJugador_armas_accesorios(jugador_actual);
+            system("pause");
+            system("cls");
+
+            mostrar_grupos(*lista_de_grupos);
+            cout << "Seleccione un grupo para el jugador: " << jugador_actual->nombre << endl;
+            string nombre_grupo;
+            cin >> nombre_grupo;
+
+            grupo* grupo_actual = buscar_grupo(*lista_de_grupos, nombre_grupo);
+            if (grupo_actual!=NULL) {           
+                insertar_soldado_grupo3(&grupo_actual, &jugador_actual);            
+            } else {
+                cout << "Grupo no encontrado. Intente nuevamente." << endl;
+                continue; // Volver al inicio para seleccionar un grupo válido
+            }
+
+            jugador_actual = jugador_actual->prox; 
+        }
+    }
+    else{
+        cout<<"No hay grupos para insertar soldados"<<endl;
+    }  
+    
 }
+
 
 
 

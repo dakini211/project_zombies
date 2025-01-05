@@ -22,6 +22,15 @@ jugador *crear_soldado( int sald, string nom){
     return nuevo_jugador;    
 }
 
+jugador *crear_soldado_con_accesorio( int sald, string nom,accesorio*lista_accesorio){
+    jugador *nuevo_jugador =new jugador;
+    nuevo_jugador->nombre=nom;
+    nuevo_jugador->salud=sald;    
+    nuevo_jugador->prox=NULL;    
+    nuevo_jugador->accesorio_jugador=lista_accesorio;
+    return nuevo_jugador;    
+}
+
 bool lista_vacia_jugador(jugador *soldado){
     return soldado==NULL;
 }
@@ -410,10 +419,32 @@ void modificar_soldado(jugador**lista_soldados)
         }
     }
 }
-void vacia()
-{
+
+
+
+void insertar_ultimo_accesorio_jugador(jugador** lista_soldados, accesorio** accesorio_nuevo) {
+   if(listaVaciaAccesorios(*accesorio_nuevo))
+    {
+        cout<<"no hay accesorios"<<endl;
+        return;
+    }
+    else{
+         accesorio* nuevo = crear_accesorio((*accesorio_nuevo)->usos,(*accesorio_nuevo)->modificador,(*accesorio_nuevo)->nombre,(*accesorio_nuevo)->tipo,(*accesorio_nuevo)->codigo);
+         nuevo->prox=NULL;    
+        if (listaVaciaAccesorios((*lista_soldados)->accesorio_jugador)) {
+            (*lista_soldados)->accesorio_jugador = nuevo;
+        } else {
+            accesorio* mover = (*lista_soldados)->accesorio_jugador;
+            while (mover->prox != NULL) {
+                mover = mover->prox;
+            }
+            mover->prox = nuevo;
+        }
+    }
 
 }
+
+   
 
 
 
