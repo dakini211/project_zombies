@@ -1,4 +1,4 @@
-#ifndef MAPA_H
+#ifndef MAPA_H//HOLA CHAMO
 #define MAPA_H
 #include <iostream>
 #include <sstream>
@@ -990,12 +990,12 @@ int accesorio_menor_dano(accesorio*lista_accesorios)
     int dano_accesorio=0;
     while(mover!=NULL)
     {
-        if(mover->tipo=="Ataque" and primero_accesorio==false)
+        if(mover->tipo=="Ataque" && primero_accesorio==false)
         {
             dano_accesorio=mover->modificador;
             primero_accesorio=true;
         }
-        if(mover->tipo=="Ataque" and mover->modificador<dano_accesorio)
+        if(mover->tipo=="Ataque" && mover->modificador<dano_accesorio)
         {
             dano_accesorio=mover->modificador;
         }
@@ -1135,12 +1135,12 @@ int accesorio_defensa_juagdor(accesorio*lista_accesorios)
     int defensa_accesorio=0;
     while(mover!=NULL)
     {
-        if(mover->tipo=="Defensa" and primero_accesorio==false)
+        if(mover->tipo=="Defensa" && primero_accesorio==false)
         {
             defensa_accesorio=mover->modificador;
             primero_accesorio=true;
         }
-        if(mover->tipo=="Defensa" and mover->modificador>defensa_accesorio)
+        if(mover->tipo=="Defensa" && mover->modificador>defensa_accesorio)
         {
             defensa_accesorio=mover->modificador;
         }
