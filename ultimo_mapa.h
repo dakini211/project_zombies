@@ -1120,6 +1120,7 @@ jugador* buscar_jugador_por_id(jugador* lista_jugadores, int id) {
             return mover;
         }
         mover = mover->prox;
+        cont++;
     }
     return mover;
 }
@@ -1145,6 +1146,11 @@ int accesorio_defensa_juagdor(accesorio*lista_accesorios)
             defensa_accesorio=mover->modificador;
         }
         mover=mover->prox;
+    }
+    if(mover==NULL and primero_accesorio==false)
+    {
+        defensa_accesorio=0;
+        return defensa_accesorio;
     }
     return defensa_accesorio;   
 }
@@ -1379,11 +1385,12 @@ void juego2(grupo** lista_grupos, nodo** camino) {
             }
             if(primer_golpe==false)
             {
-                int id_persona_atacada=generar_dado(1,numero_max_jugadores);
-                jugador*jugador_atacado=buscar_jugador_por_id(actual->grupo_jugador,id_persona_atacada);
-                int defensa_jugador=accesorio_defensa_juagdor(jugador_atacado->accesorio_jugador);
-                accesorio_menor_defensa_durabilidad(&jugador_atacado->accesorio_jugador);
+                int id_persona_atacada=generar_dado(1,actual->numero_miembros);                
+                jugador*jugador_atacado=buscar_jugador_por_id(actual->grupo_jugador,id_persona_atacada);                             
+                int defensa_jugador=accesorio_defensa_juagdor(jugador_atacado->accesorio_jugador);                 
+                accesorio_menor_defensa_durabilidad(&jugador_atacado->accesorio_jugador);                
                 int danos_retribuido=retribucion_de_dano(dano_zombies,defensa_jugador);
+               
                 jugador_atacado->salud=jugador_atacado->salud+danos_retribuido;
                 accesorio*accesorio_defensa=buscar_accesorio_de_defensa(jugador_atacado->accesorio_jugador);
                 cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido atacado por los zombies y recibio: "<< danos_retribuido<<endl;
@@ -1413,6 +1420,7 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                 primer_golpe=true;                
             }
             else{
+                cout<<"1"<<endl;
                 jugador*jugador_atacado=jugador_menor_vida(actual->grupo_jugador);
                 int defensa_jugador=accesorio_defensa_juagdor(jugador_atacado->accesorio_jugador);
                 accesorio_menor_defensa_durabilidad(&jugador_atacado->accesorio_jugador);
