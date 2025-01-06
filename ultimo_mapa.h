@@ -1430,11 +1430,10 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                 if(accesorio_defensa!=NULL)
                 {
                     cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido salvado por el accesorio de defensa: "<< accesorio_defensa->nombre<<endl;
-                    //eliminar_accesorio_por_durabilidad(&mover_dano->accesorio_jugador, 0);
+                    
                 }
                 else{
-                    cout<<"El jugador: "<<jugador_atacado->nombre<<" no tiene accesorios de defensa"<<endl;
-                    //eliminar_accesorio_por_durabilidad(&mover_dano->accesorio_jugador, 0);
+                    cout<<"El jugador: "<<jugador_atacado->nombre<<" no tiene accesorios de defensa"<<endl;                    
                 }
                 accesorio*accesorio_supervivencia=buscar_accesorio_de_supervivencia_menor(jugador_atacado->accesorio_jugador);
                 
@@ -1451,8 +1450,8 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                     cout<<"El grupo: "<<actual->nombre_grupo<<" No a logrado despejar el lugar "<<endl;
                 }
                 
-                actualizar_vida_soldado(&actual->grupo_jugador,jugador_atacado);
-                //eliminar_jugadores_por_vida(&actual->grupo_jugador, 0);
+                actualizar_vida_soldado(&actual->grupo_jugador,jugador_atacado);                               
+                eliminar_jugadores_por_vida(&actual->grupo_jugador, 0);
                 if(lista_vacia_jugador(actual->grupo_jugador))
                 {
                     cout<<"El grupo: "<<actual->nombre_grupo<<" a sido eliminado por los zombies"<<endl;
@@ -1474,7 +1473,7 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                 if(accesorio_defensa!=NULL)
                 {
                     cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido salvado por el accesorio de defensa: "<< accesorio_defensa->nombre<<endl;
-                    //eliminar_accesorio_por_durabilidad(&mover_dano->accesorio_jugador, 0);
+                    
                 }
                 else{
                     cout<<"El jugador: "<<jugador_atacado->nombre<<" no tiene accesorios de defensa"<<endl;
@@ -1486,7 +1485,7 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                     accesorio_menor_supervivencia_durabilidad(&jugador_atacado->accesorio_jugador);
                     jugador_atacado->salud=jugador_atacado->salud+accesorio_supervivencia->modificador;
                     cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido salvado por el accesorio de supervivencia: "<< accesorio_supervivencia->nombre<< "y recupero: "<<accesorio_supervivencia->modificador<<endl;
-                    //eliminar_accesorio_por_durabilidad(&mover_dano->accesorio_jugador, 0);
+                    
                 }
                 else{
                     cout<<"El jugador: "<<jugador_atacado->nombre<<" no tiene accesorios de supervivencia"<<endl;
@@ -1496,7 +1495,7 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                 }
                 
                 actualizar_vida_soldado(&actual->grupo_jugador,jugador_atacado);
-                //eliminar_jugadores_por_vida(&actual->grupo_jugador, 0);
+                eliminar_jugadores_por_vida(&actual->grupo_jugador, 0);
                 if(lista_vacia_jugador(actual->grupo_jugador))
                 {
                     cout<<"El grupo: "<<actual->nombre_grupo<<" a sido eliminado por los zombies"<<endl;
@@ -1507,8 +1506,7 @@ void juego2(grupo** lista_grupos, nodo** camino) {
 
             }
             system("pause");
-            system("cls");
-            
+            system("cls");           
             
 
             

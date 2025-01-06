@@ -118,6 +118,13 @@ int main(){
                                         break;
                                     }
                                     case '3':{
+                                        if(cargados_estaciones==false)
+                                        {
+                                            cargar_mapa(lista_mapa);
+                                            asignar_nombres(lista_mapa, lista_mapa2);                                           
+                                            cargados_estaciones=true;
+                                        }
+                                        mostrar_estaciones(lista_mapa2);
                                         if (lista_mapa == NULL) {
                                             cout << "El grafo está vacío." << endl;
                                         } 
@@ -129,6 +136,9 @@ int main(){
                                             camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
                                             camino_menor_zombies(lista_mapa, camino_corto_zombies, estacion_partida, estacion_llegada);
                                             mostrar_estaciones(camino_corto_zombies); // Mostrar la lista camino_corto_peso
+                                            system("pause");
+                                            system("cls"); 
+                                            juego2(&lista_grupo,&camino_corto_zombies);
                                         }
                                         system("pause");
                                         break;
