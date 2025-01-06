@@ -1360,6 +1360,7 @@ void eliminar_jugadores_por_vida_y_transferir_accesorios(jugador** lista_soldado
 
             jugador* aux = actual;
             actual = actual->prox;
+            cout<<"El jugador: "<<aux->nombre<<" a sido devorado"<<endl;
             delete aux;
         } else {
             anterior = actual;
@@ -1616,7 +1617,7 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                 return;
             }            
         }
-       
+       actual = actual->prox;
         
     }
 }
