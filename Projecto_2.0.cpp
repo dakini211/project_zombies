@@ -146,6 +146,11 @@ int main(){
                                         break;
                                     }
                                     case '4':{
+                                        lista_mapa = NULL;
+                                        lista_mapa2=NULL;
+                                        cargar_mapa(lista_mapa);
+                                        asignar_nombres(lista_mapa, lista_mapa2);
+                                        mostrar_estaciones(lista_mapa2);
                                         if (lista_mapa == NULL) {
                                             cout << "El grafo está vacío." << endl;
                                         } 
