@@ -1201,6 +1201,35 @@ accesorio*buscar_accesorio_de_supervivencia_menor(accesorio*lista_accesorios)
     }
     return mover;
 }
+
+accesorio*buscar_accesorio_de_defensa(accesorio*lista_accesorios)
+{
+    if(listaVaciaAccesorios(lista_accesorios))
+    {
+        return NULL;
+    }
+    accesorio*mover=lista_accesorios;
+    bool primero_accesorio=false;
+    accesorio*defensa_accesorio=NULL;
+    while(mover!=NULL)
+    {
+        if(mover->tipo=="Defensa" and primero_accesorio==false)
+        {
+            defensa_accesorio=crear_accesorio(mover->usos,mover->modificador,mover->nombre,mover->tipo,mover->codigo);
+            primero_accesorio=true;
+        }
+        if(mover->tipo=="Defensa" and mover->modificador>defensa_accesorio->modificador)
+        {
+            defensa_accesorio->codigo=mover->codigo;
+            defensa_accesorio->modificador=mover->modificador;
+            defensa_accesorio->nombre=mover->nombre;
+            defensa_accesorio->tipo=mover->tipo;
+            defensa_accesorio->usos=mover->usos;
+        }
+        mover=mover->prox;
+    }
+    return defensa_accesorio; 
+}
 void accesorio_menor_supervivencia_durabilidad(accesorio** lista_accesorios) {
     if (listaVaciaAccesorios(*lista_accesorios)) {
         return;
@@ -1234,6 +1263,24 @@ void actualizar_vida_soldado(jugador** lista_jugadores,jugador*jugador_atacado)
         }
         mover=mover->prox;
     }
+}
+
+jugador* jugador_menor_vida(jugador* lista_jugadores) {
+    if (lista_jugadores == NULL) {
+        return NULL;
+    }
+
+    jugador* menor = lista_jugadores;
+    jugador* mover = lista_jugadores->prox;
+
+    while (mover != NULL) {
+        if (mover->salud < menor->salud) {
+            menor = mover;
+        }
+        mover = mover->prox;
+    }
+
+    return menor;
 }
 
 void juego2(grupo** lista_grupos, nodo** camino) {
@@ -1338,20 +1385,65 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                 accesorio_menor_defensa_durabilidad(&jugador_atacado->accesorio_jugador);
                 int danos_retribuido=retribucion_de_dano(dano_zombies,defensa_jugador);
                 jugador_atacado->salud=jugador_atacado->salud+danos_retribuido;
+                accesorio*accesorio_defensa=buscar_accesorio_de_defensa(jugador_atacado->accesorio_jugador);
                 cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido atacado por los zombies y recibio: "<< danos_retribuido<<endl;
+                if(accesorio_defensa!=NULL)
+                {
+                    cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido salvado por el accesorio de defensa: "<< accesorio_defensa->nombre<<endl;
+                }
+                else{
+                    cout<<"El jugador: "<<jugador_atacado->nombre<<" no tiene accesorios de defensa"<<endl;
+                }
                 accesorio*accesorio_supervivencia=buscar_accesorio_de_supervivencia_menor(jugador_atacado->accesorio_jugador);
+                
                 if(accesorio_supervivencia!=NULL)
                 {
                     accesorio_menor_supervivencia_durabilidad(&jugador_atacado->accesorio_jugador);
                     jugador_atacado->salud=jugador_atacado->salud+accesorio_supervivencia->modificador;
-                    cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido salvado por un accesorio de supervivencia y recupero: "<<accesorio_supervivencia->modificador<<endl;
+                    cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido salvado por el accesorio de supervivencia: "<< accesorio_supervivencia->nombre<< "y recupero: "<<accesorio_supervivencia->modificador<<endl;
                 }
                 else{
                     cout<<"El jugador: "<<jugador_atacado->nombre<<" no tiene accesorios de supervivencia"<<endl;
+                    system("pause");
+                    system("cls");
+                    cout<<"El grupo: "<<actual->nombre_grupo<<" No a logrado despejar el lugar "<<endl;
                 }
                 
                 actualizar_vida_soldado(&actual->grupo_jugador,jugador_atacado);
                 primer_golpe=true;                
+            }
+            else{
+                jugador*jugador_atacado=jugador_menor_vida(actual->grupo_jugador);
+                int defensa_jugador=accesorio_defensa_juagdor(jugador_atacado->accesorio_jugador);
+                accesorio_menor_defensa_durabilidad(&jugador_atacado->accesorio_jugador);
+                int danos_retribuido=retribucion_de_dano(dano_zombies,defensa_jugador);
+                jugador_atacado->salud=jugador_atacado->salud+danos_retribuido;
+                accesorio*accesorio_defensa=buscar_accesorio_de_defensa(jugador_atacado->accesorio_jugador);
+                cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido atacado por los zombies y recibio: "<< danos_retribuido<<endl;
+                if(accesorio_defensa!=NULL)
+                {
+                    cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido salvado por el accesorio de defensa: "<< accesorio_defensa->nombre<<endl;
+                }
+                else{
+                    cout<<"El jugador: "<<jugador_atacado->nombre<<" no tiene accesorios de defensa"<<endl;
+                }
+                accesorio*accesorio_supervivencia=buscar_accesorio_de_supervivencia_menor(jugador_atacado->accesorio_jugador);
+                
+                if(accesorio_supervivencia!=NULL)
+                {
+                    accesorio_menor_supervivencia_durabilidad(&jugador_atacado->accesorio_jugador);
+                    jugador_atacado->salud=jugador_atacado->salud+accesorio_supervivencia->modificador;
+                    cout<<"El jugador: "<<jugador_atacado->nombre<<" a sido salvado por el accesorio de supervivencia: "<< accesorio_supervivencia->nombre<< "y recupero: "<<accesorio_supervivencia->modificador<<endl;
+                }
+                else{
+                    cout<<"El jugador: "<<jugador_atacado->nombre<<" no tiene accesorios de supervivencia"<<endl;
+                    system("pause");
+                    system("cls");
+                    cout<<"El grupo: "<<actual->nombre_grupo<<" No a logrado despejar el lugar "<<endl;
+                }
+                
+                actualizar_vida_soldado(&actual->grupo_jugador,jugador_atacado);
+
             }
             system("pause");
             system("cls");
