@@ -365,7 +365,6 @@ void dijkstra(nodo* lista, nodo*& camino_corto, string origen, string destino) {
         cout << "El grafo está vacío." << endl;
         return;
     }
-
     // Inicializar todos los nodos
     nodo* mover = lista;
     while (mover != NULL) {
@@ -374,10 +373,8 @@ void dijkstra(nodo* lista, nodo*& camino_corto, string origen, string destino) {
         mover->visitado = false;    // Marcar como no visitado
         mover = mover->prox;
     }
-
     nodo* nodoOrigen = NULL;
     nodo* nodoDestino = NULL;
-
     // Encontrar los nodos de origen y destino
     mover = lista;
     while (mover != NULL) {
@@ -385,21 +382,17 @@ void dijkstra(nodo* lista, nodo*& camino_corto, string origen, string destino) {
         if (mover->estacion == destino) nodoDestino = mover;
         mover = mover->prox;
     }
-
     // Verificar si los nodos de origen y destino existen
     if (nodoOrigen == NULL || nodoDestino == NULL) {
         cout << "Uno o ambos nodos no existen." << endl;
         return;
     }
-
     nodoOrigen->distancia = 0; // La distancia al nodo de origen es 0
     nodo* actual = nodoOrigen;
-
     // Algoritmo de Dijkstra
     while (actual != NULL) {
         actual->visitado = true; // Marcar el nodo actual como visitado
         lista_adyacencia* adyacente = actual->adyacencia;
-
         // Actualizar las distancias a los nodos adyacentes
         while (adyacente != NULL) {
             nodo* vertice = Buscar_estacion(lista, adyacente->numero_estacion);
@@ -412,7 +405,6 @@ void dijkstra(nodo* lista, nodo*& camino_corto, string origen, string destino) {
             }
             adyacente = adyacente->prox;
         }
-
         // Encontrar el siguiente nodo no visitado con la menor distancia
         nodo* menorNodo = NULL;
         int menorDistancia = INT_MAX;
@@ -426,21 +418,17 @@ void dijkstra(nodo* lista, nodo*& camino_corto, string origen, string destino) {
         }
         actual = menorNodo;
     }
-
     // Construir la lista camino_corto y devolver la distancia más corta
     if (nodoDestino->distancia == INT_MAX) {
         cout << "No hay camino entre " << origen << " y " << destino << "." << endl;
     } else {
-        nodo* mov = nodoOrigen;
+        nodo* mov = nodoDestino;
         while (mov != NULL) {
             nodo* nuevo_nodo = nuevo_estacion(mov->estacion, mov->numero_estacion);
             insertar_ultimo_estacion(camino_corto, nuevo_nodo->estacion, nuevo_nodo->numero_estacion);
             mov = mov->camino;
         }
-        system("pause");
-        system("cls");
         cout << "La distancia más corta desde " << origen << " hasta " << destino << " es: " << nodoDestino->distancia << endl;
-        system("pause");
     }
     nodo* mover_camino = camino_corto;
     nodo* mover_lista = lista;
@@ -455,7 +443,6 @@ void dijkstra(nodo* lista, nodo*& camino_corto, string origen, string destino) {
         mover_camino = mover_camino->prox;
     }
 }
-
 int contar_zombies(zombies_estaciones* lista_zombies) {
     int total = 0;
     while (lista_zombies != NULL) {
@@ -1605,7 +1592,6 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                     cout<<"El grupo: "<<actual->nombre_grupo<<" a sido eliminado por los zombies"<<endl;
                     system("pause");
                     system("cls");
-
                     break;
                 }
 
@@ -1624,8 +1610,7 @@ void juego2(grupo** lista_grupos, nodo** camino) {
         if(lista_vacia_jugador(actual->grupo_jugador))
         {
             eliminar_grupo(&(*lista_grupos),actual->nombre_grupo);
-            actual=buscar_grupo2(&(*lista_grupos));
-            if(listaVaciaGrupo(actual))
+            if(listaVaciaGrupo(*lista_grupos))
             {
                 cout<<"La Humanidad a sido eliminada por los zombies"<<endl;
                 return;
