@@ -431,7 +431,7 @@ void dijkstra(nodo* lista, nodo*& camino_corto, string origen, string destino) {
     if (nodoDestino->distancia == INT_MAX) {
         cout << "No hay camino entre " << origen << " y " << destino << "." << endl;
     } else {
-        nodo* mov = nodoDestino;
+        nodo* mov = nodoOrigen;
         while (mov != NULL) {
             nodo* nuevo_nodo = nuevo_estacion(mov->estacion, mov->numero_estacion);
             insertar_ultimo_estacion(camino_corto, nuevo_nodo->estacion, nuevo_nodo->numero_estacion);
@@ -1147,7 +1147,7 @@ int accesorio_defensa_juagdor(accesorio*lista_accesorios)
         }
         mover=mover->prox;
     }
-    if(mover==NULL and primero_accesorio==false)
+    if(mover==NULL && primero_accesorio==false)
     {
         defensa_accesorio=0;
         return defensa_accesorio;
@@ -1219,12 +1219,12 @@ accesorio*buscar_accesorio_de_defensa(accesorio*lista_accesorios)
     accesorio*defensa_accesorio=NULL;
     while(mover!=NULL)
     {
-        if(mover->tipo=="Defensa" and primero_accesorio==false)
+        if(mover->tipo=="Defensa" && primero_accesorio==false)
         {
             defensa_accesorio=crear_accesorio(mover->usos,mover->modificador,mover->nombre,mover->tipo,mover->codigo);
             primero_accesorio=true;
         }
-        if(mover->tipo=="Defensa" and mover->modificador>defensa_accesorio->modificador)
+        if(mover->tipo=="Defensa" && mover->modificador>defensa_accesorio->modificador)
         {
             defensa_accesorio->codigo=mover->codigo;
             defensa_accesorio->modificador=mover->modificador;
