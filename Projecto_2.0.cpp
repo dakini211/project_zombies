@@ -44,10 +44,12 @@ int main(){
             case '1':{
                 char opcion_jugar = '0';
                 cout<<"Desa cargar partida o crear una desde cero?"<<endl;
-                while(opcion_jugar != '3'){
+                while(opcion_jugar != '2'){
+                    cout<<"                     Jugar                       "<<endl;
+                    cout << "=============================================" << "\n";
                     cout << "1. Cargar partida " << "\n";
-                    cout << "2. Crear partida " << "\n";
-                    cout << "3. Salir " << "\n";
+                    cout << "2. Salir " << "\n";
+                    cout << "=============================================" << "\n";
                     cout << "Ingrese una opcion (1 al 3): ";
                     cin >> opcion_jugar;
                     switch (opcion_jugar)
@@ -159,15 +161,6 @@ int main(){
                                 }
                             }
                             break;  
-                        }
-
-                    case '2':{
-                           cout<<"en desarrollo";
-                           break;
-                        }
-
-                    case '3':{                                                  
-                         break;
                         }
                     default:
                         break;
