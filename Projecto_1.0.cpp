@@ -7,11 +7,10 @@
 #include "zombies.h"
 #include "mapa.h"
 #include "grupos.h"
-
 using namespace std;
 
 int main(){
- jugador *lista_soldados = NULL;    
+    jugador *lista_soldados = NULL;    
     grupo *lista_grupo = NULL;
     zombies *lista_zombies = NULL;
     accesorio*lista_accesorios=NULL;
@@ -22,9 +21,11 @@ int main(){
     nodo *camino_corto_sobreviviente = NULL;//nuevo
     ifstream leer_zombies;
     string nombre_grupo, estacion_partida, estacion_llegada;//nuevo
-    char opcion = '0'; // Inicializamos la opción    
+    char opcion_principal = '0'; // Inicializamos la opción principal
+    bool cargados_soldados=false;
+    bool cargados_estaciones=false;
 
-    while (opcion != '4') {
+    while (opcion_principal != '4') {
         system("cls");
         cout << "        \e[47mMenu\e[0m        " << "\n";
         cout << "Cristian Teran" << "\n";
@@ -37,54 +38,157 @@ int main(){
         cout << "4. Salir " << "\n";                    
         cout << "====================" << "\n";
         cout << "Ingrese una opcion (1 al 4): ";
-        cin >> opcion;
+        cin >> opcion_principal;
 
-        switch (opcion) {
+        switch (opcion_principal) {
             case '1':{
-                //cout << "Esta opción no está disponible aún." << "\n";
-                cout<<"\e[0;33mDesea cargar partida o crear una desde cero?\e[0m"<<endl;
-                char opcion_opciones = '0';
-                while(opcion_opciones!='3'){
+                char opcion_jugar = '0';
+                cout<<"Desa cargar partida o crear una desde cero?"<<endl;
+                while(opcion_jugar != '3'){
                     cout << "1. Cargar partida " << "\n";
                     cout << "2. Crear partida " << "\n";
                     cout << "3. Salir " << "\n";
                     cout << "Ingrese una opcion (1 al 3): ";
-                    cin >> opcion_opciones;
-                    switch (opcion_opciones){
+                    cin >> opcion_jugar;
+                    switch (opcion_jugar)
+                    {
                     case '1':{
-                            if((archivoExiste("Accesorio")))
-                            {
-                                cout<<"\e[0;31mpartida no se puede cargar\e[0m"<<endl;
-                                opcion_opciones='3';
+                            if((archivoExiste("Accesorio"))){
+                                cout<<"partida no se puede cargar"<<endl;
+                                opcion_jugar = '3';
                             }
-                            else{
-                                carga_de_accesorio(&lista_accesorios);
-                                cargar_jugadores(&lista_soldados);
-                                cout<<"\e[0;32mLos archivos se han cargado con exito!!\e[0m\n";
-                                cout<<"\e[0;33mPara editar debes ir a >> Menu >> Opciones\e[0m"<<endl;
-                                mostrarListaJugador(lista_soldados);
-                                crear_grupos_usuario(&lista_grupo,lista_soldados);
+                            else{                                
+                                char opcion_misiones = '0';
+                                while(opcion_misiones != '5'){
+                                    system("cls");
+                                    cout << "        \e[47mMenu de Misiones\e[0m        " << "\n";
+                                    cout << "1. Definir miembros y grupo" << "\n";
+                                    cout << "2. Encontrar el camino más corto entre dos puntos" << "\n";
+                                    cout << "3. Encontrar el camino con menor cantidad de zombies o menor fuerza de zombies" << "\n";
+                                    cout << "4. Encontrar el camino más corto donde pueda existir la posibilidad de un sobreviviente que llegue con la cura" << "\n";
+                                    cout << "5. Volver " << "\n";                    
+                                    cout << "=============================================" << "\n";
+                                    cout << "Ingrese una opcion (1 al 5): ";
+                                    cin >> opcion_misiones;
+                                    switch (opcion_misiones){
+                                    case '1':{
+                                        if(cargados_soldados==false)
+                                        {
+                                            carga_de_accesorio(&lista_accesorios);
+                                            cargar_jugadores(&lista_soldados);                                            
+                                            crear_grupos_usuario_accesorios(&lista_grupo, &lista_soldados,&lista_accesorios);
+                                            cargar_zombies(lista_zombies);
+                                            cargados_soldados=true;
+                                        }
+                                        else{
+                                            cout<<"Ya se han cargado los datos"<<endl;
+                                        }                                        
+                                        system("pause");
+                                        system("cls");
+                                        break;                                       
+                                    }
+                                    case '2':{
+                                        if(cargados_estaciones==false)
+                                        {
+                                            cargar_mapa(lista_mapa);
+                                            asignar_nombres(lista_mapa, lista_mapa2);                                           
+                                            cargados_estaciones=true;
+                                        }
+                                                                                    
+                                            mostrar_estaciones(lista_mapa2);
+                                            if (lista_mapa == NULL) {
+                                                cout << "El grafo está vacío." << endl;
+                                            } 
+                                            else {
+                                                cout << "Ingrese la estación de partida: ";
+                                                cin>> estacion_partida;
+                                                cout << "Ingrese la estación de llegada: ";
+                                                cin>>estacion_llegada;
+                                                camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
+                                                dijkstra(lista_mapa, camino_corto_peso, estacion_partida, estacion_llegada);
+                                                mostrar_estaciones(camino_corto_peso); // Mostrar la lista camino_corto_peso
+                                                system("pause");
+                                                system("cls"); 
+                                                juego2(&lista_grupo,&camino_corto_peso);
+                                                
+                                            }
+                                            system("pause");                                            
+                                                                              
+                                       
+                                        break;
+                                    }
+                                    case '3':{
+                                        if(cargados_estaciones==false)
+                                        {
+                                            cargar_mapa(lista_mapa);
+                                            asignar_nombres(lista_mapa, lista_mapa2);                                           
+                                            cargados_estaciones=true;
+                                        }
+                                        mostrar_estaciones(lista_mapa2);
+                                        if (lista_mapa == NULL) {
+                                            cout << "El grafo está vacío." << endl;
+                                        } 
+                                        else {
+                                            cout << "Ingrese la estación de partida: ";
+                                            cin>> estacion_partida;
+                                            cout << "Ingrese la estación de llegada: ";
+                                            cin>>estacion_llegada;
+                                            camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
+                                            camino_menor_zombies(lista_mapa, camino_corto_zombies, estacion_partida, estacion_llegada);
+                                            mostrar_estaciones(camino_corto_zombies); // Mostrar la lista camino_corto_peso
+                                            system("pause");
+                                            system("cls"); 
+                                            juego2(&lista_grupo,&camino_corto_zombies);
+                                        }
+                                        system("pause");
+                                        break;
+                                    }
+                                    case '4':{
+                                        if (lista_mapa == NULL) {
+                                            cout << "El grafo está vacío." << endl;
+                                        } 
+                                        else {
+                                            cout << "Ingrese la estación de partida: ";
+                                            cin>> estacion_partida;                                            
+                                            cout << "Ingrese la estación de llegada: ";
+                                            cin>> estacion_llegada;
+                                            camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
+                                            camino_posible_sobreviviente(lista_mapa, camino_corto_sobreviviente, estacion_llegada, estacion_partida, 10);
+                                            mostrar_estaciones(camino_corto_sobreviviente); // Mostrar la lista camino_corto_peso
+                                        }
+                                        system("pause");
+                                        break;
+                                    }
+                                    case '5':{
+                                        cout << "Volviendo al menú principal..." << endl;
+                                        break;
+                                    }
+                                    default:
+                                        break;
+                                    }
+                                }
                             }
-                            system("cls");                             
                             break;  
                         }
+
                     case '2':{
                            cout<<"en desarrollo";
                            break;
                         }
-                    case '3':{
-                           cout<<"saliendo"<<endl;
-                           break;
+
+                    case '3':{                                                  
+                         break;
                         }
                     default:
                         break;
                     }
-                }                
-                break;   
+                }
+
+                system("pause");
+            break;
             }
             case '2': {
-                char opcion_opciones = '0'; // Variable para las opciones del submenú
-
+                char opcion_opciones = '0';
                 while (opcion_opciones != '4') {
                     system("cls");
                     cout << "        \e[47mOpciones\e[0m        " << "\n";
@@ -98,8 +202,9 @@ int main(){
                     cin >> opcion_opciones;
 
                     switch (opcion_opciones) {
-                        case '1':
-                            while (opcion != '6') {
+                        case '1': {
+                            char opcion_zombies = '0';
+                            while (opcion_zombies != '6') {
                                 system("cls");
                                 cout << "          \e[47mGestionar zombies\e[0m      \n";
                                 cout << "======================================================\n";
@@ -111,20 +216,14 @@ int main(){
                                 cout << "6. Salir\n";
                                 cout << "======================================================\n";
                                 cout << "Ingrese una opcion: ";
-                                cin >> opcion;
-                                switch (opcion) {
+                                cin >> opcion_zombies;
+                                switch (opcion_zombies) {
                                     case '1':
-                                        if(lista_zombies != NULL){
-                                            cout << "Ya se han cargado zombies\n";
-                                        }
-                                        else{
-                                            cargar_zombies(lista_zombies);
-                                            system("pause");
-                                        }
+                                        cargar_zombies(lista_zombies);
+                                        system("pause");
                                     break;
                                     case '2':
                                         llenar_zombie(lista_zombies);
-                                        cout << "\e[0;32mZombies agregados con exito\e[0m\n";
                                         system("pause");    
                                     break;
                                     case '3':
@@ -137,7 +236,7 @@ int main(){
                                     break;
                                     case '5':
                                         char eleccion;
-                                        cout << "\e[0;33mDesea eliminar un solo zombie (1) o todas las apariciones de un zombie (2)?: \e[0m";
+                                        cout << "Desea eliminar un solo zombie (1) o todas las apariciones de un zombie (2)?: ";
                                         cin >> eleccion;
 
                                         if (eleccion == '1') {
@@ -145,7 +244,6 @@ int main(){
                                             cout << "Ingrese el nombre del zombie a eliminar: ";
                                             cin >> nombre_zombie;
                                             eliminar(lista_zombies, nombre_zombie);
-                                            cout << "\e[0;32mZombie eliminado con exito\e[0m\n";
                                         } 
                                         else if (eleccion == '2'){
                                             string nombre_zombie;
@@ -154,18 +252,20 @@ int main(){
                                             eliminar_apariciones(lista_zombies, nombre_zombie);
                                         } 
                                         else{
-                                            cout << "\e[0;31mOpcion invalida\e[0m\n";
+                                            cout << "Opcion invalida\n";
                                         }
                                         system("pause");
                                     break;
                                     default:
-                                        cout << "\e[0;31mOpcion invalida\e[0m\n";
+                                        cout << "Opcion invalida\n";
                                     break;
                                 }
                             }
-                        break;
-                        case '2': 
-                            while (opcion != '5') {
+                            break;
+                        }
+                        case '2': {
+                            char opcion_grupos = '0';
+                            while (opcion_grupos != '5') {
                                 system("cls");
                                 cout << "        \e[47mGestionar Grupos\e[0m        " << "\n";
                                 cout << "======================================" << "\n";
@@ -176,9 +276,9 @@ int main(){
                                 cout << "5. Volver " << "\n";
                                 cout << "======================================" << "\n";
                                 cout << "Ingrese una opcion (1 al 5): ";
-                                cin >> opcion;
+                                cin >> opcion_grupos;
 
-                                switch (opcion) {
+                                switch (opcion_grupos) {
                                     case '1':
                                         insertar_ultimo_grupos(&lista_grupo);
                                         system("pause");
@@ -190,6 +290,7 @@ int main(){
                                     case '3':
                                         eliminar_grupo(&lista_grupo, pedir_nombre_grupo());
                                         mostrar_grupos(lista_grupo);
+                                        //cargados=false;
                                         system("pause");
                                         break;
                                     case '4':
@@ -199,77 +300,119 @@ int main(){
                                     case '5':
                                         break;
                                     default:
-                                        cout << "\e[0;31mOpcion invalida, vuelva a intentarlo\e[0m" << endl;
+                                        cout << "Opcion invalida, vuelva a intentarlo" << endl;
                                         system("pause");
                                 }
                             }
-                            break;
-                        case '3':
-                            while (opcion != '6'){
+                        break;
+                        }
+                        case '3': {
+                            char opcion_mapa = '0';
+                            while (opcion_mapa != '8'){
                                 system("cls");
                                 cout << "    \e[47mGestionar mapa\e[0m    \n";
-                                cout<<"===================================="<<"\n";
-                                cout << "1. Cargar mapa\n";
-                                cout << "2. Agregar estacion\n";
-                                cout << "3. Mostrar estaciones\n";
-                                cout << "4. Modificar estacion\n";
-                                cout << "5. Eliminar estacion\n";
-                                cout << "6. Salir\n";
-                                cout<<"===================================="<<"\n";
-                                cout<<"Ingrese una opcion (1 al 5): ";
-                                cin >> opcion;
-                                switch (opcion) {
+                                cout << "======================================================\n";
+                                cout << "1.- Cargar mapa\n";
+                                cout << "2.- Agregar estacion\n";
+                                cout << "3.- Agregar adyacencias\n";
+                                cout << "4.- Agregar zombies\n";
+                                cout << "5.- Mostrar estaciones\n";
+                                cout << "6.- Modificar estacion\n";
+                                cout << "7.- Eliminar estacion\n";
+                                cout << "8.- Salir\n";
+                                cout << "======================================================\n";
+                                cout << "Ingrese la opcion deseada del menu: ";
+                                cin >> opcion_mapa;
+                                switch (opcion_mapa) {
                                     case '1':
-                                        if(lista_mapa != NULL){
-                                        cout << "Ya se ha cargado un mapa\n";
-                                        }
-                                        else{
-                                            cargar_mapa(lista_mapa);
-                                            cout<<"\e[0;32mMapa cargado con exito\e[0m"<<endl;
-                                        }
+                                        cargar_mapa(lista_mapa);
+                                        asignar_nombres(lista_mapa, lista_mapa2);
                                         system("pause");
                                     break;
-                                    case '2'    :
-                                        agregar_estacion(lista_mapa);
+                                    case '2':
+                                        llenar_estaciones(lista_mapa2);
                                         system("pause");
                                     break;
                                     case '3':
-                                        system("cls");
-                                        cout << "                \e[47mMostrar mapa\e[0m     " << endl;
-                                        cout<<"==================================================="<<"\n";
-                                        mostrar_estaciones(lista_mapa);
+                                        if (lista_mapa2 == NULL) {
+                                            cout << "El grafo está vacío." << endl;
+                                        }   
+                                        else {
+                                            string nombre_est;
+                                            cout << "Ingrese  la estación a la que desea agregar adyacencias: ";
+                                            cin >> nombre_est;
+                                            nodo* ubicacion = Buscar_estacion_nom(lista_mapa2, nombre_est);
+                                            if (ubicacion == NULL) {
+                                                cout << "Estación no encontrada." << endl;
+                                            } 
+                                            else {
+                                                agregar_adyacencias(lista_mapa2, ubicacion);
+                                            }
+                                        }
                                         system("pause");
                                     break;
                                     case '4':
-                                        modificar_estacion(lista_mapa);
+                                        if (lista_mapa2 == NULL) {
+                                            cout << "El grafo está vacío." << endl;
+                                        }   
+                                        else {
+                                            string nombre_est;
+                                            cout << "Ingrese la estación a la que desea agregar zombies: ";
+                                            cin >> nombre_est;
+                                            nodo* ubicacion = Buscar_estacion_nom(lista_mapa2, nombre_est);
+                                            if (ubicacion == NULL) {
+                                                cout << "Estación no encontrada." << endl;
+                                            } 
+                                            else {
+                                                agregar_zombies(ubicacion);
+                                            }
+                                        }
                                         system("pause");
                                     break;
                                     case '5':
-                                        eliminar_vertice(lista_mapa);
+                                        if (lista_mapa2 == NULL) {
+                                            cout << "El grafo está vacío." << endl;
+                                        }   
+                                        else {
+                                            mostrar_estaciones(lista_mapa2);
+                                        }
+                                        system("pause");
+                                    break;
+                                    case '6':
+                                        if (lista_mapa2 == NULL) {
+                                            cout << "El grafo está vacío." << endl;
+                                        }   
+                                        else {
+                                            modificar_estacion(lista_mapa2);
+                                        }
+                                        system("pause");
+                                    break;
+                                    case '7':
+                                        if (lista_mapa2 == NULL) {
+                                            cout << "El grafo está vacío." << endl;
+                                        }   
+                                        else {
+                                            eliminar_vertice(lista_mapa2);
+                                        }
                                         system("pause");
                                     break;
                                     default:
-                                        cout << "\e[0;31mOpcion no valida\e[0m\n";
+                                        cout << "Opción inválida. Intente nuevamente." << endl;
                                         system("pause");
                                     break;
                                 }
                             }
                         break;
-                        case '4':
-                        {                            
-                            break;
                         }
                         default:
-                            cout << "Opcion invalida. Intente nuevamente." << endl;
+                            cout << "Opcion invalida, vuelva a intentarlo" << endl;
                             system("pause");
-                        break;
+                        }
                     }
-                }
                 break;
             }
-
             case '3':
-                cout << "Reglas del juego no disponibles aun." << "\n";
+                cout << "Reglas del juego no disponibles aún." << "\n";
                 system("pause");
                 break;
 
@@ -278,7 +421,7 @@ int main(){
                 break;
 
             default:
-                cout << "Opcion invalida. Intente nuevamente." << endl;
+                cout << "Opción inválida. Intente nuevamente." << endl;
                 system("pause");
         }
     }
@@ -287,8 +430,8 @@ int main(){
     delete lista_soldados;
     delete lista_zombies;    
     delete lista_grupo;
+    delete lista_mapa2;
     delete lista_mapa;
-    //if((archivoExiste("Soldado") or archivoVacio("Soldado"))and(archivoExiste("Accesorio") or archivoVacio("Accesorio")))
     return 0;
 }
 

@@ -1314,10 +1314,110 @@ void eliminar_jugadores_por_vida(jugador** lista_soldado, int vida_limite) {
 
             jugador* aux = actual;
             actual = actual->prox;
+            cout<<"El jugador: "<<aux->nombre<<" a sido devorado"<<endl;
             delete aux;
         } else {
             anterior = actual;
             actual = actual->prox;
+        }
+    }
+}
+
+void transferir_accesorios(jugador* destino, accesorio* accesorios) {
+    if (destino == NULL || accesorios == NULL) {
+        return;
+    }
+
+    accesorio* mover = accesorios;
+    while (mover != NULL) {
+        accesorio* nuevo_accesorio = new accesorio;
+        nuevo_accesorio->usos = mover->usos;
+        nuevo_accesorio->modificador = mover->modificador;
+        nuevo_accesorio->nombre = mover->nombre;
+        nuevo_accesorio->tipo = mover->tipo;
+        nuevo_accesorio->codigo = mover->codigo;
+        nuevo_accesorio->prox = destino->accesorio_jugador;
+        destino->accesorio_jugador = nuevo_accesorio;
+        mover = mover->prox;
+    }
+}
+
+void eliminar_jugadores_por_vida_y_transferir_accesorios(jugador** lista_soldado, int vida_limite) {
+    if (lista_vacia_jugador(*lista_soldado)) {
+        cout << "No hay soldados a eliminar" << endl;
+        return;
+    }
+
+    jugador* actual = *lista_soldado;
+    jugador* anterior = NULL;
+
+    while (actual != NULL) {
+        if (actual->salud <= vida_limite) {
+            jugador* siguiente = actual->prox;
+            if (siguiente != NULL) {
+                transferir_accesorios(siguiente, actual->accesorio_jugador);
+            }
+
+            if (anterior == NULL) {
+                *lista_soldado = actual->prox;
+            } else {
+                anterior->prox = actual->prox;
+            }
+
+            accesorio* borrar_accesorio = actual->accesorio_jugador;
+            while (borrar_accesorio != NULL) {
+                accesorio* aux = borrar_accesorio;
+                borrar_accesorio = borrar_accesorio->prox;
+                delete aux;
+            }
+
+            jugador* aux = actual;
+            actual = actual->prox;
+            delete aux;
+        } else {
+            anterior = actual;
+            actual = actual->prox;
+        }
+    }
+}
+
+void ordenar_lista_jugadores(jugador**lista_jugadores)
+{
+    if(lista_vacia_jugador(*lista_jugadores))
+    {
+        return;
+    }
+    else{
+        jugador*mover=*lista_jugadores;
+        jugador*auxiliar=NULL;
+        while(mover!=NULL)
+        {
+            auxiliar=mover->prox;
+            while(auxiliar!=NULL)
+            {
+                if(mover->salud>auxiliar->salud)
+                {
+                    jugador*aux=mover;
+                    mover->prox=auxiliar->prox;
+                    auxiliar->prox=aux;
+                    if(mover==*lista_jugadores)
+                    {
+                        *lista_jugadores=auxiliar;
+                    }
+                    else
+                    {
+                        jugador*anterior=*lista_jugadores;
+                        while(anterior->prox!=mover)
+                        {
+                            anterior=anterior->prox;
+                        }
+                        anterior->prox=auxiliar;
+                    }
+                    auxiliar=mover;
+                }
+                auxiliar=auxiliar->prox;
+            }
+            mover=mover->prox;
         }
     }
 }
@@ -1339,7 +1439,7 @@ void juego2(grupo** lista_grupos, nodo** camino) {
         cout << "No se encontró el grupo." << endl;
         return;
     }
-
+    
     mostrar_grupos(actual);
     if (lista_vacia_jugador(actual->grupo_jugador)) {
         cout << "No hay jugadores en el grupo, agregue jugadores para poder jugar." << endl;
@@ -1348,6 +1448,7 @@ void juego2(grupo** lista_grupos, nodo** camino) {
 
     nodo* mover = (*camino);
     while (mover != NULL && actual != NULL) {
+        
             while(!listaVaciaZombiesEstaciones(mover->zombies_estacion)) {
             cout << "Estación actual: " << mover->estacion << endl;
             cout << "Grupo actual: " << actual->nombre_grupo << endl;
@@ -1450,8 +1551,9 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                     cout<<"El grupo: "<<actual->nombre_grupo<<" No a logrado despejar el lugar "<<endl;
                 }
                 
-                actualizar_vida_soldado(&actual->grupo_jugador,jugador_atacado);                               
-                eliminar_jugadores_por_vida(&actual->grupo_jugador, 0);
+                actualizar_vida_soldado(&actual->grupo_jugador,jugador_atacado);
+                ordenar_lista_jugadores(&actual->grupo_jugador);                               
+                eliminar_jugadores_por_vida_y_transferir_accesorios(&actual->grupo_jugador, 0);
                 if(lista_vacia_jugador(actual->grupo_jugador))
                 {
                     cout<<"El grupo: "<<actual->nombre_grupo<<" a sido eliminado por los zombies"<<endl;
@@ -1495,12 +1597,15 @@ void juego2(grupo** lista_grupos, nodo** camino) {
                 }
                 
                 actualizar_vida_soldado(&actual->grupo_jugador,jugador_atacado);
-                eliminar_jugadores_por_vida(&actual->grupo_jugador, 0);
+                ordenar_lista_jugadores(&actual->grupo_jugador);                               
+                eliminar_jugadores_por_vida_y_transferir_accesorios(&actual->grupo_jugador, 0);
                 if(lista_vacia_jugador(actual->grupo_jugador))
                 {
+
                     cout<<"El grupo: "<<actual->nombre_grupo<<" a sido eliminado por los zombies"<<endl;
                     system("pause");
                     system("cls");
+
                     break;
                 }
 
@@ -1519,7 +1624,8 @@ void juego2(grupo** lista_grupos, nodo** camino) {
         if(lista_vacia_jugador(actual->grupo_jugador))
         {
             eliminar_grupo(&(*lista_grupos),actual->nombre_grupo);
-            if(listaVaciaGrupo(*lista_grupos))
+            actual=buscar_grupo2(&(*lista_grupos));
+            if(listaVaciaGrupo(actual))
             {
                 cout<<"La Humanidad a sido eliminada por los zombies"<<endl;
                 return;

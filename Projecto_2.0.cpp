@@ -22,8 +22,7 @@ int main(){
     ifstream leer_zombies;
     string nombre_grupo, estacion_partida, estacion_llegada;//nuevo
     char opcion_principal = '0'; // Inicializamos la opción principal
-    bool cargados_soldados=false;
-    bool cargados_estaciones=false;
+    bool cargados_soldados=false;   
 
     while (opcion_principal != '4') {
         system("cls");
@@ -42,6 +41,7 @@ int main(){
 
         switch (opcion_principal) {
             case '1':{
+                system("cls");
                 char opcion_jugar = '0';
                 cout<<"Desa cargar partida o crear una desde cero?"<<endl;
                 while(opcion_jugar != '2'){
@@ -90,42 +90,44 @@ int main(){
                                         break;                                       
                                     }
                                     case '2':{
-                                        if(cargados_estaciones==false)
-                                        {
-                                            cargar_mapa(lista_mapa);
-                                            asignar_nombres(lista_mapa, lista_mapa2);                                           
-                                            cargados_estaciones=true;
-                                        }
+                                       
+                                        lista_mapa = NULL;
+                                        lista_mapa2=NULL;
+                                        cargar_mapa(lista_mapa);
+                                        asignar_nombres(lista_mapa, lista_mapa2);                                        
+                                        
+                                        
                                                                                     
-                                            mostrar_estaciones(lista_mapa2);
-                                            if (lista_mapa == NULL) {
-                                                cout << "El grafo está vacío." << endl;
-                                            } 
-                                            else {
-                                                cout << "Ingrese la estación de partida: ";
-                                                cin>> estacion_partida;
-                                                cout << "Ingrese la estación de llegada: ";
-                                                cin>>estacion_llegada;
-                                                camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
-                                                dijkstra(lista_mapa, camino_corto_peso, estacion_partida, estacion_llegada);
-                                                mostrar_estaciones(camino_corto_peso); // Mostrar la lista camino_corto_peso
-                                                system("pause");
-                                                system("cls"); 
-                                                juego2(&lista_grupo,&camino_corto_peso);
+                                         mostrar_estaciones(lista_mapa2);
+                                        if (lista_mapa == NULL) {
+                                            cout << "El grafo está vacío." << endl;
+                                        } 
+                                        else {
+                                            cout << "Ingrese la estación de partida: ";
+                                            cin>> estacion_partida;
+                                            cout << "Ingrese la estación de llegada: ";
+                                            cin>>estacion_llegada;
+                                            camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
+                                            dijkstra(lista_mapa, camino_corto_peso, estacion_partida, estacion_llegada);
+                                            mostrar_estaciones(camino_corto_peso); // Mostrar la lista camino_corto_peso
+                                            system("pause");
+                                            system("cls"); 
+                                            juego2(&lista_grupo,&camino_corto_peso);
                                                 
-                                            }
-                                            system("pause");                                            
+                                        }
+                                        system("pause");                                            
                                                                               
                                        
                                         break;
                                     }
                                     case '3':{
-                                        if(cargados_estaciones==false)
-                                        {
-                                            cargar_mapa(lista_mapa);
-                                            asignar_nombres(lista_mapa, lista_mapa2);                                           
-                                            cargados_estaciones=true;
-                                        }
+                                        
+                                        lista_mapa = NULL;
+                                        lista_mapa2=NULL;
+                                        cargar_mapa(lista_mapa);
+                                        asignar_nombres(lista_mapa, lista_mapa2);                                       
+                                        
+                                        
                                         mostrar_estaciones(lista_mapa2);
                                         if (lista_mapa == NULL) {
                                             cout << "El grafo está vacío." << endl;
@@ -146,6 +148,12 @@ int main(){
                                         break;
                                     }
                                     case '4':{
+                                        lista_mapa = NULL;
+                                        lista_mapa2=NULL;
+                                        cargar_mapa(lista_mapa);
+                                        asignar_nombres(lista_mapa, lista_mapa2);                                                                          
+                                        
+                                        mostrar_estaciones(lista_mapa2);
                                         if (lista_mapa == NULL) {
                                             cout << "El grafo está vacío." << endl;
                                         } 
