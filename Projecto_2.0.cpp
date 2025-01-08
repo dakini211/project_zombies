@@ -113,6 +113,11 @@ int main(){
                                             system("pause");
                                             system("cls"); 
                                             juego2(&lista_grupo,&camino_corto_peso);
+                                            if(listaVaciaGrupo(lista_grupo))
+                                            {
+                                               cargados_soldados=false;
+                                            }
+                                            
                                                 
                                         }
                                         system("pause");                                            
@@ -143,6 +148,10 @@ int main(){
                                             system("pause");
                                             system("cls"); 
                                             juego2(&lista_grupo,&camino_corto_zombies);
+                                            if(listaVaciaGrupo(lista_grupo))
+                                            {
+                                               cargados_soldados=false;
+                                            }
                                         }
                                         system("pause");
                                         break;
@@ -165,6 +174,11 @@ int main(){
                                             camino_corto_peso = NULL; // Reiniciar la lista camino_corto_peso
                                             camino_posible_sobreviviente(lista_mapa, camino_corto_sobreviviente, estacion_llegada, estacion_partida, 10);
                                             mostrar_estaciones(camino_corto_sobreviviente); // Mostrar la lista camino_corto_peso
+                                        }
+                                        juego2(&lista_grupo,&camino_corto_sobreviviente);
+                                        if(listaVaciaGrupo(lista_grupo))
+                                        {
+                                           cargados_soldados=false;
                                         }
                                         system("pause");
                                         break;

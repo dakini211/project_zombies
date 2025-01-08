@@ -169,7 +169,7 @@ void agregar_estacion(nodo*& lista) {
     int numero_est;
 
     cout << "Ingrese el nombre de la estacion: ";
-    getline(cin, nombre_est);
+    cin >> nombre_est;
     cout << "Ingrese el numero de la estacion: ";
     cin >> numero_est;
     cin.ignore(); // Ignorar el salto de línea después del número
@@ -219,7 +219,7 @@ void agregar_zombies(nodo* ubicacion) {
     int vida;
     int dano_ataque;
     cout << "Ingrese el tipo del zombie: ";
-    getline(cin, nombre_zombie);
+    cin >> nombre_zombie;
     cout << "Ingrese la vida del zombie: ";
     cin >> vida;
     cout << "Ingrese el daño de ataque del zombie: ";
@@ -705,7 +705,7 @@ void modificar_zombie_estacion(zombies_estaciones *lista) {
     
     string name;
     cout << "Ingrese el nombre del zombie a modificar: ";
-    getline(cin, name);
+    cin>>name;
     
     zombies_estaciones* buscar = lista;
     while (buscar != NULL) {
@@ -727,7 +727,7 @@ void modificar_zombie_estacion(zombies_estaciones *lista) {
                     case '1': {
                         string nuevo_nombre;
                         cout << "Ingrese el nuevo nombre: ";
-                        getline(cin, nuevo_nombre);
+                        cin>>nuevo_nombre;
                         buscar->nombre_zombie = nuevo_nombre;
                         break;
                     }
@@ -768,7 +768,7 @@ void modificar_estacion(nodo *lista) {
     
     string name;
     cout << "Ingrese el nombre de la estación a modificar: ";
-    getline(cin, name);
+   cin>>name;
     
     nodo* ubicacion = Buscar_estacion_nom(lista, name);
     if (ubicacion == NULL) {
@@ -794,7 +794,7 @@ void modificar_estacion(nodo *lista) {
                 string nuevo_nombre;
                 int nuevo_numero;
                 cout << "Ingrese el nuevo nombre: ";
-                getline(cin, nuevo_nombre);
+                cin >> nuevo_nombre;
                 cout << "Ingrese el nuevo número de la estación: ";
                 cin >> nuevo_numero;
                 modificar_nombre_est(ubicacion->estacion, nuevo_nombre, nuevo_numero);
@@ -880,8 +880,7 @@ void eliminar_vertice(nodo*& lista) {
     nodo* anterior = NULL;
     string nom_est;
     cout << "Ingrese el nombre de la estacion a eliminar: ";
-    getline(cin, nom_est);
-
+    cin >> nom_est;
     // Buscar el vértice a eliminar
     while (temp != NULL && temp->estacion != nom_est) {
         anterior = temp;
@@ -1611,13 +1610,13 @@ void juego2(grupo** lista_grupos, nodo** camino) {
         if(lista_vacia_jugador(actual->grupo_jugador))
         {
             eliminar_grupo(&(*lista_grupos),actual->nombre_grupo);
+            actual=buscar_grupo2(&(*lista_grupos));
             if(listaVaciaGrupo(*lista_grupos))
             {
                 cout<<"La Humanidad a sido eliminada por los zombies"<<endl;
                 return;
             }            
-        }
-       actual = actual->prox;
+        }      
         
     }
 }

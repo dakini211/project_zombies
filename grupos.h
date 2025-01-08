@@ -139,11 +139,7 @@ grupo *buscar_grupo2(grupo**lista_grupo)
 {
   
     
-    mostrar_grupos(*lista_grupo);
-    string nombre;
-    cout << "Ingrese el nombre del grupo a insertar en estacion: ";
-    cin >> nombre;
-    grupo*mover=*lista_grupo; bool encontrado=false;
+    
         if(listaVaciaGrupo(*lista_grupo))
         {
             cout<<"No hay grupos disponibles"<<endl;
@@ -151,6 +147,11 @@ grupo *buscar_grupo2(grupo**lista_grupo)
             return NULL;        
         }
         else{
+            mostrar_grupos(*lista_grupo);
+            string nombre;
+            cout << "Ingrese el nombre del grupo a insertar en estacion: ";
+            cin >> nombre;
+            grupo*mover=*lista_grupo; bool encontrado=false;
             while(mover!=NULL && encontrado==false)
             {
                 if(mover->nombre_grupo==nombre)
